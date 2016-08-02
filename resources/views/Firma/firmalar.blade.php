@@ -10,10 +10,12 @@
             <tr>
                 <td>{{$i}}</td>&nbsp;&nbsp;
                 <td>{{$firma->adi}}</td>&nbsp;&nbsp;
-                <td><a href="{{ url('firma/'.$firma->id)}}">Tıkla</a>
+                <td><a href="{{ url('firmaProfili/'.$firma->id)}}">Tıkla</a>
             </tr>
             <?php $i++; ?>
             @endforeach
+            {{$firmalar->links()}}
+
             </table>
         </div>
         

@@ -50,7 +50,7 @@ class Firma extends Model
     }
     public function iletisim_bilgileri()
     {
-        return $this->hasOne('App\iletisim_bilgileri', 'firma_id', 'id');
+        return $this->hasOne('App\IletisimBilgisi', 'firma_id', 'id');
     }
     public function firma_calisma_bilgileri()
     {

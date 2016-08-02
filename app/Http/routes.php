@@ -22,74 +22,43 @@ use Illuminate\Http\Request;
  */
 
 Route::get('/', function () {
-    $firmalar = Firma::all();
+    $firmalar = Firma::paginate(2);
     
     return view('Firma.firmalar')->with('firmalar', $firmalar);
 });
+Route::get('/image/{id}', function ($id) {
+        $firmas=Firma::find($id);  
+        return view('firmas.upload' )->with('firmas',$firmas);
+    });
+Route::post('firmaProfili/uploadImage/{id}', 'FirmaController@uploadImage');
+Route::post('firmaProfili/deleteImage/{id}', 'FirmaController@deleteImage');
 
-Route::post('/form', function (Request $request) {
-    $validator = Validator::make($request->all(), [
-                'city_id' => 'required',
-                'district_id' => 'required',
-                'neighborhood_id' => 'required',
-                'posta_kodu' => 'required',
-                'telefon' => 'required',
-                'fax' => 'required',
-                'web_sayfasi' => 'required',
-    ]);
-
-    if ($validator->fails()) {
-        return redirect('/')
-                        ->withInput()
-                        ->withErrors($validator);
-    }
-
-    $iletisim = new iletisim_bilgileri();
-    $iletisim->telefon = $request->telefon;
-    $iletisim->fax = $request->fax;
-    $iletisim->web_sayfasi = $request->web_sayfasi;
-    //$iletisim->save();
-    
-    $adres = new adresler();
-    $adres->il_id = $request->city_id;
-    $adres->ilce_id = $request->district_id;
-    $adres->semt_id = $request->neighborhood_id;
-    $adres->posta_kodu = $request->posta_kodu;
-    //$tur = adres_turleri::where('adi', '=', 'İletişim')->select('id')->get();
-    $adres->tur_id = 1;
-    $adres->save();
-    
-    $iletisim->adres_id = $adres->id;
-    
-    $iletisim->save();
-
-
-    return redirect('/');
-});
+Route::post('firmaProfili/iletisimAdd/{id}', 'FirmaController@iletisimAdd');
 
 Route::post('/firma', 'FirmaController@firma');
 Route::get('/firma/{id}', 'FirmaController@index');
+Route::get('/firmaProfili/{id}', 'FirmaController@showFirma');
 
 Route::get('/ajax-subcat', function () {
-    $city_id = Input::get('city_id');
+    $city_id = Input::get('il_id');
 
-		$districts = \App\ilceler::where('il_id', '=', $city_id)->get();
+		$districts = \App\Ilce::where('il_id', '=', $city_id)->get();
 
 		return Response::json($districts);
 });
 Route::get('/ajax-subcatt', function () {
-    $district_id = Input::get('district_id');
+    $district_id = Input::get('ilce_id');
 
-		$neighborhoods = \App\semtler::where('ilce_id', '=', $district_id)->get();
+		$neighborhoods = \App\Semt::where('ilce_id', '=', $district_id)->get();
 
 		return Response::json($neighborhoods);
 });
 Route::get('/ajax-subcattt', function () {
-    $neighborhood_id=Input::get('neighborhood_id');
+    $neighborhood_id=Input::get('semt_id');
 
-		$neighborhoods = \App\semtler::where('id', '=', $neighborhood_id)->get();
+    $neighborhoods = \App\Semt::where('id', '=', $neighborhood_id)->get();
 
-		return Response::json($neighborhoods);
+    return Response::json($neighborhoods);
 });
 
 Route::get('/city', 'iller@index');

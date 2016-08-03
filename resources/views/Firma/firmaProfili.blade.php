@@ -213,8 +213,8 @@
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" name="il_id" id="il_id" required>
                                                                             <option selected disabled>Seçiniz</option>
-                                                                            @foreach($iller as $iller)
-                                                                            <option  value="{{$iller->id}}" >{{$iller->adi}}</option>
+                                                                            @foreach($iller as $il)
+                                                                            <option  value="{{$il->id}}" >{{$il->adi}}</option>
                                                                             @endforeach
                                                                         </select>
                                                                     </div>
@@ -336,6 +336,195 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Mali Bilgileri</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse3" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                         <table class="table" >
+                                                <thead id="tasks-list" name="tasks-list">
+                                                 
+                                                    <tr>
+                                                        <td>Firma Ünvanı:</td>
+                                                        <?php $firmaFatura = $firma->adresler()->where('tur_id', '=', '2')->first();
+                                                              if(!$firma->mali_bilgiler){
+                                                                  $firma->mali_bilgiler = new App\MaliBilgi();
+                                                                  $firma->mali_bilgiler->vergi_daireleri = new App\VergiDairesi();
+                                                                  $firma->sirket_turleri = new App\SirketTuru();
+                                                              }
+                                                              if(!$firmaFatura){
+                                                                  $firmaFatura = new Adres();
+                                                                  $firmaFatura->iller = new Il();
+                                                                  $firmaFatura->ilceler = new Ilce();
+                                                                  $firmaFatura->semtler = new Semt();                                                                  
+                                                              }
+                                                        ?>
+                                                        <td>{{$firma->mali_bilgiler->unvani}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Şirket Türü:</td>
+                                                        <td>{{$firma->sirket_turleri->adi}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Fatura Adresi:</td>
+                                                        <td>{{$firmaFatura->adres}}</td>
+
+                                                    </tr>
+                                                     <tr>
+                                                        <td>İli:</td>
+                                                        <td>{{$firmaFatura->iller->adi}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>İlçesi:</td>
+                                                        <td>{{$firmaFatura->ilceler->adi}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Semt:</td>
+                                                        <td>{{$firmaFatura->semtler->adi}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Vergi Dairesi:</td>                                                        
+                                                        <td>{{$firma->mali_bilgiler->vergi_daireleri->adi}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Vergi Numarası:</td>
+                                                        <td>{{$firma->mali_bilgiler->vergi_numarasi}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Yıllık Cirosu:</td>
+                                                        <td>{{$firma->mali_bilgiler->yillik_cirosu}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sermayesi:</td>
+                                                        <td>{{$firma->mali_bilgiler->sermayesi}}</</td>
+
+                                                    </tr>
+                                                  
+                                                </thead>
+
+
+                                            </table>
+                                            <div class="modal fade" id="myModal-malibilgiler" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                            <h4 class="modal-title" id="myModalLabel">Mali Bilgiler</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                             {!! Form::open(array('url'=>'firmaProfili/malibilgi/'.$firma->id,'class'=>'form-horizontal','method'=>'POST', 'files'=>true)) !!}
+                                                                <div class="form-group error">
+                                                                    <label for="inputTask" class="col-sm-3 control-label">Şehir</label>
+                                                                    <div class="col-sm-9">
+                                                                        <select class="form-control" name="il_id" id="il_id" required>
+                                                                            <option selected disabled>Seçiniz</option>
+                                                                            @foreach($iller as $il)
+                                                                                <option  value="{{$il->id}}" >{{$il->adi}}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="form-group error">
+                                                                    <label for="inputTask" class="col-sm-3 control-label">İlçe</label>
+                                                                    <div class="col-sm-9">
+                                                                        <select class="form-control" name="ilce_id" id="ilce_id" required>
+                                                                            <option selected disabled>Seçiniz</option>
+                                                                           
+                                                                        </select>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="form-group error">
+                                                                    <label for="inputTask" class="col-sm-3 control-label">Semt</label>
+                                                                    <div class="col-sm-9">
+                                                                        <select class="form-control" name="semt_id" id="semt_id" required>
+                                                                            <option selected disabled>Seçiniz</option>
+
+                                                                        </select>
+                                                                    </div>
+
+                                                                </div>    
+
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Firma Ünvanı</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="unvani" name="unvani" placeholder="Firma Ünvanı" value="{{$firma->mali_bilgiler->unvani}}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Şirket Türü</label>
+                                                                    <div class="col-sm-9">
+                                                                        <select class="form-control" name="sirket_turu" id="sirket_turu" required>
+                                                                            <option selected disabled>Seçiniz</option>
+                                                                            @foreach($sirketTurleri as $tur)
+                                                                                <option  value="{{$tur->id}}" >{{$tur->adi}}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Fatura Adresi</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="fatura_adresi" name="fatura_adresi" placeholder="Fatura Adresi" value="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Vergi Daireleri</label>
+                                                                    <div class="col-sm-9">
+                                                                        <select class="form-control" name="vergi_dairesi_id" id="vergi_dairesi_id" required>
+                                                                                <option selected disabled>Seçiniz</option>
+                                                                                @foreach($vergiDaireleri as $vergiDaire)
+                                                                                    <option  value="{{$vergiDaire->id}}" >{{$vergiDaire->adi}}</option>
+                                                                                @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Vergi Numarası</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="vergi_numarasi" name="vergi_numarasi" placeholder="Vergi Numarası" value="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Yıllık Cirosu</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="yillik_cirosü" name="yıllık_cirosü" placeholder="Yıllık Cirosu" value="">
+                                                                            <input type="checkbox" class="form-control" id="ciro_goster" name="ciro_goster" >Göster<br></input>
+                                                                                
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Sermayesi</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="sermayesi" name="sermayesi" placeholder="Sermayesi" value="">
+                                                                            <input type="checkbox" class="form-control" id="sermaye_goster" name="sermaye_goster" >Göster<br></input>
+                                                                    </div>
+                                                                </div>
+                                                            {!! Form::submit('Kaydet', array('url'=>'firmaProfili/malibilgi/'.$firma->id,'class'=>'btn btn-danger')) !!}
+                                                            {!! Form::close() !!}
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button id="btn-add-malibilgiler" name="btn-add-malibilgiler" class="btn btn-primary btn-xs">Ekle / Düzenle</button>
+                                            <script src="{{asset('js/ajax-crud-malibilgiler.js')}}"></script>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 <script>
@@ -380,6 +569,15 @@ $('#il_id').on('change', function (e) {
 });
 
 $('#ilce_id').on('change', function (e) {
+    var ilce_id = e.target.value;
+    fillSemt(ilce_id);
+});
+$('#mali_il_id').on('change', function (e) {
+    var il_id = e.target.value;
+    fillIlce(il_id);
+});
+
+$('#mali_ilce_id').on('change', function (e) {
     var ilce_id = e.target.value;
     fillSemt(ilce_id);
 });

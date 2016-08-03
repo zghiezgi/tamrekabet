@@ -6,6 +6,7 @@ use App\Sektor;
 use App\Il;
 use App\IletisimBilgisi;
 use App\Adres;
+use App\SirketTuru;
 use Session;
 use File;
 use Illuminate\Support\Facades\Redirect;
@@ -118,7 +119,44 @@ class FirmaController extends Controller
     }
     
     
-    
+    public function maliBilgiAdd(Request $request){
+        $validator = Validator::make($request->all(), [
+                    'unvani' => 'required',
+                    'vergi_dairesi_id' => 'required',
+                    'vergi_numarasi' => 'required',
+                    'yillik_cirosu' => 'required',
+                    'sermayesi' => 'required',
+                    'ciro_goster' => 'required',
+                    'sermaye_goster' => 'required',
+                    'sirket_turu' => 'required',
+                   
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('firmaProfili/'.$request->id)
+                            ->withInput()
+                            ->withErrors($validator);
+        }
+        
+        $firma = Firma::find($request->id);
+        
+        $maliBilgi = $firma->mali_bilgiler ?: new \App\MaliBilgi();
+        $maliBilgi->unvani = $request->unvani;
+        $maliBilgi->vergi_numarasi = $request->vergi_numarasi;
+        $maliBilgi->vergi_dairesi_id = $request->vergi_dairesi_id;
+        $firma->mali_bilgiler()->save($maliBilgi);        
+
+        $adres = $firma->adresler()->where('tur_id', '=', '2')->first() ?: new Adres();
+        $adres->il_id = $request>il_id;
+        $adres->ilce_id = $request->ilce_id;
+        $adres->semt_id = $request->semt_id;
+        $adres->adres = $request->adres;
+        $tur = 2;
+        $adres->tur_id = $tur;
+        $firma->adresler()->save($adres);
+        
+        return redirect('firmaProfili/'.$firma->id);
+    }
     
     
     
@@ -154,6 +192,8 @@ class FirmaController extends Controller
     public function showFirma($id){
         $firma = Firma::find($id);
         $iller = Il::all();
-        return view('Firma.firmaProfili', ['firma' => $firma], ['iller' => $iller]);
+        $sirketTurleri=  SirketTuru::all();
+        $vergiDaireleri= \App\VergiDairesi::all();
+        return view('Firma.firmaProfili', ['firma' => $firma], ['iller' => $iller])->with('sirketTurleri',$sirketTurleri)->with('vergiDaireleri',$vergiDaireleri);
     }
 }

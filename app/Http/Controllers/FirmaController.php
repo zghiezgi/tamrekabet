@@ -74,11 +74,12 @@ class FirmaController extends Controller
                     'web_sayfasi' => 'required|max:50',
         ]);
 
-        /*if ($validator->fails()) {
+        if ($validator->fails()) {
             return redirect('firmaProfili/'.$request->id)
                             ->withInput()
                             ->withErrors($validator);
-        }*/
+        }
+        
         $firma = Firma::find($request->id);
         
         $iletisim = $firma->iletisim_bilgileri ?: new IletisimBilgisi();
@@ -96,6 +97,23 @@ class FirmaController extends Controller
         $adres->tur_id = $tur;
         $firma->adresler()->save($adres);
         
+        return redirect('firmaProfili/'.$firma->id);
+    }
+    public function tanitimAdd(Request $request){
+        $validator = Validator::make($request->all(), [
+                    'tanitim_yazisi' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('firmaProfili/'.$request->id)
+                            ->withInput()
+                            ->withErrors($validator);
+        }
+        
+        $firma = Firma::find($request->id);
+        
+        $firma->tanitim_yazisi = $request->tanitim_yazisi;
+        $firma->save();        
         return redirect('firmaProfili/'.$firma->id);
     }
     

@@ -283,60 +283,106 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Firma Tanıtım Yazısı</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse2" class="panel-collapse collapse">
+                                        <div class="panel-body">
+
+                                            <table class="table" >
+                                                <thead id="tasks-list" name="tasks-list">
+                                                    <tr id="firma{{$firma->id}}">
+                                                        <tr>
+                                                            <td>Tanıtım Yazısı:</td>
+                                                            <td>{{$firma->tanitim_yazisi}}</td>
+                                                        </tr>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+
+                                            <div class="modal fade" id="myModal-tanıtımyazısı" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                            <h4 class="modal-title" id="myModalLabel">Firma Tanıtım Yazısı</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            {!! Form::open(array('url'=>'firmaProfili/tanitim/'.$firma->id,'method'=>'POST', 'files'=>true)) !!}
+                                                        
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Tanıtım Yazısı</label>
+                                                                    <div class="col-sm-9">
+                                                                        <!--input type="text" class="form-control" id="tanıtım_yazısı" name="tanıtım_yazısı" placeholder="Tanıtım Yazısı" value=""-->
+                                                                        <textarea id="tanitim_yazisi" name="tanitim_yazisi" rows="7" class="form-control ckeditor" placeholder="Lütfen tanıtım yazısını buraya yazınız.." ></textarea>
+                                                                    </div>
+                                                                </div>
+
+                                                            {!! Form::submit('Kaydet', array('url'=>'firmaProfili/tanitim/'.$firma->id,'class'=>'btn btn-danger')) !!}
+                                                            {!! Form::close() !!}
+                                                        </div>
+                                                        <div class="modal-footer">                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button id="btn-add-tanıtımyazısı" name="btn-add-tanıtımyazısı" class="btn btn-primary btn-xs" onclick="fillTanitim()">Ekle / Düzenle</button>
+                                            <script src="{{asset('js/ajax-crud-firmaTanitim.js')}}"></script>
+                                            <script src="//cdn.ckeditor.com/4.5.10/standard/ckeditor.js"></script>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 <script>
-$('#il_id').on('change', function (e) {
-    console.log(e);
+$(document).ready(function() {
+    fillIlce({{$firmaAdres->iller->id}});
+    fillSemt({{$firmaAdres->ilceler->id}});
+    $("#il_id").val({{$firmaAdres->iller->id}});
+    $("#ilce_id").val({{$firmaAdres->ilceler->id}});
+    $("#semt_id").val({{$firmaAdres->semtler->id}});
+})
+var fillTanitim = function () {
+    alert('özge');
+    CKEDITOR.instances['tanitim_yazisi'].setData('{{$firma->tanitim_yazisi}}');
+}
+var fillIlce = function (il_id) {
+        //ajax
+        async:false,
+        $.get('/tamrekabet/public/index.php/ajax-subcat?il_id=' + il_id, function (data) {
+            $('#ilce_id').empty();
+            $('#ilce_id').append('<option value=""> Seçiniz </option>');
+            $.each(data, function (index, subcatObj) {
+                $('#ilce_id').append('<option value="' + subcatObj.id + '">' + subcatObj.adi + '</option>');
+            });
+        });        
+}
 
-    var il_id = e.target.value;
-
-    //ajax
-    $.get('/tamrekabet/public/index.php/ajax-subcat?il_id=' + il_id, function (data) {
-        //success data
-        //console.log(data);
-        $('#ilce_id').empty();
-        $('#ilce_id').append('<option value=""> Seçiniz </option>');
-        $.each(data, function (index, subcatObj) {
-            $('#ilce_id').append('<option value="' + subcatObj.id + '">' + subcatObj.adi + '</option>');
+var fillSemt = function (ilce_id) {
+        //ajax
+        async:false,
+        $.get('/tamrekabet/public/index.php/ajax-subcatt?ilce_id=' + ilce_id, function (data) {
+            $('#semt_id').empty();
+            $('#semt_id').append('<option value=""> Seçiniz </option>');
+            $.each(data, function (index, subcatObj) {
+                $('#semt_id').append('<option value="' + subcatObj.id + '">' + subcatObj.adi + '</option>');
+            });
         });
-    });
-  
+}
+
+$('#il_id').on('change', function (e) {
+    var il_id = e.target.value;
+    fillIlce(il_id);
 });
 
 $('#ilce_id').on('change', function (e) {
-    console.log(e);
-
     var ilce_id = e.target.value;
-
-    //ajax
-    $.get('/tamrekabet/public/index.php/ajax-subcatt?ilce_id=' + ilce_id, function (data) {
-        //success data
-        //console.log(data);
-        $('#semt_id').empty();
-        $('#semt_id').append('<option value=" ">Seçiniz </option>');
-        $.each(data, function (index, subcatObj) {
-            $('#semt_id').append('<option value="' + subcatObj.id + '">' + subcatObj.adi + '</option>');
-        });
-    });
+    fillSemt(ilce_id);
 });
-$('#semt_id').on('change', function (e) {
-    console.log(e);
-
-    var semt_id = e.target.value;
-
-    //ajax
-    $.get('/tamrekabet/public/index.php/ajax-subcattt?semt_id=' + semt_id, function (data) {
-        //success data
-        //console.log(data);
-        $('#semt_id').empty();
-        $.each(data, function (index, subcatObj) {
-            $('#semt_id').append('<option value="' + subcatObj.id + '">' + subcatObj.adi + '</option>');
-        });
-    });
-});
-
-
 
 
 </script>

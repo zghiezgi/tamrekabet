@@ -34,6 +34,7 @@ Route::post('firmaProfili/uploadImage/{id}', 'FirmaController@uploadImage');
 Route::post('firmaProfili/deleteImage/{id}', 'FirmaController@deleteImage');
 
 Route::post('firmaProfili/iletisimAdd/{id}', 'FirmaController@iletisimAdd');
+Route::post('firmaProfili/tanitim/{id}', 'FirmaController@tanitimAdd');
 
 Route::post('/firma', 'FirmaController@firma');
 Route::get('/firma/{id}', 'FirmaController@index');

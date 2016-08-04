@@ -132,11 +132,11 @@ class FirmaController extends Controller
                    
         ]);
 
-        if ($validator->fails()) {
+        /*if ($validator->fails()) {
             return redirect('firmaProfili/'.$request->id)
                             ->withInput()
                             ->withErrors($validator);
-        }
+        }*/
         
         $firma = Firma::find($request->id);
         
@@ -147,10 +147,10 @@ class FirmaController extends Controller
         $firma->mali_bilgiler()->save($maliBilgi);        
 
         $adres = $firma->adresler()->where('tur_id', '=', '2')->first() ?: new Adres();
-        $adres->il_id = $request>il_id;
-        $adres->ilce_id = $request->ilce_id;
-        $adres->semt_id = $request->semt_id;
-        $adres->adres = $request->adres;
+        $adres->il_id = $request->mali_il_id;
+        $adres->ilce_id = $request->mali_ilce_id;
+        $adres->semt_id = $request->mali_semt_id;
+        $adres->adres = $request->fatura_adres;
         $tur = 2;
         $adres->tur_id = $tur;
         $firma->adresler()->save($adres);

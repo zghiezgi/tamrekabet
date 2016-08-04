@@ -277,7 +277,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button id="btn-add" name="btn-add" class="btn btn-primary btn-xs">Ekle / Düzenle</button>
+                                            <button id="btn-add" name="btn-add" class="btn btn-primary btn-xs" onclick="selectDD()">Ekle / Düzenle</button>
                                             
                                             
                                         </div>
@@ -423,39 +423,6 @@
                                                         </div>
                                                         <div class="modal-body">
                                                              {!! Form::open(array('url'=>'firmaProfili/malibilgi/'.$firma->id,'class'=>'form-horizontal','method'=>'POST', 'files'=>true)) !!}
-                                                                <div class="form-group error">
-                                                                    <label for="inputTask" class="col-sm-3 control-label">Şehir</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" name="il_id" id="il_id" required>
-                                                                            <option selected disabled>Seçiniz</option>
-                                                                            @foreach($iller as $il)
-                                                                                <option  value="{{$il->id}}" >{{$il->adi}}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
-
-                                                                </div>
-                                                                <div class="form-group error">
-                                                                    <label for="inputTask" class="col-sm-3 control-label">İlçe</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" name="ilce_id" id="ilce_id" required>
-                                                                            <option selected disabled>Seçiniz</option>
-                                                                           
-                                                                        </select>
-                                                                    </div>
-
-                                                                </div>
-                                                                <div class="form-group error">
-                                                                    <label for="inputTask" class="col-sm-3 control-label">Semt</label>
-                                                                    <div class="col-sm-9">
-                                                                        <select class="form-control" name="semt_id" id="semt_id" required>
-                                                                            <option selected disabled>Seçiniz</option>
-
-                                                                        </select>
-                                                                    </div>
-
-                                                                </div>    
-
                                                                 <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Firma Ünvanı</label>
                                                                     <div class="col-sm-9">
@@ -477,6 +444,33 @@
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Fatura Adresi</label>
                                                                     <div class="col-sm-9">
                                                                         <input type="text" class="form-control" id="fatura_adresi" name="fatura_adresi" placeholder="Fatura Adresi" value="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group error">
+                                                                    <label for="inputTask" class="col-sm-3 control-label">Şehir</label>
+                                                                    <div class="col-sm-9">
+                                                                        <select class="form-control" name="mali_il_id" id="mali_il_id" required>
+                                                                            <option selected disabled>Seçiniz</option>
+                                                                            @foreach($iller as $il)
+                                                                                <option  value="{{$il->id}}" >{{$il->adi}}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group error">
+                                                                    <label for="inputTask" class="col-sm-3 control-label">İlçe</label>
+                                                                    <div class="col-sm-9">
+                                                                        <select class="form-control" name="mali_ilce_id" id="mali_ilce_id" required>
+                                                                            <option selected disabled>Seçiniz</option>                                                                           
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group error">
+                                                                    <label for="inputTask" class="col-sm-3 control-label">Semt</label>
+                                                                    <div class="col-sm-9">
+                                                                        <select class="form-control" name="mali_semt_id" id="mali_semt_id" required>
+                                                                            <option selected disabled>Seçiniz</option>
+                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
@@ -529,57 +523,47 @@
                         </div>
 <script>
 $(document).ready(function() {
-    fillIlce({{$firmaAdres->iller->id}});
-    fillSemt({{$firmaAdres->ilceler->id}});
+    popDropDown('ilce_id', 'ajax-subcat?il_id=',{{$firmaAdres->iller->id}});
+    popDropDown('semt_id', 'ajax-subcatt?ilce_id=',{{$firmaAdres->ilceler->id}});
+})
+var selectDD = function() {
     $("#il_id").val({{$firmaAdres->iller->id}});
     $("#ilce_id").val({{$firmaAdres->ilceler->id}});
     $("#semt_id").val({{$firmaAdres->semtler->id}});
-})
+}
 var fillTanitim = function () {
     alert('özge');
     CKEDITOR.instances['tanitim_yazisi'].setData('{{$firma->tanitim_yazisi}}');
 }
-var fillIlce = function (il_id) {
-        //ajax
-        async:false,
-        $.get('/tamrekabet/public/index.php/ajax-subcat?il_id=' + il_id, function (data) {
-            $('#ilce_id').empty();
-            $('#ilce_id').append('<option value=""> Seçiniz </option>');
+var popDropDown = function (element, ajax, parameter){
+    $.get('/tamrekabet/public/index.php/'+ ajax + parameter, function (data) {
+            $('#'+ element).empty();
+            $('#'+ element).append('<option value=""> Seçiniz </option>');
             $.each(data, function (index, subcatObj) {
-                $('#ilce_id').append('<option value="' + subcatObj.id + '">' + subcatObj.adi + '</option>');
+                $('#'+ element).append('<option value="' + subcatObj.id + '">' + subcatObj.adi + '</option>');
             });
-        });        
+        });    
 }
-
-var fillSemt = function (ilce_id) {
-        //ajax
-        async:false,
-        $.get('/tamrekabet/public/index.php/ajax-subcatt?ilce_id=' + ilce_id, function (data) {
-            $('#semt_id').empty();
-            $('#semt_id').append('<option value=""> Seçiniz </option>');
-            $.each(data, function (index, subcatObj) {
-                $('#semt_id').append('<option value="' + subcatObj.id + '">' + subcatObj.adi + '</option>');
-            });
-        });
-}
-
 $('#il_id').on('change', function (e) {
     var il_id = e.target.value;
-    fillIlce(il_id);
+    popDropDown('ilce_id', 'ajax-subcat?il_id=', il_id);
+    $("#semt_id")[0].selectedIndex=0;
 });
 
 $('#ilce_id').on('change', function (e) {
     var ilce_id = e.target.value;
-    fillSemt(ilce_id);
+    popDropDown('semt_id', 'ajax-subcatt?ilce_id=', ilce_id);
 });
+
 $('#mali_il_id').on('change', function (e) {
     var il_id = e.target.value;
-    fillIlce(il_id);
+    popDropDown('mali_ilce_id', 'ajax-subcat?il_id=', il_id);
+    $("#mali_semt_id")[0].selectedIndex=0;
 });
 
 $('#mali_ilce_id').on('change', function (e) {
     var ilce_id = e.target.value;
-    fillSemt(ilce_id);
+    popDropDown('mali_semt_id', 'ajax-subcatt?ilce_id=', ilce_id);
 });
 
 

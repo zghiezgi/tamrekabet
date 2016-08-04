@@ -16,6 +16,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
            <script src="{{asset('js/ajax-crud.js')}}"></script>
                         <style>
@@ -56,7 +57,7 @@
                                 cursor: pointer;
                                 float:left;
                             }
-
+                           
 
 
                         </style>
@@ -354,6 +355,7 @@
                                                                   $firma->mali_bilgiler = new App\MaliBilgi();
                                                                   $firma->mali_bilgiler->vergi_daireleri = new App\VergiDairesi();
                                                                   $firma->sirket_turleri = new App\SirketTuru();
+                                                                  
                                                               }
                                                               if(!$firmaFatura){
                                                                   $firmaFatura = new Adres();
@@ -362,12 +364,15 @@
                                                                   $firmaFatura->semtler = new Semt();                                                                  
                                                               }
                                                         ?>
-                                                        <td>{{$firma->mali_bilgiler->unvani}}</td>
+                                                     <td>{{$firma->mali_bilgiler->unvani}}</td>
 
                                                     </tr>
                                                     <tr>
                                                         <td>Şirket Türü:</td>
-                                                        <td>{{$firma->sirket_turleri->adi}}</td>
+                                                        @foreach($firma->sirket_turleri() as $turleri)
+                                                       
+                                                        <td>{{$turleri->adi}}</td>
+                                                        @endforeach
                                                     </tr>
                                                     <tr>
                                                         <td>Fatura Adresi:</td>
@@ -493,7 +498,7 @@
                                                                 <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Yıllık Cirosu</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="yillik_cirosü" name="yıllık_cirosü" placeholder="Yıllık Cirosu" value="">
+                                                                        <input type="text" class="form-control" id="yillik_cirosu" name="yillik_cirosu" placeholder="Yıllık Cirosu" value="">
                                                                             <input type="checkbox" class="form-control" id="ciro_goster" name="ciro_goster" >Göster<br></input>
                                                                                 
                                                                     </div>
@@ -515,6 +520,249 @@
                                             </div>
                                             <button id="btn-add-malibilgiler" name="btn-add-malibilgiler" class="btn btn-primary btn-xs">Ekle / Düzenle</button>
                                             <script src="{{asset('js/ajax-crud-malibilgiler.js')}}"></script>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Ticari Bilgiler</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse4" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                         <table class="table" >
+                                                <thead id="tasks-list" name="tasks-list">
+                                                    
+                                                    <tr>
+                                                        <td>Ticaret Sicil No:</td>
+                                                        <?php $firmaFatura = $firma->adresler()->where('tur_id', '=', '2')->first();
+                                                              if(!$firma->ticari_bilgiler){
+                                                                  $firma->ticari_bilgiler = new App\TicariBilgi();
+                                                                  $firma->ticari_bilgiler->ticaret_odalari = new App\TicaretOdasi();
+                                                                  $firma->ticari_bilgiler->sektorler = new App\Sektor();
+                                                                  
+                                                                  $firma->firma_departmanlar = new App\FirmaDepartman();
+                                                                  $firma->firma_departmanlar->departmanlar = new App\Departman();
+                                                                  
+                                                                  $firma->firma_sektorler = new App\FirmaSektor();
+                                                                  $firma->firma_sektorler->sektorler= new App\Sektor();
+                                                                  
+                                                                  $firma->firma_satilan_markalar= new App\FirmaSatilanMarka();
+                                                                  $firma->firma_satilan_markalar->satilan_markalar= new App\SatilanMarka();
+                                                                  
+                                                                  $firma->firma_faaliyetler= new App\FirmaFaaliyet();
+                                                                  $firma->firma_faaliyetler->faaliyetler= new App\Faaliyet();
+                                                                  
+                                                                  
+                                                                  
+                                                              }
+                                                              if(!$firma->uretilen_markalar){
+                                                                    $firma->uretilen_markalar= new App\UretilenMarka();
+								}
+                                                              
+                                                        ?>
+                                                        <td>{{$firma->ticari_bilgiler->tic_sicil_no}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Ticaret Odası:</td>
+                                                        <td>{{$firma->ticari_bilgiler->ticaret_odalari->adi}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Üst Sektör:</td>
+                                                        <td>{{$firma->ticari_bilgiler->sektorler->adi}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Faliyet Sektör:</td>
+                                                         <td>@foreach($firma->sektorler as $sektor)
+                                                            {{$sektor->adi}}
+                                                            @endforeach
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Firma Departmanları:</td>
+                                                        <td>@foreach($firma->departmanlar as $departman)
+                                                            {{$departman->adi}}
+                                                            @endforeach
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kuruluş Tarihi:</td>
+                                                        <td>{{$firma->kurulus_tarihi}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Firma Faaliyet Türü:</td>
+                                                        
+                                                        <td>@foreach($firma->faaliyetler as $faaliyet)
+                                                            {{$faaliyet->adi}}
+                                                            @endforeach
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Firmanın Ürettiği Markalar:</td>
+                                                        <td>
+                                                            @foreach($firma->uretilen_markalar as $marka)
+                                                            {{$marka->adi}}
+                                                            @endforeach
+                                                        </td>
+
+                                                    </tr>
+                                                     <tr>
+                                                        <td>Firmanın Sattığı Markalar:</td>
+                                                       <td>@foreach($firma->satilan_markalar as $satMarka)
+                                                            {{$satMarka->adi}}
+                                                            @endforeach
+                                                        </td>
+
+                                                    </tr>
+                                                
+                                                </thead>
+
+
+                                            </table>
+                                            <div class="modal fade" id="myModal-ticaribilgiler" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                            <h4 class="modal-title" id="myModalLabel">Ticari Bilgiler</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                             {!! Form::open(array('url'=>'firmaProfili/ticaribilgi/'.$firma->id,'class'=>'form-horizontal','method'=>'POST', 'files'=>true)) !!}
+                                                                 <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Ticaret Sicil NO</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="ticaret_sicil_no" name="ticaret_sicil_no" placeholder="Ticaret Sicil No" value="{{$firma->ticari_bilgiler->tic_sicil_no}}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Ticaret Odası</label>
+                                                                    <div class="col-sm-9">
+                                                                         <select class="form-control" name="ticaret_odasi" id="ticaret_odasi" required>
+                                                                                <option selected disabled>Seçiniz</option>
+                                                                                @foreach($ticaretodasi as $ticaret)
+                                                                                    <option  value="{{$ticaret->id}}" >{{$ticaret->adi}}</option>
+                                                                                @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Üst Sektör</label>
+                                                                    <div class="col-sm-9">
+                                                                       <select class="form-control" name="ust_sektor" id="ust_sektor" required>
+                                                                                <option selected disabled>Seçiniz</option>
+                                                                                @foreach($ustsektor as $ust)
+                                                                                    <option  value="{{$ust->id}}" >{{$ust->adi}}</option>
+                                                                                @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Faaliyet Sektörleri</label>
+                                                                    <div class="col-sm-9">
+                                                                        @foreach($ustsektor as $sektor)
+                                                                                <input type="checkbox" name="faaliyet_sektorleri[]" value="{{$sektor->id}}">{{$sektor->adi}}
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Firma Departmanları</label>
+                                                                    <div class="col-sm-9">
+                                                                        @foreach($departmanlar as $departman)
+                                                                                <input type="checkbox" name="firma_departmanları[]" value="{{$departman->id}}">{{$departman->adi}}
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Kuruluş Tarihi</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="date" class="form-control datepicker" id="kurulus_tarihi" name="kurulus_tarihi" placeholder="Kuruluş Tarihi" value="{{$firma->kurulus_tarihi}}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Firma Faaliyet Türü</label>
+                                                                    <div class="col-sm-9">
+                                                                          @foreach($faaliyetler as $faaliyet)
+                                                                                <input type="checkbox" name="firma_faaliyet_turu[]" value="{{$faaliyet->id}}">{{$faaliyet->adi}}
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Üretilen Markalar</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input_fields_wrap">
+                                                                            <button class="add_field_button"><i class="large material-icons">queue</i></button>
+                                                                            <div><input type="text" class="form-control"  name="mytext[]"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                 <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Firmanın Sattığı Markalari</label>
+                                                                    <div class="col-sm-9">
+                                                                        
+                                                                                @foreach($markalar as $marka)
+                                                                                   <input type="checkbox" name="firmanin_sattıgı_markalar[]" value="{{$marka->id}}">{{$marka->adi}}
+                                                                                @endforeach
+                                                                     
+                                                                    </div>
+                                                                </div>
+
+                                                            {!! Form::submit('Kaydet', array('url'=>'firmaProfili/ticaribilgi/'.$firma->id,'class'=>'btn btn-danger')) !!}
+                                                            {!! Form::close() !!}
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          
+                                            <button id="btn-add-ticaribilgiler" name="btn-add-ticaribilgiler" class="btn btn-primary btn-xs">Ekle / Düzenle</button>
+                                            <script src="{{asset('js/ajax-crud-ticaribilgiler.js')}}"></script>
+                                            <script>
+                                              $(document).ready(function() {
+                                                    var max_fields      = 10; //maximum input boxes allowed
+                                                    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+                                                    var add_button      = $(".add_field_button"); //Add button ID
+
+                                                    var x = 1; //initlal text box count
+                                                    $(add_button).click(function(e){ //on add input button click
+                                                        e.preventDefault();
+                                                        if(x < max_fields){ //max input box allowed
+                                                            x++; //text box increment
+                                                            $(wrapper).append('<div><input type="text" class="form-control" name="mytext[]"/><a href="#" class="remove_field"><i class="large material-icons">delete</i></a></div>'); //add input box
+                                                        }
+                                                    });
+
+                                                    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+                                                        e.preventDefault(); $(this).parent('div').remove(); x--;
+                                                    })
+                                                });
+                                            </script>
+                                             <!-- Include Date Range Picker -->
+                                            <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+                                            <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+                                            <script>
+                                            $(document).ready(function() {
+                                                
+                                              $( "#kurulus_tarihi" ).datepicker({
+                                                                                    showOn: "button",
+                                                                                    buttonImage: "/checkbook/public/overcast/images/calendar19.gif",  // put in an image to click on
+                                                                                    buttonImageOnly: true,
+                                                                                    dateFormat: "yyyy-mm-dd",
+                                                                                    changeMonth: true,
+                                                                                    changeYear: true,
+                                                                                    
+                                                                                });
+                                            });
+                                            </script>
 
                                         </div>
                                     </div>

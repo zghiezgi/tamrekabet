@@ -164,7 +164,57 @@ class FirmaController extends Controller
         
         return redirect('firmaProfili/'.$firma->id);
     }
-    
+    public function ticariBilgiAdd(Request $request){
+        $validator = Validator::make($request->all(), [
+                    'ticaret_sicil_no' => 'required',
+                    'ticaret_odasi' => 'required',
+                    'ust_sektor' => 'required',
+                    'faaliyet_sektorleri' => 'required',
+                    'firma_departmanları' => 'required',
+                    'kurulus_tarihi' => 'required',
+                    'firma_faaliyet_turu' => 'required',
+                    'firmanin_urettigi_markalar' => 'required',
+                    'firmanin_sattıgı_markalar' => 'required',
+                   
+        ]);
+
+        /*if ($validator->fails()) {
+            return redirect('firmaProfili/'.$request->id)
+                            ->withInput()
+                            ->withErrors($validator);
+        }*/
+        
+        $firma = Firma::find($request->id);
+        $firma->kurulus_tarihi=$request->kurulus_tarihi;
+        $firma->save();
+        
+        $ticariBilgi = $firma->ticari_bilgiler ?: new \App\TicariBilgi();
+        $ticariBilgi->tic_sicil_no = $request->ticaret_sicil_no;
+        $ticariBilgi->tic_oda_id = 1;//$request->ticaret_odasi;
+        $ticariBilgi->ust_sektor_id = $request->ust_sektor;
+        
+        $firma->ticari_bilgiler()->save($ticariBilgi);        
+        
+        $uretilenMarka = $firma->uretilen_markalar ?: new \App\UretilenMarka();
+        foreach($request->firmanın_urettigi_markalar as $urettigiMarka)
+        $uretilenMarka->adi = $urettigiMarka;
+        
+        $firma->uretilen_markalar()->save($uretilenMarka);
+        
+        foreach($request->faaliyet_sektorleri as $sektor)
+        $firma->sektorler()->attach($sektor);
+        
+        foreach($request->firma_departmanları as $departman)
+        $firma->departmanlar()->attach($departman);
+        
+        foreach($request->firmanin_sattıgı_markalar as $markalar)
+        $firma->satilan_markalar()->attach($markalar);
+        
+        foreach($request->firma_faaliyet_turu as $faaliyetTur)
+        $firma->faaliyetler()->attach($faaliyetTur);
+        
+        return redirect('firmaProfili/'.$firma->id);
+    }
     
     
     //eski fonksiyonlar
@@ -201,6 +251,11 @@ class FirmaController extends Controller
         $iller = Il::all();
         $sirketTurleri=  SirketTuru::all();
         $vergiDaireleri= \App\VergiDairesi::all();
-        return view('Firma.firmaProfili', ['firma' => $firma], ['iller' => $iller])->with('sirketTurleri',$sirketTurleri)->with('vergiDaireleri',$vergiDaireleri);
+        $ticaretodasi=  \App\TicaretOdasi::all();
+        $ustsektor=  Sektor::all();
+        $departmanlar=  \App\Departman::all();
+        $markalar=  \App\SatilanMarka::all();
+        $faaliyetler= \App\Faaliyet::all();
+        return view('Firma.firmaProfili', ['firma' => $firma], ['iller' => $iller])->with('sirketTurleri',$sirketTurleri)->with('vergiDaireleri',$vergiDaireleri)->with('ustsektor',$ustsektor)->with('ticaretodasi',$ticaretodasi)->with('departmanlar',$departmanlar)->with('markalar',$markalar)->with('faaliyetler',$faaliyetler);
     }
 }

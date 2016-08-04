@@ -16,6 +16,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
            <script src="{{asset('js/ajax-crud.js')}}"></script>
                         <style>
@@ -56,7 +57,7 @@
                                 cursor: pointer;
                                 float:left;
                             }
-
+                           
 
 
                         </style>
@@ -547,6 +548,7 @@
                                                               if(!$firma->ticari_bilgiler){
                                                                   $firma->ticari_bilgiler = new App\TicariBilgi();
                                                                   $firma->ticari_bilgiler->ticaret_odalari = new App\TicaretOdasi();
+                                                                  $firma->ticari_bilgiler->sektorler = new App\Sektor();
                                                                   
                                                                   $firma->firma_departmanlar = new App\FirmaDepartman();
                                                                   $firma->firma_departmanlar->departmanlar = new App\Departman();
@@ -557,9 +559,15 @@
                                                                   $firma->firma_satilan_markalar= new App\FirmaSatilanMarka();
                                                                   $firma->firma_satilan_markalar->satilan_markalar= new App\SatilanMarka();
                                                                   
-                                                                  $firma->uretilen_markalar= new App\UretilenMarka();
+                                                                  $firma->firma_faaliyetler= new App\FirmaFaaliyet();
+                                                                  $firma->firma_faaliyetler->faaliyetler= new App\Faaliyet();
+                                                                  
+                                                                  
                                                                   
                                                               }
+                                                              if(!$firma->uretilen_markalar){
+                                                                    $firma->uretilen_markalar= new App\UretilenMarka();
+								}
                                                               
                                                         ?>
                                                         <td>{{$firma->ticari_bilgiler->tic_sicil_no}}</td>
@@ -572,37 +580,54 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Üst Sektör:</td>
-                                                        <td></td>
+                                                        <td>{{$firma->ticari_bilgiler->sektorler->adi}}</td>
 
                                                     </tr>
                                                     <tr>
                                                         <td>Faliyet Sektör:</td>
-                                                        <td></td>
+                                                         <td>@foreach($firma->sektorler as $sektor)
+                                                            {{$sektor->adi}}
+                                                            @endforeach
+                                                        </td>
 
                                                     </tr>
                                                     <tr>
                                                         <td>Firma Departmanları:</td>
-                                                        <td></td>
+                                                        <td>@foreach($firma->departmanlar as $departman)
+                                                            {{$departman->adi}}
+                                                            @endforeach
+                                                        </td>
 
                                                     </tr>
                                                     <tr>
                                                         <td>Kuruluş Tarihi:</td>
-                                                        <td></td>
+                                                        <td>{{$firma->kurulus_tarihi}}</td>
 
                                                     </tr>
                                                     <tr>
                                                         <td>Firma Faaliyet Türü:</td>
-                                                        <td></td>
+                                                        
+                                                        <td>@foreach($firma->faaliyetler as $faaliyet)
+                                                            {{$faaliyet->adi}}
+                                                            @endforeach
+                                                        </td>
 
                                                     </tr>
                                                     <tr>
                                                         <td>Firmanın Ürettiği Markalar:</td>
-                                                        <td></td>
+                                                        <td>
+                                                            @foreach($firma->uretilen_markalar as $marka)
+                                                            {{$marka->adi}}
+                                                            @endforeach
+                                                        </td>
 
                                                     </tr>
                                                      <tr>
                                                         <td>Firmanın Sattığı Markalar:</td>
-                                                        <td></td>
+                                                       <td>@foreach($firma->satilan_markalar as $satMarka)
+                                                            {{$satMarka->adi}}
+                                                            @endforeach
+                                                        </td>
 
                                                     </tr>
                                                 
@@ -622,55 +647,78 @@
                                                                  <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Ticaret Sicil NO</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="ticaret_sicil_no" name="ticaret_sicil_no" placeholder="Ticaret Sicil No" value="">
+                                                                        <input type="text" class="form-control" id="ticaret_sicil_no" name="ticaret_sicil_no" placeholder="Ticaret Sicil No" value="{{$firma->ticari_bilgiler->tic_sicil_no}}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Ticaret Odası</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="ticaret_odasi" name="ticaret_odasi" placeholder="Ticaret Odası" value="">
+                                                                         <select class="form-control" name="ticaret_odasi" id="ticaret_odasi" required>
+                                                                                <option selected disabled>Seçiniz</option>
+                                                                                @foreach($ticaretodasi as $ticaret)
+                                                                                    <option  value="{{$ticaret->id}}" >{{$ticaret->adi}}</option>
+                                                                                @endforeach
+                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Üst Sektör</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="ust_sektor" name="ust_sektor" placeholder="Üst Sektör" value="">
+                                                                       <select class="form-control" name="ust_sektor" id="ust_sektor" required>
+                                                                                <option selected disabled>Seçiniz</option>
+                                                                                @foreach($ustsektor as $ust)
+                                                                                    <option  value="{{$ust->id}}" >{{$ust->adi}}</option>
+                                                                                @endforeach
+                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Faaliyet Sektörleri</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="faaliyet_sektorleri" name="faaliyet_sektorleri" placeholder="Faaliyet Sektörleri" value="">
+                                                                        @foreach($ustsektor as $sektor)
+                                                                                <input type="checkbox" name="faaliyet_sektorleri[]" value="{{$sektor->id}}">{{$sektor->adi}}
+                                                                        @endforeach
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Firma Departmanları</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="firma_departmanları" name="firma_departmanları" placeholder="Firma Departmanları" value="">
+                                                                        @foreach($departmanlar as $departman)
+                                                                                <input type="checkbox" name="firma_departmanları[]" value="{{$departman->id}}">{{$departman->adi}}
+                                                                        @endforeach
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Kuruluş Tarihi</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="kurulus_tarihi" name="kurulus_tarihi" placeholder="Kuruluş Tarihi" value="">
+                                                                        <input type="date" class="form-control datepicker" id="kurulus_tarihi" name="kurulus_tarihi" placeholder="Kuruluş Tarihi" value="{{$firma->kurulus_tarihi}}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Firma Faaliyet Türü</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="firma_faaliyet_turu" name="firma_faaliyet_turu" placeholder="Firma Faaliyet Türü" value="">
+                                                                          @foreach($faaliyetler as $faaliyet)
+                                                                                <input type="checkbox" name="firma_faaliyet_turu[]" value="{{$faaliyet->id}}">{{$faaliyet->adi}}
+                                                                        @endforeach
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Firmanın Ürettiği Markalar</label>
+                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Üretilen Markalar</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="firmanin_ürettigi_markalar" name="firmanin_ürettigi_markalar" placeholder="Firmanın Ürettiği Markalar" value="">
+                                                                        <div class="input_fields_wrap">
+                                                                            <button class="add_field_button"><i class="large material-icons">queue</i></button>
+                                                                            <div><input type="text" class="form-control"  name="mytext[]"></div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                  <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Firmanın Sattığı Markalari</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="firmanin_sattıgı_markalar" name="firmanin_sattıgı_markalar" placeholder="Firmanın Sattığı Markalar" value="">
+                                                                        
+                                                                                @foreach($markalar as $marka)
+                                                                                   <input type="checkbox" name="firmanin_sattıgı_markalar[]" value="{{$marka->id}}">{{$marka->adi}}
+                                                                                @endforeach
+                                                                     
                                                                     </div>
                                                                 </div>
 
@@ -685,6 +733,43 @@
                                           
                                             <button id="btn-add-ticaribilgiler" name="btn-add-ticaribilgiler" class="btn btn-primary btn-xs">Ekle / Düzenle</button>
                                             <script src="{{asset('js/ajax-crud-ticaribilgiler.js')}}"></script>
+                                            <script>
+                                              $(document).ready(function() {
+                                                    var max_fields      = 10; //maximum input boxes allowed
+                                                    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+                                                    var add_button      = $(".add_field_button"); //Add button ID
+
+                                                    var x = 1; //initlal text box count
+                                                    $(add_button).click(function(e){ //on add input button click
+                                                        e.preventDefault();
+                                                        if(x < max_fields){ //max input box allowed
+                                                            x++; //text box increment
+                                                            $(wrapper).append('<div><input type="text" class="form-control" name="mytext[]"/><a href="#" class="remove_field"><i class="large material-icons">delete</i></a></div>'); //add input box
+                                                        }
+                                                    });
+
+                                                    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+                                                        e.preventDefault(); $(this).parent('div').remove(); x--;
+                                                    })
+                                                });
+                                            </script>
+                                             <!-- Include Date Range Picker -->
+                                            <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+                                            <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+                                            <script>
+                                            $(document).ready(function() {
+                                                
+                                              $( "#kurulus_tarihi" ).datepicker({
+                                                                                    showOn: "button",
+                                                                                    buttonImage: "/checkbook/public/overcast/images/calendar19.gif",  // put in an image to click on
+                                                                                    buttonImageOnly: true,
+                                                                                    dateFormat: "yyyy-mm-dd",
+                                                                                    changeMonth: true,
+                                                                                    changeYear: true,
+                                                                                    
+                                                                                });
+                                            });
+                                            </script>
 
                                         </div>
                                     </div>

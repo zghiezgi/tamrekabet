@@ -354,6 +354,7 @@
                                                                   $firma->mali_bilgiler = new App\MaliBilgi();
                                                                   $firma->mali_bilgiler->vergi_daireleri = new App\VergiDairesi();
                                                                   $firma->sirket_turleri = new App\SirketTuru();
+                                                                  
                                                               }
                                                               if(!$firmaFatura){
                                                                   $firmaFatura = new Adres();
@@ -362,12 +363,15 @@
                                                                   $firmaFatura->semtler = new Semt();                                                                  
                                                               }
                                                         ?>
-                                                        <td>{{$firma->mali_bilgiler->unvani}}</td>
+                                                     <td>{{$firma->mali_bilgiler->unvani}}</td>
 
                                                     </tr>
                                                     <tr>
                                                         <td>Şirket Türü:</td>
-                                                        <td>{{$firma->sirket_turleri->adi}}</td>
+                                                        @foreach($firma->sirket_turleri() as $turleri)
+                                                       
+                                                        <td>{{$turleri->adi}}</td>
+                                                        @endforeach
                                                     </tr>
                                                     <tr>
                                                         <td>Fatura Adresi:</td>
@@ -423,7 +427,13 @@
                                                         </div>
                                                         <div class="modal-body">
                                                              {!! Form::open(array('url'=>'firmaProfili/malibilgi/'.$firma->id,'class'=>'form-horizontal','method'=>'POST', 'files'=>true)) !!}
-                                                                <div class="form-group error">
+                                                             <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Fatura Adresi</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="fatura_adresi" name="fatura_adresi" placeholder="Fatura Adresi" value="">
+                                                                    </div>
+                                                             </div>   
+                                                             <div class="form-group error">
                                                                     <label for="inputTask" class="col-sm-3 control-label">Şehir</label>
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" name="il_id" id="il_id" required>
@@ -473,12 +483,7 @@
                                                                         </select>
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group">
-                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Fatura Adresi</label>
-                                                                    <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="fatura_adresi" name="fatura_adresi" placeholder="Fatura Adresi" value="">
-                                                                    </div>
-                                                                </div>
+                                                                
                                                                 <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Vergi Daireleri</label>
                                                                     <div class="col-sm-9">
@@ -499,7 +504,7 @@
                                                                 <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Yıllık Cirosu</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="yillik_cirosü" name="yıllık_cirosü" placeholder="Yıllık Cirosu" value="">
+                                                                        <input type="text" class="form-control" id="yillik_cirosu" name="yillik_cirosu" placeholder="Yıllık Cirosu" value="">
                                                                             <input type="checkbox" class="form-control" id="ciro_goster" name="ciro_goster" >Göster<br></input>
                                                                                 
                                                                     </div>
@@ -521,6 +526,165 @@
                                             </div>
                                             <button id="btn-add-malibilgiler" name="btn-add-malibilgiler" class="btn btn-primary btn-xs">Ekle / Düzenle</button>
                                             <script src="{{asset('js/ajax-crud-malibilgiler.js')}}"></script>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Ticari Bilgiler</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse4" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                         <table class="table" >
+                                                <thead id="tasks-list" name="tasks-list">
+                                                    
+                                                    <tr>
+                                                        <td>Ticaret Sicil No:</td>
+                                                        <?php $firmaFatura = $firma->adresler()->where('tur_id', '=', '2')->first();
+                                                              if(!$firma->ticari_bilgiler){
+                                                                  $firma->ticari_bilgiler = new App\TicariBilgi();
+                                                                  $firma->ticari_bilgiler->ticaret_odalari = new App\TicaretOdasi();
+                                                                  
+                                                                  $firma->firma_departmanlar = new App\FirmaDepartman();
+                                                                  $firma->firma_departmanlar->departmanlar = new App\Departman();
+                                                                  
+                                                                  $firma->firma_sektorler = new App\FirmaSektor();
+                                                                  $firma->firma_sektorler->sektorler= new App\Sektor();
+                                                                  
+                                                                  $firma->firma_satilan_markalar= new App\FirmaSatilanMarka();
+                                                                  $firma->firma_satilan_markalar->satilan_markalar= new App\SatilanMarka();
+                                                                  
+                                                                  $firma->uretilen_markalar= new App\UretilenMarka();
+                                                                  
+                                                              }
+                                                              
+                                                        ?>
+                                                        <td>{{$firma->ticari_bilgiler->tic_sicil_no}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Ticaret Odası:</td>
+                                                        <td>{{$firma->ticari_bilgiler->ticaret_odalari->adi}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Üst Sektör:</td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Faliyet Sektör:</td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Firma Departmanları:</td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kuruluş Tarihi:</td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Firma Faaliyet Türü:</td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Firmanın Ürettiği Markalar:</td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                     <tr>
+                                                        <td>Firmanın Sattığı Markalar:</td>
+                                                        <td></td>
+
+                                                    </tr>
+                                                
+                                                </thead>
+
+
+                                            </table>
+                                            <div class="modal fade" id="myModal-ticaribilgiler" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                            <h4 class="modal-title" id="myModalLabel">Ticari Bilgiler</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                             {!! Form::open(array('url'=>'firmaProfili/ticaribilgi/'.$firma->id,'class'=>'form-horizontal','method'=>'POST', 'files'=>true)) !!}
+                                                                 <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Ticaret Sicil NO</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="ticaret_sicil_no" name="ticaret_sicil_no" placeholder="Ticaret Sicil No" value="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Ticaret Odası</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="ticaret_odasi" name="ticaret_odasi" placeholder="Ticaret Odası" value="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Üst Sektör</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="ust_sektor" name="ust_sektor" placeholder="Üst Sektör" value="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Faaliyet Sektörleri</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="faaliyet_sektorleri" name="faaliyet_sektorleri" placeholder="Faaliyet Sektörleri" value="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Firma Departmanları</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="firma_departmanları" name="firma_departmanları" placeholder="Firma Departmanları" value="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Kuruluş Tarihi</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="kurulus_tarihi" name="kurulus_tarihi" placeholder="Kuruluş Tarihi" value="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Firma Faaliyet Türü</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="firma_faaliyet_turu" name="firma_faaliyet_turu" placeholder="Firma Faaliyet Türü" value="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Firmanın Ürettiği Markalar</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="firmanin_ürettigi_markalar" name="firmanin_ürettigi_markalar" placeholder="Firmanın Ürettiği Markalar" value="">
+                                                                    </div>
+                                                                </div>
+                                                                 <div class="form-group">
+                                                                    <label for="inputEmail3" class="col-sm-3 control-label">Firmanın Sattığı Markalari</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="firmanin_sattıgı_markalar" name="firmanin_sattıgı_markalar" placeholder="Firmanın Sattığı Markalar" value="">
+                                                                    </div>
+                                                                </div>
+
+                                                            {!! Form::submit('Kaydet', array('url'=>'firmaProfili/ticaribilgi/'.$firma->id,'class'=>'btn btn-danger')) !!}
+                                                            {!! Form::close() !!}
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          
+                                            <button id="btn-add-ticaribilgiler" name="btn-add-ticaribilgiler" class="btn btn-primary btn-xs">Ekle / Düzenle</button>
+                                            <script src="{{asset('js/ajax-crud-ticaribilgiler.js')}}"></script>
 
                                         </div>
                                     </div>

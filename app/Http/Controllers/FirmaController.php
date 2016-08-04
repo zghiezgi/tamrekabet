@@ -132,25 +132,32 @@ class FirmaController extends Controller
                    
         ]);
 
-        if ($validator->fails()) {
+        /*if ($validator->fails()) {
             return redirect('firmaProfili/'.$request->id)
                             ->withInput()
                             ->withErrors($validator);
-        }
+        }*/
         
         $firma = Firma::find($request->id);
+        $firma->sirket_turu = $request->sirket_turu;
+        $firma->save();
         
         $maliBilgi = $firma->mali_bilgiler ?: new \App\MaliBilgi();
         $maliBilgi->unvani = $request->unvani;
         $maliBilgi->vergi_numarasi = $request->vergi_numarasi;
         $maliBilgi->vergi_dairesi_id = $request->vergi_dairesi_id;
+        $maliBilgi->sermayesi = $request ->sermayesi;
+        $maliBilgi->yillik_cirosu = $request ->yillik_cirosu;
+        $maliBilgi->ciro_goster = $request ->ciro_goster;
+        $maliBilgi->sermaye_goster = $request ->sermaye_goster;
         $firma->mali_bilgiler()->save($maliBilgi);        
-
+        
+        
         $adres = $firma->adresler()->where('tur_id', '=', '2')->first() ?: new Adres();
-        $adres->il_id = $request>il_id;
-        $adres->ilce_id = $request->ilce_id;
-        $adres->semt_id = $request->semt_id;
-        $adres->adres = $request->adres;
+        $adres->il_id = $request->il_id;
+        $adres->ilce_id = 2;//$request->ilce_id;
+        $adres->semt_id = 1 ;//$request->semt_id;
+        $adres->adres = $request->fatura_adresi;
         $tur = 2;
         $adres->tur_id = $tur;
         $firma->adresler()->save($adres);

@@ -10,10 +10,15 @@ class Il extends Model
     
     public function ilceler()
     {
-        return $this->hasMany('App\ilceler', 'il_id', 'id');
+        return $this->hasMany('App\Ilce', 'il_id', 'id');
     }
     public function adresler()
     {
-        return $this->hasMany('App\adresler', 'il_id', 'id');
+        return $this->hasMany('App\Adres', 'il_id', 'id');
     }
+     public function ilanlar()
+    {
+        return $this->hasMany('App\Ilan', 'teslim_yeri_il_id', 'id');
+    }
+    
 }

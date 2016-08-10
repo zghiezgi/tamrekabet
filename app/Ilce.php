@@ -20,4 +20,8 @@ class Ilce extends Model
     {
         return $this->hasMany('App\adresler', 'ilce_id', 'id');
     }
+     public function ilanlar()
+    {
+        return $this->hasMany('App\Ilan', 'teslim_yeri_ilce_id', 'id');
+    }
 }

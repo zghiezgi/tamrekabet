@@ -64,6 +64,10 @@ class Firma extends Model
     {
         return $this->belongsTo('App\SirketTuru', 'tur_id', 'id');
     }
+    public function kullanicilar()
+    {
+        return $this->belongsToMany('App\Kullanici','firma_kullanicilar', 'firma_id','kullanici_id');
+    }
     
     
     

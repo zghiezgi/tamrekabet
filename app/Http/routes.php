@@ -42,27 +42,20 @@ Route::post('/firma', 'FirmaController@firma');
 Route::get('/firma/{id}', 'FirmaController@index');
 Route::get('/firmaProfili/{id}', 'FirmaController@showFirma');
 
-Route::get('/ajax-subcat', function () {
-    $city_id = Input::get('il_id');
-
-		$districts = \App\Ilce::where('il_id', '=', $city_id)->get();
-
-		return Response::json($districts);
+Route::get('/ajax-subcat', function (Request $request) {
+    
+    $il_id = Input::get('il_id');
+    
+    //$il_id=1
+    $ilceler = \App\Ilce::where('il_id', '=', $il_id)->get();
+    return Response::json($ilceler);
 });
 Route::get('/ajax-subcatt', function () {
-    $district_id = Input::get('ilce_id');
-
-		$neighborhoods = \App\Semt::where('ilce_id', '=', $district_id)->get();
-
-		return Response::json($neighborhoods);
+    $ilce_id = Input::get('ilce_id');
+    $semtler = \App\Semt::where('ilce_id', '=', $ilce_id)->get();
+    return Response::json($semtler);
 });
-Route::get('/ajax-subcattt', function () {
-    $neighborhood_id=Input::get('semt_id');
 
-    $neighborhoods = \App\Semt::where('id', '=', $neighborhood_id)->get();
-
-    return Response::json($neighborhoods);
-});
 
 Route::get('/city', 'iller@index');
 //Route::get('/ajax-subcat', 'ilcelerController@ajax');

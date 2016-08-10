@@ -1,5 +1,5 @@
-<?php 
-    use App\Adres; 
+<?php
+    use App\Adres;
     use App\Il;
     use App\Ilce;
     use App\IletisimBilgisi;
@@ -16,7 +16,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        
+
            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
            <script src="{{asset('js/ajax-crud.js')}}"></script>
                         <style>
@@ -57,7 +57,7 @@
                                 cursor: pointer;
                                 float:left;
                             }
-                           
+
 
 
                         </style>
@@ -99,7 +99,7 @@
                                                                 @endif
                                                             </div>
                                                         </div>
-                                                        <div id="success"> 
+                                                        <div id="success">
 
                                                         </div>
 
@@ -132,8 +132,8 @@
 
 
                             </div>
-                            
-                            
+
+
 
                         </div>
                         <div class="container">
@@ -149,7 +149,7 @@
 
                                             <table class="table" >
                                                 <thead id="tasks-list" name="tasks-list">
-                                                    
+
                                                     <tr>
                                                         <td>Adres:</td>
                                                         <?php $firmaAdres = $firma->adresler()->where('tur_id', '=', '1')->first();
@@ -159,7 +159,7 @@
                                                                   $firmaAdres = new Adres();
                                                                   $firmaAdres->iller = new Il();
                                                                   $firmaAdres->ilceler = new Ilce();
-                                                                  $firmaAdres->semtler = new Semt();                                                                  
+                                                                  $firmaAdres->semtler = new Semt();
                                                               }
                                                         ?>
                                                         <td>{{$firmaAdres->adres}}</td>
@@ -208,7 +208,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             {!! Form::open(array('url'=>'firmaProfili/iletisimAdd/'.$firma->id, 'class' => 'form-horizontal', 'method' => 'POST')) !!}
-                                                            
+
                                                                 <div class="form-group error">
                                                                     <label for="inputTask" class="col-sm-3 control-label">Şehir</label>
                                                                     <div class="col-sm-9">
@@ -226,7 +226,7 @@
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" name="ilce_id" id="ilce_id" required>
                                                                             <option selected disabled>Seçiniz</option>
-                                                                           
+
                                                                         </select>
                                                                     </div>
 
@@ -240,13 +240,13 @@
                                                                         </select>
                                                                     </div>
 
-                                                                </div>                                                     
+                                                                </div>
 
 
                                                                 <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Adres</label>
                                                                     <div class="col-sm-9">
-                                                                        <input type="text" class="form-control" id="adres" name="adres" placeholder="Adres" value="{{$firmaAdres->adres}}">
+                                                                        <input type="text" class="form-control" id="adres" name="adres" placeholder="Adres" required value="{{$firmaAdres->adres}}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
@@ -268,19 +268,19 @@
                                                                     </div>
                                                                 </div>
                                                                 {!! Form::submit('Kaydet', array('url'=>'firmaProfili/iletisimAdd/'.$firma->id,'class'=>'btn btn-danger')) !!}
-                                                            
+
                                                             {!! Form::close() !!}
-                                                        </div>                                                        
+                                                        </div>
                                                         <div class="modal-footer">
-                                                            
+
                                                             <input type="hidden" id="iletisimbilgisi_id" name="iletisimbilgisi_id" value="{{$firma->iletisim_bilgileri->id}}">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button id="btn-add" name="btn-add" class="btn btn-primary btn-xs" onclick="selectDD()">Ekle / Düzenle</button>
-                                            
-                                            
+                                            <button id="btn-add" name="btn-add" class="btn btn-primary btn-xs" onclick="selectDD()" >Ekle / Düzenle</button>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -313,7 +313,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             {!! Form::open(array('url'=>'firmaProfili/tanitim/'.$firma->id,'method'=>'POST', 'files'=>true)) !!}
-                                                        
+
                                                                 <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Tanıtım Yazısı</label>
                                                                     <div class="col-sm-9">
@@ -325,7 +325,7 @@
                                                             {!! Form::submit('Kaydet', array('url'=>'firmaProfili/tanitim/'.$firma->id,'class'=>'btn btn-danger')) !!}
                                                             {!! Form::close() !!}
                                                         </div>
-                                                        <div class="modal-footer">                                                            
+                                                        <div class="modal-footer">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -347,7 +347,7 @@
                                         <div class="panel-body">
                                          <table class="table" >
                                                 <thead id="tasks-list" name="tasks-list">
-                                                 
+
                                                     <tr>
                                                         <td>Firma Ünvanı:</td>
                                                         <?php $firmaFatura = $firma->adresler()->where('tur_id', '=', '2')->first();
@@ -355,13 +355,13 @@
                                                                   $firma->mali_bilgiler = new App\MaliBilgi();
                                                                   $firma->mali_bilgiler->vergi_daireleri = new App\VergiDairesi();
                                                                   $firma->sirket_turleri = new App\SirketTuru();
-                                                                  
+
                                                               }
                                                               if(!$firmaFatura){
                                                                   $firmaFatura = new Adres();
                                                                   $firmaFatura->iller = new Il();
                                                                   $firmaFatura->ilceler = new Ilce();
-                                                                  $firmaFatura->semtler = new Semt();                                                                  
+                                                                  $firmaFatura->semtler = new Semt();
                                                               }
                                                         ?>
                                                      <td>{{$firma->mali_bilgiler->unvani}}</td>
@@ -370,7 +370,7 @@
                                                     <tr>
                                                         <td>Şirket Türü:</td>
                                                         @foreach($firma->sirket_turleri() as $turleri)
-                                                       
+
                                                         <td>{{$turleri->adi}}</td>
                                                         @endforeach
                                                     </tr>
@@ -395,7 +395,7 @@
 
                                                     </tr>
                                                     <tr>
-                                                        <td>Vergi Dairesi:</td>                                                        
+                                                        <td>Vergi Dairesi:</td>
                                                         <td>{{$firma->mali_bilgiler->vergi_daireleri->adi}}</td>
 
                                                     </tr>
@@ -414,7 +414,7 @@
                                                         <td>{{$firma->mali_bilgiler->sermayesi}}</</td>
 
                                                     </tr>
-                                                  
+
                                                 </thead>
 
 
@@ -466,7 +466,7 @@
                                                                     <label for="inputTask" class="col-sm-3 control-label">İlçe</label>
                                                                     <div class="col-sm-9">
                                                                         <select class="form-control" name="mali_ilce_id" id="mali_ilce_id" required>
-                                                                            <option selected disabled>Seçiniz</option>                                                                           
+                                                                            <option selected disabled>Seçiniz</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -500,7 +500,7 @@
                                                                     <div class="col-sm-9">
                                                                         <input type="text" class="form-control" id="yillik_cirosu" name="yillik_cirosu" placeholder="Yıllık Cirosu" value="">
                                                                             <input type="checkbox" class="form-control" id="ciro_goster" name="ciro_goster" >Göster<br></input>
-                                                                                
+
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
@@ -534,7 +534,7 @@
                                         <div class="panel-body">
                                          <table class="table" >
                                                 <thead id="tasks-list" name="tasks-list">
-                                                    
+
                                                     <tr>
                                                         <td>Ticaret Sicil No:</td>
                                                         <?php $firmaFatura = $firma->adresler()->where('tur_id', '=', '2')->first();
@@ -542,26 +542,26 @@
                                                                   $firma->ticari_bilgiler = new App\TicariBilgi();
                                                                   $firma->ticari_bilgiler->ticaret_odalari = new App\TicaretOdasi();
                                                                   $firma->ticari_bilgiler->sektorler = new App\Sektor();
-                                                                  
+
                                                                   $firma->firma_departmanlar = new App\FirmaDepartman();
                                                                   $firma->firma_departmanlar->departmanlar = new App\Departman();
-                                                                  
+
                                                                   $firma->firma_sektorler = new App\FirmaSektor();
                                                                   $firma->firma_sektorler->sektorler= new App\Sektor();
-                                                                  
+
                                                                   $firma->firma_satilan_markalar= new App\FirmaSatilanMarka();
                                                                   $firma->firma_satilan_markalar->satilan_markalar= new App\SatilanMarka();
-                                                                  
+
                                                                   $firma->firma_faaliyetler= new App\FirmaFaaliyet();
                                                                   $firma->firma_faaliyetler->faaliyetler= new App\Faaliyet();
-                                                                  
-                                                                  
-                                                                  
+
+
+
                                                               }
                                                               if(!$firma->uretilen_markalar){
                                                                     $firma->uretilen_markalar= new App\UretilenMarka();
 								}
-                                                              
+
                                                         ?>
                                                         <td>{{$firma->ticari_bilgiler->tic_sicil_no}}</td>
 
@@ -599,7 +599,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Firma Faaliyet Türü:</td>
-                                                        
+
                                                         <td>@foreach($firma->faaliyetler as $faaliyet)
                                                             {{$faaliyet->adi}}
                                                             @endforeach
@@ -623,7 +623,7 @@
                                                         </td>
 
                                                     </tr>
-                                                
+
                                                 </thead>
 
 
@@ -707,11 +707,11 @@
                                                                  <div class="form-group">
                                                                     <label for="inputEmail3" class="col-sm-3 control-label">Firmanın Sattığı Markalari</label>
                                                                     <div class="col-sm-9">
-                                                                        
+
                                                                                 @foreach($markalar as $marka)
                                                                                    <input type="checkbox" name="firmanin_sattıgı_markalar[]" value="{{$marka->id}}">{{$marka->adi}}
                                                                                 @endforeach
-                                                                     
+
                                                                     </div>
                                                                 </div>
 
@@ -723,84 +723,129 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                          
+
                                             <button id="btn-add-ticaribilgiler" name="btn-add-ticaribilgiler" class="btn btn-primary btn-xs">Ekle / Düzenle</button>
                                             <script src="{{asset('js/ajax-crud-ticaribilgiler.js')}}"></script>
-                                            <script>
-                                              $(document).ready(function() {
-                                                    var max_fields      = 10; //maximum input boxes allowed
-                                                    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
-                                                    var add_button      = $(".add_field_button"); //Add button ID
-
-                                                    var x = 1; //initlal text box count
-                                                    $(add_button).click(function(e){ //on add input button click
-                                                        e.preventDefault();
-                                                        if(x < max_fields){ //max input box allowed
-                                                            x++; //text box increment
-                                                            $(wrapper).append('<div><input type="text" class="form-control" name="mytext[]"/><a href="#" class="remove_field"><i class="large material-icons">delete</i></a></div>'); //add input box
-                                                        }
-                                                    });
-
-                                                    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-                                                        e.preventDefault(); $(this).parent('div').remove(); x--;
-                                                    })
-                                                });
-                                            </script>
-                                             <!-- Include Date Range Picker -->
+                                            <!-- Include Date Range Picker -->
                                             <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
                                             <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-                                            <script>
-                                            $(document).ready(function() {
-                                                
-                                              $( "#kurulus_tarihi" ).datepicker({
-                                                                                    showOn: "button",
-                                                                                    buttonImage: "/checkbook/public/overcast/images/calendar19.gif",  // put in an image to click on
-                                                                                    buttonImageOnly: true,
-                                                                                    dateFormat: "yyyy-mm-dd",
-                                                                                    changeMonth: true,
-                                                                                    changeYear: true,
-                                                                                    
-                                                                                });
-                                            });
-                                            </script>
-
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 <script>
-$(document).ready(function() {
-    popDropDown('ilce_id', 'ajax-subcat?il_id=',{{$firmaAdres->iller->id}});
-    popDropDown('semt_id', 'ajax-subcatt?ilce_id=',{{$firmaAdres->ilceler->id}});
-})
+
 var selectDD = function() {
+    GetIlce({{$firmaAdres->iller->id}});
+    GetSemt({{$firmaAdres->ilceler->id}});
     $("#il_id").val({{$firmaAdres->iller->id}});
     $("#ilce_id").val({{$firmaAdres->ilceler->id}});
     $("#semt_id").val({{$firmaAdres->semtler->id}});
+    
+        /*alert("doluyum ben");
+        popDropDown('ilce_id', 'ajax-subcat?il_id=', {{$firmaAdres->iller->id}});
+        popDropDown('semt_id', 'ajax-subcatt?ilce_id=', {{$firmaAdres->ilceler->id}});
+        $("#il_id").val({{$firmaAdres->iller->id}});
+        $("#ilce_id").val({{$firmaAdres->ilceler->id}});
+        alert("seçtim");
+        
+    */
 }
+
 var fillTanitim = function () {
-    alert('özge');
     CKEDITOR.instances['tanitim_yazisi'].setData('{{$firma->tanitim_yazisi}}');
 }
+
+function GetIlce(il_id) {
+    if (il_id > 0) {
+        $("#ilce_id").get(0).options.length = 0;
+        $("#ilce_id").get(0).options[0] = new Option("Yükleniyor", "-1"); 
+ 
+        $.ajax({
+            type: "GET",
+            url: "/tamrekabet/public/index.php/ajax-subcat?il_id="+il_id,
+            
+            contentType: "application/json; charset=utf-8",
+      
+            success: function(msg) {
+                $("#ilce_id").get(0).options.length = 0;
+                $("#ilce_id").get(0).options[0] = new Option("Seçiniz", "-1");
+ 
+                $.each(msg, function(index, ilce) {
+                    $("#ilce_id").get(0).options[$("#ilce_id").get(0).options.length] = new Option(ilce.adi, ilce.id);
+                });
+            },
+            async: false,
+            error: function() {
+                $("#ilce_id").get(0).options.length = 0;
+                alert("İlçeler yükelenemedi!!!");
+            }
+        });
+    }
+    else {
+        $("#ilce_id").get(0).options.length = 0;
+    }
+} 
+
+function GetSemt(ilce_id) {
+    if (ilce_id > 0) {
+        $("#semt_id").get(0).options.length = 0;
+        $("#semt_id").get(0).options[0] = new Option("Yükleniyor", "-1"); 
+ 
+        $.ajax({
+            type: "GET",
+            url: "/tamrekabet/public/index.php/ajax-subcatt?ilce_id="+ilce_id,
+            
+            contentType: "application/json; charset=utf-8",
+      
+            success: function(msg) {
+                $("#semt_id").get(0).options.length = 0;
+                $("#semt_id").get(0).options[0] = new Option("Seçiniz", "-1");
+ 
+                $.each(msg, function(index, semt) {
+                    $("#semt_id").get(0).options[$("#semt_id").get(0).options.length] = new Option(semt.adi, semt.id);
+                });
+            },
+            async: false,
+            error: function() {
+                $("#semt_id").get(0).options.length = 0;
+                alert("Semtler yükelenemedi!!!");
+            }
+        });
+    }
+    else {
+        $("#semt_id").get(0).options.length = 0;
+    }
+} 
+
+
 var popDropDown = function (element, ajax, parameter){
+    
+        //alert(element+","+ajax+","+parameters);
     $.get('/tamrekabet/public/index.php/'+ ajax + parameter, function (data) {
-            $('#'+ element).empty();
-            $('#'+ element).append('<option value=""> Seçiniz </option>');
-            $.each(data, function (index, subcatObj) {
-                $('#'+ element).append('<option value="' + subcatObj.id + '">' + subcatObj.adi + '</option>');
-            });
-        });    
+        $('#'+ element).empty();
+        $('#'+ element).append('<option value=""> Seçiniz </option>');
+        $.each(data, function (index, subcatObj) {
+            $('#'+ element).append('<option value="' + subcatObj.id + '">' + subcatObj.adi + '</option>');
+        });
+    });
+    alert(element);
 }
+
 $('#il_id').on('change', function (e) {
+    alert("change");
     var il_id = e.target.value;
-    popDropDown('ilce_id', 'ajax-subcat?il_id=', il_id);
-    $("#semt_id")[0].selectedIndex=0;
+    GetIlce(il_id);
+    //popDropDown('ilce_id', 'ajax-subcat?il_id=', il_id);
+    //$("#semt_id")[0].selectedIndex=0;
 });
 
 $('#ilce_id').on('change', function (e) {
     var ilce_id = e.target.value;
-    popDropDown('semt_id', 'ajax-subcatt?ilce_id=', ilce_id);
+    GetSemt(ilce_id);
+    //popDropDown('semt_id', 'ajax-subcatt?ilce_id=', ilce_id);
 });
 
 $('#mali_il_id').on('change', function (e) {

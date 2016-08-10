@@ -27,8 +27,7 @@ $(document).ready(function(){
 
     //display modal form for creating new task
     $('#btn-add').click(function(){
-        $('#btn-save').val("add");
-        $('#frmTasks').trigger("reset");
+        
         $('#myModal').modal('show');
     });
 
@@ -78,6 +77,7 @@ $(document).ready(function(){
         var type = "POST"; //for creating new resource
         var commucation_id = $('#commucation_id').val();
         var my_url = url;
+        
 
         if (state == "update"){
             type = "PUT"; //for updating existing resource

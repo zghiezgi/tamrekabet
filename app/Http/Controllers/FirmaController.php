@@ -11,9 +11,7 @@ use Session;
 use File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
-
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 
 class FirmaController extends Controller
@@ -75,11 +73,11 @@ class FirmaController extends Controller
                     'web_sayfasi' => 'required|max:50',
         ]);
 
-        if ($validator->fails()) {
+        /*if ($validator->fails()) {
             return redirect('firmaProfili/'.$request->id)
                             ->withInput()
                             ->withErrors($validator);
-        }
+        }*/
         
         $firma = Firma::find($request->id);
         

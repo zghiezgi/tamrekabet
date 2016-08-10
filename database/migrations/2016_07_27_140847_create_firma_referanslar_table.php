@@ -19,6 +19,7 @@ class CreateFirmaReferanslarTable extends Migration
             $table->string('adi');
             $table->string('is_adi');
             $table->string('is_turu');
+            $table->integer('is_yili');
             $table->string('calisma_suresi');
             $table->string('yetkili_adi');
             $table->string('yetkili_email');

@@ -16,7 +16,6 @@ $(document).ready(function(){
             $('#telefon').val(data.telefon);
             $('#fax').val(data.fax);
             $('#web_sayfası').val(data.web_sayfası);
-            
             $('#btn-save').val("update");
             $('#myModal').modal('show');
             

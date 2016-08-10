@@ -1,0 +1,39 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateKullanicilarTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        //
+        Schema::create('kullanicilar', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('adi');
+            $table->string('soyadi');
+            $table->string('unvani');
+            $table->string('email');
+            $table->string('telefon');
+            
+        });
+        
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+        Schema::drop('kullanicilar');
+        
+    }
+}

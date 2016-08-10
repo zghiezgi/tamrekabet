@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 use App\Firma;
 use App\Sektor;
@@ -18,35 +17,30 @@ class FirmaController extends Controller
 {
     public function uploadImage(Request $request) {
         $file = $request->file('logo');
-        
-        // getting all of the post data
         $file = array('logo' => $request->file('logo'));
-        // setting up rules
         $rules = array('logo' => 'required|mimes:jpeg,bmp,png|max:100000'); //mimes:jpeg,bmp,png and for max size max:10000
-        // doing the validation, passing post data, rules and the messages
         $validator = Validator::make($file, $rules);
         if ($validator->fails()) {
-            // send back to the page with the input data and errors
             return Redirect::to('firmaProfili/'.$request->firmaId)->withInput()->withErrors($validator);
-        } else {
-            // checking file is valid.
+        } 
+        else {
             if ($request->file('logo')->isValid()) {
                 $destinationPath = 'uploads'; // upload path
                 $extension = $request->file('logo')->getClientOriginalExtension(); // getting image extension
                 $fileName = rand(11111, 99999) . '.' . $extension; // renameing image
-
+                
                 $firma = Firma::find($request->id);
                 $oldName=$firma->logo;
                 $firma->logo = $fileName; 
                 $firma->save();
-
+                
                 $request->file('logo')->move($destinationPath, $fileName); // uploading file to given path
                 // sending back with message
                 Session::flash('success', 'Upload successfully');
                 File::delete("uploads/$oldName");
                 return Redirect::to('firmaProfili/'.$firma->id);
-                //return  Redirect::route('commucations')->with('fileName', $fileName);
-            } else {
+            } 
+            else {
                 // sending back with error message.
                 Session::flash('error', 'uploaded file is not valid');
                 return Redirect::to('firmaProfili/'.$request->firmaId)->withInput()->withErrors($validator);
@@ -63,22 +57,6 @@ class FirmaController extends Controller
         return Redirect::to('iletisimbilgilerii/'.$item->id);
     }
     public function iletisimAdd(Request $request){
-        $validator = Validator::make($request->all(), [
-                    'il_id' => 'required',
-                    'ilce_id' => 'required',
-                    'semt_id' => 'required',
-                    'adres' => 'required',
-                    'telefon' => 'required|numeric|size:10',
-                    'fax' => 'required|numeric|size:10',
-                    'web_sayfasi' => 'required|max:50',
-        ]);
-
-        /*if ($validator->fails()) {
-            return redirect('firmaProfili/'.$request->id)
-                            ->withInput()
-                            ->withErrors($validator);
-        }*/
-        
         $firma = Firma::find($request->id);
         
         $iletisim = $firma->iletisim_bilgileri ?: new IletisimBilgisi();
@@ -99,43 +77,13 @@ class FirmaController extends Controller
         return redirect('firmaProfili/'.$firma->id);
     }
     public function tanitimAdd(Request $request){
-        $validator = Validator::make($request->all(), [
-                    'tanitim_yazisi' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect('firmaProfili/'.$request->id)
-                            ->withInput()
-                            ->withErrors($validator);
-        }
-        
         $firma = Firma::find($request->id);
         
         $firma->tanitim_yazisi = $request->tanitim_yazisi;
         $firma->save();        
         return redirect('firmaProfili/'.$firma->id);
     }
-    
-    
     public function maliBilgiAdd(Request $request){
-        $validator = Validator::make($request->all(), [
-                    'unvani' => 'required',
-                    'vergi_dairesi_id' => 'required',
-                    'vergi_numarasi' => 'required',
-                    'yillik_cirosu' => 'required',
-                    'sermayesi' => 'required',
-                    'ciro_goster' => 'required',
-                    'sermaye_goster' => 'required',
-                    'sirket_turu' => 'required',
-                   
-        ]);
-
-        /*if ($validator->fails()) {
-            return redirect('firmaProfili/'.$request->id)
-                            ->withInput()
-                            ->withErrors($validator);
-        }*/
-        
         $firma = Firma::find($request->id);
         $firma->sirket_turu = $request->sirket_turu;
         $firma->save();
@@ -163,25 +111,6 @@ class FirmaController extends Controller
         return redirect('firmaProfili/'.$firma->id);
     }
     public function ticariBilgiAdd(Request $request){
-        $validator = Validator::make($request->all(), [
-                    'ticaret_sicil_no' => 'required',
-                    'ticaret_odasi' => 'required',
-                    'ust_sektor' => 'required',
-                    'faaliyet_sektorleri' => 'required',
-                    'firma_departmanları' => 'required',
-                    'kurulus_tarihi' => 'required',
-                    'firma_faaliyet_turu' => 'required',
-                    'firmanin_urettigi_markalar' => 'required',
-                    'firmanin_sattıgı_markalar' => 'required',
-                   
-        ]);
-
-        /*if ($validator->fails()) {
-            return redirect('firmaProfili/'.$request->id)
-                            ->withInput()
-                            ->withErrors($validator);
-        }*/
-        
         $firma = Firma::find($request->id);
         $firma->kurulus_tarihi=$request->kurulus_tarihi;
         $firma->save();
@@ -194,56 +123,155 @@ class FirmaController extends Controller
         $firma->ticari_bilgiler()->save($ticariBilgi);        
         
         $uretilenMarka = $firma->uretilen_markalar ?: new \App\UretilenMarka();
-        foreach($request->firmanın_urettigi_markalar as $urettigiMarka)
+        foreach($request->firmanin_urettigi_markalar as $urettigiMarka){
         $uretilenMarka->adi = $urettigiMarka;
+        //$firma->uretilen_markalar()->save($uretilenMarka);
+        }
         
-        $firma->uretilen_markalar()->save($uretilenMarka);
-        
-        foreach($request->faaliyet_sektorleri as $sektor)
+        foreach($request->faaliyet_sektorleri as $sektor){
         $firma->sektorler()->attach($sektor);
-        
-        foreach($request->firma_departmanları as $departman)
+        }
+        foreach($request->firma_departmanları as $departman){
         $firma->departmanlar()->attach($departman);
-        
-        foreach($request->firmanin_sattıgı_markalar as $markalar)
+        }
+        foreach($request->firmanin_sattıgı_markalar as $markalar){
         $firma->satilan_markalar()->attach($markalar);
-        
-        foreach($request->firma_faaliyet_turu as $faaliyetTur)
+        }
+        foreach($request->firma_faaliyet_turu as $faaliyetTur){
         $firma->faaliyetler()->attach($faaliyetTur);
+        }
+        return redirect('firmaProfili/'.$firma->id);
+    }
+    public function kaliteAdd(Request $request){
+        $firma = Firma::find($request->id);
+        
+        $kalite_belgeleri = $firma->kalite_belgeleri ?: new \App\KaliteBelgesi();
+        
+        foreach($request->kalite_belgeleri as $kalite_belgesi){
+        $firma->kalite_belgeleri()->attach($kalite_belgesi,['belge_no'=>$request->belge_no]);
+        }
+       
+        return redirect('firmaProfili/'.$firma->id);
+    }
+    public function referansAdd(Request $request){        
+        $firma = Firma::find($request->id);
+        $firma_referans = $firma->firma_referanslar ?: new \App\FirmaReferans();
+            if ($firma->firma_referanslar) {
+                $firmaReferans = $firma->firma_referanslar()->where('id', '=', '$request->ref_id')->first() ? : new \App\FirmaReferans();
+            } else {
+                $firmaReferans = $firma->firma_referanslar()->where('ref_turu', '=', '$request->ref_turu')->first() ? : new \App\FirmaReferans();
+            }
+
+        $firmaReferans->ref_turu=$request->ref_turu;
+        $firmaReferans->adi=$request->ref_firma_adi;
+        $firmaReferans->is_adi=$request->yapılan_isin_adi;
+        $firmaReferans->is_turu=$request->isin_turu;
+        $firmaReferans->is_yili=$request->is_yili;
+        $firmaReferans->calisma_suresi=$request->calısma_suresi;
+        $firmaReferans->yetkili_adi=$request->yetkili_kisi_adi;
+        $firmaReferans->yetkili_email=$request->yetkili_kisi_email;
+        $firmaReferans->yetkili_telefon=$request->yetkili_kisi_telefon;
+        $firma->firma_referanslar()->save( $firmaReferans);
+        return redirect('firmaProfili/'.$firma->id);
+    }
+    public function referansUpdate(Request $request){        
+        $referans = \App\FirmaReferans::find($request->ref_id);
+       
+        $referans->ref_turu=$request->ref_turu;
+        $referans->adi=$request->ref_firma_adi;
+        $referans->is_adi=$request->yapılan_isin_adi;
+        $referans->is_turu=$request->isin_turu;
+        $referans->is_yili=$request->is_yili;
+        $referans->calisma_suresi=$request->calısma_suresi;
+        $referans->yetkili_adi=$request->yetkili_kisi_adi;
+        $referans->yetkili_email=$request->yetkili_kisi_email;
+        $referans->yetkili_telefon=$request->yetkili_kisi_telefon;
+        $referans->save( );
+        return redirect('firmaProfili/'.$referans->firma_id);
+    }
+    public function calisanGunleriAdd(Request $request){
+         $validator = Validator::make($request->all(), [
+                    'calisma_gunleri' => 'required',
+                    'calisma_saatleri' => 'required',
+                    'calisma_profili' => 'required',
+                    'calisma_sayisi' => 'required',
+                    
+
+             
+                    
+        ]);
+
+        /*if ($validator->fails()) {
+            return redirect('firmaProfili/'.$request->id)
+                            ->withInput()
+                            ->withErrors($validator);
+        }*/
+        
+        $firma = Firma::find($request->id);
+        $firma_calisan = $firma->firma_calisma_bilgileri ?: new \App\FirmaCalismaBilgisi();
+        $firma_calisan->calisma_gunleri_id=$request->id;
+        $firma_calisan->calisma_saatleri=$request->calisma_saatleri;
+        $firma_calisan->calisan_profili=$request->calisma_profili;
+        $firma_calisan->calisan_sayisi=$request->calisma_sayisi;
+       
+      $firma->firma_calisma_bilgileri()->save( $firma_calisan);
+        return redirect('firmaProfili/'.$firma->id);
+    }
+    public function bilgilendirmeTercihiAdd(Request $request){
+        $firma = Firma::find($request->id);
+        $firma->bilgilendirme_tercihi=$request->bilgilendirme_tercihi;
+        $firma->save();
         
         return redirect('firmaProfili/'.$firma->id);
     }
-    
-    
-    //eski fonksiyonlar
-    public function firma(Request $request){
-        $validator = Validator::make($request->all(), [
-                    'firmaAdi' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect('/')
-                            ->withInput()
-                            ->withErrors($validator);
-        }
-        //console.log($request);
-
-        $firma = new Firma();
-        $firma->adi = $request->firmaAdi;
-        $firma->save();
+    public function uploadPdf(Request $request){
+         $file = $request->file('yolu');
         
-        foreach($request->sektor as $sektor)
-            $firma->sektorler()->attach($sektor);
+        // getting all of the post data
+        $file = array('yolu' => $request->file('yolu'));
+        // setting up rules
+        $rules = array('yolu' => 'required|mimes:pdf|max:100000'); //mimes:jpeg,bmp,png and for max size max:10000
+        // doing the validation, passing post data, rules and the messages
+        $validator = Validator::make($file, $rules);
+        if ($validator->fails()) {
+            // send back to the page with the input data and errors
+            return Redirect::to('firmaProfili/'.$request->id)->withInput()->withErrors($validator);
+        } else {
+            // checking file is valid.
+            if ($request->file('yolu')->isValid()) {
+                $destinationPath = 'brosur'; // upload path
+                $extension = $request->file('yolu')->getClientOriginalExtension(); // getting image extension
+                $fileName = rand(11111, 99999) . '.' . $extension; // renameing image
 
+                $firma = Firma::find($request->id);
+                $firma_brosur = $firma->firma_brosurler()->first() ?: new \App\FirmaBrosur();
+                
+                if ($firma->firma_brosurler){
+                    $oldName=$firma->firma_brosurler()->first()->yolu ;
+     
+                }
+                
+                $firma_brosur->yolu = $fileName;
+                $firma_brosur->adi=$request->brosur_adi;
+                $firma->firma_brosurler()->save($firma_brosur);
 
-        return redirect('/');
-    } 
-    public function index($id){
-        $firmalar = Firma::find($id);
-        $sektorler = Sektor::all();
-
-        return view('firmaKaydet')->with('firmalar',$firmalar)->with('sektorler', $sektorler);
-    }
+                $request->file('yolu')->move($destinationPath, $fileName); // uploading file to given path
+                // sending back with message
+                Session::flash('success', 'Upload successfully');
+                if ($firma->firma_brosurler){
+                    
+                File::delete("brosur/$oldName");
+                }
+                return Redirect::to('firmaProfili/'.$firma->id);
+                //return  Redirect::route('commucations')->with('fileName', $fileName);
+            } else {
+                // sending back with error message.
+                Session::flash('error', 'uploaded file is not valid');
+                return Redirect::to('firmaProfili/'.$firma->id)->withInput()->withErrors($validator);
+            }
+        }
+         
+     }
     public function showFirma($id){
         $firma = Firma::find($id);
         $iller = Il::all();
@@ -254,6 +282,32 @@ class FirmaController extends Controller
         $departmanlar=  \App\Departman::all();
         $markalar=  \App\SatilanMarka::all();
         $faaliyetler= \App\Faaliyet::all();
-        return view('Firma.firmaProfili', ['firma' => $firma], ['iller' => $iller])->with('sirketTurleri',$sirketTurleri)->with('vergiDaireleri',$vergiDaireleri)->with('ustsektor',$ustsektor)->with('ticaretodasi',$ticaretodasi)->with('departmanlar',$departmanlar)->with('markalar',$markalar)->with('faaliyetler',$faaliyetler);
+        $kalite_belgeleri= \App\KaliteBelgesi::all();
+        $calisma_günleri= \App\CalismaGunu::all();
+        
+        return view('Firma.firmaProfili', ['firma' => $firma], ['iller' => $iller])->with('sirketTurleri',$sirketTurleri)->with('vergiDaireleri',$vergiDaireleri)->with('ustsektor',$ustsektor)->with('ticaretodasi',$ticaretodasi)->with('departmanlar',$departmanlar)->with('markalar',$markalar)->with('faaliyetler',$faaliyetler)->with('kalite_belgeleri',$kalite_belgeleri)->with('calisma_günleri',$calisma_günleri);
     }
+     
+     
+     
+     
+     
+     
+    //eski fonksiyonlar...suan kullanılmıyorlar
+    public function firma(Request $request){
+        $firma = new Firma();
+        $firma->adi = $request->firmaAdi;
+        $firma->save();
+        
+        foreach($request->sektor as $sektor)
+            $firma->sektorler()->attach($sektor);
+        return redirect('/');
+    } 
+    public function index($id){
+        $firmalar = Firma::find($id);
+        $sektorler = Sektor::all();
+
+        return view('firmaKaydet')->with('firmalar',$firmalar)->with('sektorler', $sektorler);
+    }
+    
 }

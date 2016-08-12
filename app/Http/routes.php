@@ -20,6 +20,7 @@ Route::get('/image/{id}', function ($id) {
     $firmas = Firma::find($id);
     return view('firmas.upload')->with('firmas', $firmas);
 });
+//firma profil route...
 Route::post('firmaProfili/uploadImage/{id}', 'FirmaController@uploadImage');
 Route::post('firmaProfili/deleteImage/{id}', 'FirmaController@deleteImage');
 Route::post('firmaProfili/iletisimAdd/{id}', 'FirmaController@iletisimAdd');
@@ -33,6 +34,13 @@ Route::post('firmaProfili/bilgilendirmeTercihi/{id}', 'FirmaController@bilgilend
 Route::post('firmaProfili/firmaBrosur/{id}', 'FirmaController@uploadPdf');
 Route::post('firmaProfili/referansUpdate/{id}', 'FirmaController@referansUpdate');
 Route::get('/firmaProfili/{id}', 'FirmaController@showFirma');
+
+//firma ilan route...
+Route::get('/firmaIlanOlustur/{id}', 'FirmaIlanController@showFirmaIlan');
+Route::post('firmaIlanOlustur/firmaBilgilerim/{id}', 'FirmaIlanController@firmaBilgilerimAdd');
+Route::post('firmaIlanOlustur/ilanBilgileri/{id}', 'FirmaIlanController@ilanAdd');
+Route::post('firmaIlanOlustur/fiyatlandırmaBilgileri/{id}', 'FirmaIlanController@fiyatlandırmaBilgileriAdd');
+
 
 Route::get('/ajax-subcat', function (Request $request) {
     

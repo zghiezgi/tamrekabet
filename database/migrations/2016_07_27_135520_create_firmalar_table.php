@@ -20,6 +20,7 @@ class CreateFirmalarTable extends Migration
             $table->date('kurulus_tarihi');
             $table->string('bilgilendirme_tercihi');
             $table->integer('sirket_turu')->unsigned();
+            $table->string('goster');
             $table->foreign('sirket_turu')->references('id')->on('sirket_turleri')->onDelete('cascade');
             $table->timestamps();
         });

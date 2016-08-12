@@ -1011,7 +1011,7 @@
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Broşür Adi</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control " id="brosur_adi" name="brosur_adi" placeholder="Broşür Adi" value="{{$firmaBrosur->adi}}"/>
+                                               <input type="text" class="form-control " id="brosur_adi" name="brosur_adi" placeholder="Broşür Adi" value=""/>
                                            </div>
                                        </div>
                                        <div class="form-group">
@@ -1179,11 +1179,15 @@
                    </div>
                </div>
            </div>
+           
+           
+           
+           
        </div>
    </div>       
 <script>
   
-    $(document).ready(function() {
+$(document).ready(function() {
         var max_fields      = 10; //maximum input boxes allowed
         var wrapper         = $(".input_fields_wrap"); //Fields wrapper
         var add_button      = $(".add_field_button"); //Add button ID

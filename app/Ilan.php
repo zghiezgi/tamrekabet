@@ -8,6 +8,7 @@ class Ilan extends Model
 {
     //
     protected $table = 'ilanlar';
+     public $timestamps = false;
     
     public function odeme_turleri()
     {

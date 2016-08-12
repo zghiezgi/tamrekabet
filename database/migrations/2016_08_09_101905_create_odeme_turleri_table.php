@@ -15,7 +15,7 @@ class CreateOdemeTurleriTable extends Migration
         //
         Schema::create('odeme_turleri', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('adi');
+            $table->string('adi');
            
         });
     }

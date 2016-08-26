@@ -47,8 +47,7 @@ class FirmaController extends Controller
             }
         }
     }
-    public function deleteImage($id)
-    {
+    public function deleteImage($id){
         $item = Firma::findOrFail($id);
         $oldName=$item->logo;
         $item->logo=null;
@@ -328,6 +327,30 @@ class FirmaController extends Controller
         $calisma_günleri= \App\CalismaGunu::all();
         
         return view('Firma.firmaProfili', ['firma' => $firma], ['iller' => $iller])->with('sirketTurleri',$sirketTurleri)->with('vergiDaireleri',$vergiDaireleri)->with('ustsektor',$ustsektor)->with('ticaretodasi',$ticaretodasi)->with('departmanlar',$departmanlar)->with('markalar',$markalar)->with('faaliyetler',$faaliyetler)->with('kalite_belgeleri',$kalite_belgeleri)->with('calisma_günleri',$calisma_günleri);
+    }
+    public function deleteKalite(Request $request,$id){  
+        
+         $kalite = \App\FirmaKaliteBelgesi::find($id);
+         
+         $kalite->delete();
+         
+        return redirect('firmaProfili/'.$request->firma_id);
+    }
+      public function deleteReferans(Request $request,$id){  
+        
+         $referans = \App\FirmaReferans::find($id);
+         
+         $referans->delete();
+         
+        return redirect('firmaProfili/'.$request->firma_id);
+    }
+     public function deleteBrosur(Request $request,$id){  
+        
+         $brosur = \App\FirmaBrosur::find($id);
+         
+         $brosur->delete();
+         
+        return redirect('firmaProfili/'.$request->firma_id);
     }
      
      

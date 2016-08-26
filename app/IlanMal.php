@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class IlanMal extends Model
 {
     //
-     protected $table = 'ilan_mallar';
+    public $timestamps=false;
+    protected $table = 'ilan_mallar';
      public function birimler()
     {
         return $this->belongsTo('App\Birim', 'birim_id', 'id');
@@ -16,4 +17,5 @@ class IlanMal extends Model
     {
         return $this->belongsTo('App\Ilan', 'ilan_id', 'id');
     }
+    
 }

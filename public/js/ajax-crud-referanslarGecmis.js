@@ -3,7 +3,7 @@ $(document).ready(function(){
    var url = "/tamrekabet/public/index.php/firma";
     $('.open-modal-gecmis').click(function(){
         var ref_id = $(this).val();
-       alert(ref_id);
+
         $.get(url + '/'  + ref_id, function (data) {
             //success data
            console.log(data);

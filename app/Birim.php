@@ -21,5 +21,13 @@ class Birim extends Model
     {
         return $this->hasMany('App\IlanYapimIsi', 'birim_id', 'id');
     }
+     public function ilan_hizmetler_fiyat()
+    {
+        return $this->hasMany('App\IlanHizmet', 'fiyat_standardi_birim_id', 'id');
+    }
+     public function ilan_hizmetler_miktar()
+    {
+        return $this->hasMany('App\IlanHizmet', 'miktar_birim_id', 'id');
+    }
     
 }

@@ -8,6 +8,7 @@ class IlanYapimIsi extends Model
 {
     //
      protected $table = 'ilan_yapim_isleri';
+     public $timestamps=false;
      public function birimler()
     {
         return $this->belongsTo('App\Birim', 'birim_id', 'id');

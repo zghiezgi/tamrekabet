@@ -4,4 +4,8 @@ $(document).ready(function(){
         $('#btn-save-kalite').val("add");
         $('#myModal-kalite').modal('show');
     });
+ 
+    $('.open-modal-kaliteGuncelle').click(function(){
+        $('#myModal-kaliteGuncelle').modal('show');
+    });
 });

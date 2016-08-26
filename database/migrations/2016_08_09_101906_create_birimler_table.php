@@ -15,7 +15,7 @@ class CreateBirimlerTable extends Migration
         //
         Schema::create('birimler', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('adi');
+            $table->string('adi');
            
         });
     }

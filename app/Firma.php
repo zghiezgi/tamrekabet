@@ -72,6 +72,18 @@ class Firma extends Model
     {
         return $this->hasOne('App\Ilan', 'firma_id', 'id');
     }
+    public function ilan_mallar()
+    {
+        return $this->hasManyThrough('App\IlanMal', 'App\Ilan','firma_id','ilan_id','id');
+    }
+     public function ilan_hizmetler()
+    {
+        return $this->hasManyThrough('App\IlanHizmet', 'App\Ilan','firma_id','ilan_id','id');
+    }
+     public function ilan_goturu_bedeller()
+    {
+        return $this->hasManyThrough('App\IlanGoturuBedel', 'App\Ilan','firma_id','ilan_id','id');
+    }
     
     
     

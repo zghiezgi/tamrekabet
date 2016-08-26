@@ -341,8 +341,13 @@
                                </tr>
                                <tr>
                                    <td>Şirket Türü:</td>
-                                   @foreach($firma->sirket_turleri() as $turleri)
-                                   <td>{{$turleri->adi}}</td>
+                                   @foreach($sirketTurleri as $sirket)<?php
+                                   if($sirket->id == $firma->sirket_turu){
+                                       ?>
+                                          <td>{{$sirket->adi}}</td>
+                                          <?php
+                                   }
+                                   ?>
                                    @endforeach
                                </tr>
                                <tr>
@@ -555,7 +560,8 @@
                                <tr>
                                    <td>Firmanın Ürettiği Markalar:</td>
                                    <td>
-                                       @foreach($firma->uretilen_markalar as $marka)
+                                       <?php  $uretilenMarka = DB::table('uretilen_markalar')->where('firma_id', '=', $firma->id)->get(); ?>
+                                       @foreach($uretilenMarka as $marka)
                                        {{$marka->adi}}
                                        @endforeach
                                    </td>
@@ -640,7 +646,7 @@
                                            <label for="inputEmail3" class="col-sm-3 control-label">Üretilen Markalar</label>
                                            <div class="col-sm-9">
                                                <div class="input_fields_wrap">
-                                                   <button class="add_field_button"><i class="large material-icons">queue</i></button>
+                                                   <button name="deneme" class="add_field_button"><i class="large material-icons">queue</i></button>
                                                    <div><input type="text" class="form-control"  name="firmanin_urettigi_markalar[]"></div>
                                                </div>
                                            </div>
@@ -679,32 +685,66 @@
                        <div class="panel-footer">Kalite Belgeleri
                            <table class="table" >
                                <thead id="tasks-list" name="tasks-list">
-                                   <tr id="firma{{$firma->id}}">
-                                   <tr>
-                                       <td>Kalite Belgesi:</td>
+                                       <th>Kalite Belgesi:</th>
+                                       <th>Belge NO:</th>
                                             <?php
                                             if (!$firma->kalite_belgeleri) {
                                                 $firma->firma_kalite_belgeleri = new App\FirmaKaliteBelgesi();
                                                 //$firma->firma_kalite_belgeleri->kalite_belgeleri = new App\KaliteBelgesi();
                                             }
                                             ?>
+                                
+                                   @foreach($firma->kalite_belgeleri as $kalite_belgesi)
+                                    <tr>
                                        <td>
-                                           @foreach($firma->kalite_belgeleri as $kalite_belgesi)
                                            {{$kalite_belgesi->adi}}
-                                           @endforeach
                                        </td>
-                                   </tr>
-                                   <tr>
-                                       <td>Belge NO:</td>
                                        <td>
-                                           @foreach($firma->kalite_belgeleri as $kalite_belgesi)
                                            {{$kalite_belgesi->pivot->belge_no}}
-                                           @endforeach
                                        </td>
+                                       <td>
+                                       <button name="open-modal-kaliteGuncelle"  value="{{$kalite_belgesi->id}}" class="btn btn-primary btn-xs open-modal-kaliteGuncelle" >Düzenle</button></td>
                                    </tr>
-                                   </tr>
-                               </thead>
+                           <div class="modal fade" id="myModal-kaliteGuncelle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                               <div class="modal-dialog">
+                                   <div class="modal-content">
+                                       <div class="modal-header">
+                                           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                           <h4 class="modal-title" id="myModalLabel">Kalite Belgeleri </h4>
+                                       </div>
+                                       <div class="modal-body">
+                                           {!! Form::open(array('url'=>'firmaProfili/kaliteGuncelle/'.$firma->id,'class'=>'form-horizontal','method'=>'POST', 'files'=>true)) !!}
+
+                                           <div class="form-group">
+                                               <label for="inputEmail3" class="col-sm-3 control-label">Kalite Belgesi</label>
+                                               <div class="col-sm-9">
+                                                    <select class="form-control" name="kalite_belgeleri" id="kalite_belgeleri" required>
+                                                        <option selected disabled>Seçiniz</option>
+                                                        @foreach($kalite_belgeleri as $kalite)
+                                                        <option  value="{{$kalite->id}}">{{$kalite->adi}}</option>
+                                                        @endforeach
+                                                    </select>
+                                               </div>
+                                           </div>
+                                           <div class="form-group">
+                                               <label for="inputEmail3" class="col-sm-3 control-label">Belge No</label>
+                                               <div class="col-sm-9">
+                                                   <input type="text" class="form-control " id="belge_no" name="belge_no" placeholder="Belge No" value="{{$kalite_belgesi->pivot->belge_no}}"/>
+                                               </div>
+                                           </div>
+                                           <input type="hidden" name="kalite_id"  id="kalite_id" value="{{$kalite_belgesi->id}}"> 
+                                           {!! Form::submit('Kaydet', array('url'=>'firmaProfili/kaliteGuncelle/'.$firma->id,'class'=>'btn btn-danger')) !!}
+                                           {!! Form::close() !!}
+                                       </div>
+                                       <div class="modal-footer">                                                            
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                               @endforeach
+                            </thead>
                            </table>
+                           
                            <div class="modal fade" id="myModal-kalite" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                <div class="modal-dialog">
                                    <div class="modal-content">
@@ -718,9 +758,12 @@
                                            <div class="form-group">
                                                <label for="inputEmail3" class="col-sm-3 control-label">Kalite Belgesi</label>
                                                <div class="col-sm-9">
-                                                   @foreach($kalite_belgeleri as $kalite)
-                                                   <input type="checkbox"  name="kalite_belgeleri[]" value="{{$kalite->id}}">{{$kalite->adi}}</input>
-                                                   @endforeach
+                                                    <select class="form-control" name="kalite_belgeleri" id="kalite_belgeleri" required>
+                                                        <option selected disabled>Seçiniz</option>
+                                                        @foreach($kalite_belgeleri as $kalite)
+                                                        <option  value="{{$kalite->id}}">{{$kalite->adi}}</option>
+                                                        @endforeach
+                                                    </select>
                                                </div>
                                            </div>
                                            <div class="form-group">
@@ -729,16 +772,16 @@
                                                    <input type="text" class="form-control " id="belge_no" name="belge_no" placeholder="Belge No" value=""/>
                                                </div>
                                            </div>
-
                                            {!! Form::submit('Kaydet', array('url'=>'firmaProfili/kalite/'.$firma->id,'class'=>'btn btn-danger')) !!}
                                            {!! Form::close() !!}
                                        </div>
                                        <div class="modal-footer">                                                            
                                        </div>
+                                       
                                    </div>
                                </div>
                            </div>
-                           <button id="btn-add-kalite" name="btn-add-kalite" class="btn btn-primary btn-xs" >Ekle / Düzenle</button>
+                           <button id="btn-add-kalite" name="btn-add-kalite" class="btn btn-primary btn-xs" >Ekle</button>
                        </div>
                        <div class="panel-footer ">Referanslar
                            <table class="table" >
@@ -858,13 +901,13 @@
                                                        </div>
                                                    </div>
                                                    <div class="form-group">
-                                                       <label for="inputEmail3" class="col-sm-3 control-label">Yetkili Kişi Email Adresi</label>
+                                                       <label for="inputEmail3" class="col-sm-3 control-label">Y.K Email Adresi</label>
                                                        <div class="col-sm-9">
                                                            <input type="email" class="form-control " id="yetkili_kisi_email" name="yetkili_kisi_email" placeholder="Yetkili Kişi Email Adresi" value=" "/>
                                                        </div>
                                                    </div>
                                                    <div class="form-group">
-                                                       <label for="inputEmail3" class="col-sm-3 control-label">Yetkili Kişi Telefon</label>
+                                                       <label for="inputEmail3" class="col-sm-3 control-label">Y.K Telefon</label>
                                                        <div class="col-sm-9">
                                                            <input type="text" class="form-control " id="yetkili_kisi_telefon" name="yetkili_kisi_telefon" placeholder="Yetkili Kişi Telefon" value=""/>
                                                        </div>
@@ -880,7 +923,7 @@
                                        </div>
                                    </div>
                                    @endforeach
-                                   </tr>
+                                   
                                    </thead>
                            </table>
                            <div class="modal fade" id="myModal-referanslar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -981,65 +1024,112 @@
                    <div class="panel-body">
                        <table class="table" >
                            <thead id="tasks-list" name="tasks-list">
-                               <tr id="firma{{$firma->id}}">
-                               <tr>
-                                   <td>Broşür Adı:</td>
+                                <th>Broşür Adı:</th>
+                                <th>Broşür Pdf:</th>
                                         <?php
                                         if (!$firma->firma_brosurler) {
                                             $firma->firma_brosurler = new App\FirmaBrosur();
                                         }
                                         ?>
-                                   <td>
-                                       @foreach($firma->firma_brosurler as $firmaBrosur)
-                                        {{$firmaBrosur->adi}}
-                                       @endforeach
-                                   </td>
-                               </tr>
-                               </tr>
-                           </thead>
-                       </table>
-                       <div class="modal fade" id="myModal-firmabrosur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                           <div class="modal-dialog">
-                               <div class="modal-content">
-                                   <div class="modal-header">
-                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                       <h4 class="modal-title" id="myModalLabel">Firma Broşürü</h4>
-                                   </div>
-                                   <div class="modal-body">
-                                       {!! Form::open(array('url'=>'firmaProfili/firmaBrosur/'.$firma->id,'class'=>'form-horizontal','method'=>'POST', 'files'=>true)) !!}
+                                @foreach($firma->firma_brosurler as $firmaBrosur)
+                                    <tr>   
+                                       <td>
+                                           {{$firmaBrosur->adi}}
+                                       </td>
+                                       <td>
+                                           <a href="{{ asset('brosur/'.$firmaBrosur->yolu) }}">{{$firmaBrosur->yolu}}</a>
+                                       </td>
+                                  
+                                   <td> <button   value="{{$firmaBrosur->id}}" class="btn btn-primary btn-xs open-modal-brosurGuncelle" >Düzenle</button></td>
+                                    <input type="hidden" name="brosur_id"  id="brosur_id" value="{{$firmaBrosur->id}}"> 
+                                    </tr>
+                                    <div class="modal fade" id="myModal-firmabrosurGuncelle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Firma Broşürü</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {!! Form::open(array('url'=>'firmaProfili/firmaBrosurGuncelle/'.$firmaBrosur->id,'class'=>'form-horizontal','method'=>'POST', 'files'=>true)) !!}
 
-                                       <div class="form-group">
-                                           <label for="inputEmail3" class="col-sm-3 control-label">Broşür Adi</label>
-                                           <div class="col-sm-9">
-                                               <input type="text" class="form-control " id="brosur_adi" name="brosur_adi" placeholder="Broşür Adi" value=""/>
-                                           </div>
-                                       </div>
-                                       <div class="form-group">
-                                           <label for="inputEmail3" class="col-sm-3 control-label">Broşür PDF</label>
-                                           <div class="col-sm-9">
-                                               <div class="control-group">
-                                                   <div class="controls">
-                                                       {!! Form::file('yolu') !!}
-                                                       <p class="errors">{!!$errors->first('image')!!}</p>
-                                                       @if(Session::has('error'))
-                                                       <p class="errors">{!! Session::get('error') !!}</p>
-                                                       @endif
-                                                   </div>
-                                               </div>
-                                               <div id="success"> 
-                                               </div>
-                                           </div>
-                                       </div>
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Broşür Adi</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control " id="brosur_adi" name="brosur_adi" placeholder="Broşür Adi" value=""/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Broşür PDF</label>
+                                                        <div class="col-sm-9">
+                                                            <div class="control-group">
+                                                                <div class="controls">
+                                                                    {!! Form::file('yolu') !!}
+                                                                    <p class="errors">{!!$errors->first('image')!!}</p>
+                                                                    @if(Session::has('error'))
+                                                                    <p class="errors">{!! Session::get('error') !!}</p>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            <div id="success"> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <input type="hidden" name="brosur_id"  id="brosur_id" value="{{$firmaBrosur->id}}"> 
+                                                    {!! Form::submit('Kaydet', array('url'=>'firmaProfili/firmaBrosurGuncelle/'.$firmaBrosur->id,'class'=>'btn btn-danger')) !!}
+                                                    {!! Form::close() !!}
+                                                </div>
+                                                <div class="modal-footer">                                                            
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   @endforeach
+                                </thead>
+                            </table>
+                        <div class="modal fade" id="myModal-firmabrosurEkle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                              <h4 class="modal-title" id="myModalLabel">Firma Broşürü</h4>
+                                          </div>
+                                          <div class="modal-body">
+                                              {!! Form::open(array('url'=>'firmaProfili/firmaBrosur/'.$firma->id,'class'=>'form-horizontal','method'=>'POST', 'files'=>true)) !!}
 
-                                       {!! Form::submit('Kaydet', array('url'=>'firmaProfili/firmaBrosur/'.$firma->id,'class'=>'btn btn-danger')) !!}
-                                       {!! Form::close() !!}
-                                   </div>
-                                   <div class="modal-footer">                                                            
-                                   </div>
-                               </div>
-                           </div>
-                       </div>
-                       <button id="btn-add-firmabrosur" name="btn-add-firmabroşür" class="btn btn-primary btn-xs" >Ekle / Düzenle</button>
+                                              <div class="form-group">
+                                                  <label for="inputEmail3" class="col-sm-3 control-label">Broşür Adi</label>
+                                                  <div class="col-sm-9">
+                                                      <input type="text" class="form-control " id="brosur_adi" name="brosur_adi" placeholder="Broşür Adi" value=""/>
+                                                  </div>
+                                              </div>
+                                              <div class="form-group">
+                                                  <label for="inputEmail3" class="col-sm-3 control-label">Broşür PDF</label>
+                                                  <div class="col-sm-9">
+                                                      <div class="control-group">
+                                                          <div class="controls">
+                                                              {!! Form::file('yolu') !!}
+                                                              <p class="errors">{!!$errors->first('image')!!}</p>
+                                                              @if(Session::has('error'))
+                                                              <p class="errors">{!! Session::get('error') !!}</p>
+                                                              @endif
+                                                          </div>
+                                                      </div>
+                                                      <div id="success"> 
+                                                      </div>
+                                                  </div>
+                                              </div>
+
+                                              {!! Form::submit('Kaydet', array('url'=>'firmaProfili/firmaBrosur/'.$firma->id,'class'=>'btn btn-danger')) !!}
+                                              {!! Form::close() !!}
+                                          </div>
+                                          <div class="modal-footer">                                                            
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                       <button id="btn-add-firmabrosurEkle" name="btn-add-firmabrosurEkle" class="btn btn-primary btn-xs" >Ekle</button>
                    </div>
                </div>
            </div>
@@ -1179,15 +1269,11 @@
                    </div>
                </div>
            </div>
-           
-           
-           
-           
        </div>
    </div>       
 <script>
   
-$(document).ready(function() {
+    $(document).ready(function() {
         var max_fields      = 10; //maximum input boxes allowed
         var wrapper         = $(".input_fields_wrap"); //Fields wrapper
         var add_button      = $(".add_field_button"); //Add button ID

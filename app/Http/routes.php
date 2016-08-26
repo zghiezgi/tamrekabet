@@ -37,6 +37,9 @@ Route::post('firmaProfili/bilgilendirmeTercihi/{id}', 'FirmaController@bilgilend
 Route::post('firmaProfili/firmaBrosur/{id}', 'FirmaController@uploadPdf');
 Route::post('firmaProfili/firmaBrosurGuncelle/{id}', 'FirmaController@brosurUpdate');
 Route::post('firmaProfili/referansUpdate/{id}', 'FirmaController@referansUpdate');
+Route::delete('firmaProfili/kaliteSil/{id}', 'FirmaController@deleteKalite');
+Route::delete('firmaProfili/referansSil/{id}', 'FirmaController@deleteReferans');
+Route::delete('firmaProfili/brosurSil/{id}', 'FirmaController@deleteBrosur');
 Route::get('/firmaProfili/{id}', 'FirmaController@showFirma');
 Route::get('/firma/{ref_id?}',function($ref_id){
     $referans=  FirmaReferans::find($ref_id);

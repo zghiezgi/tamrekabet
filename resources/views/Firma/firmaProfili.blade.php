@@ -646,9 +646,9 @@
                                            <label for="inputEmail3" class="col-sm-3 control-label">Üretilen Markalar</label>
                                            <div class="col-sm-9">
                                                <div class="input_fields_wrap">
-                                                   <button name="deneme" class="add_field_button"><i class="large material-icons">queue</i></button>
-                                                   <div><input type="text" class="form-control"  name="firmanin_urettigi_markalar[]"></div>
-                                               </div>
+                                                    <button  class="add_field_button">Ekle</button>
+                                                    <div><input type="text" name="firmanin_urettigi_markalar[]"></div>
+                                                </div>
                                            </div>
                                        </div>
                                        <div class="form-group">
@@ -692,6 +692,7 @@
                                                 $firma->firma_kalite_belgeleri = new App\FirmaKaliteBelgesi();
                                                 //$firma->firma_kalite_belgeleri->kalite_belgeleri = new App\KaliteBelgesi();
                                             }
+                                           
                                             ?>
                                 
                                    @foreach($firma->kalite_belgeleri as $kalite_belgesi)
@@ -703,7 +704,19 @@
                                            {{$kalite_belgesi->pivot->belge_no}}
                                        </td>
                                        <td>
-                                       <button name="open-modal-kaliteGuncelle"  value="{{$kalite_belgesi->id}}" class="btn btn-primary btn-xs open-modal-kaliteGuncelle" >Düzenle</button></td>
+                                 
+                                       <button name="open-modal-kaliteGuncelle"  value="{{$kalite_belgesi->id}}" class="btn btn-primary btn-xs open-modal-kaliteGuncelle" >Düzenle</button>
+                                       </td>
+                                      
+                                        <td>
+                                            
+                                            {{ Form::open(array('url'=>'firmaProfili/kaliteSil/'.$kalite_belgesi->id,'method' => 'DELETE', 'files'=>true)) }}
+                                            <input type="hidden" name="firma_id"  id="firma_id" value="{{$firma->id}}">
+                                            {{ Form::submit('Sil', ['class' => 'btn btn-primary btn-xs']) }}
+                                            {{ Form::close() }}
+                                             
+                                        </td>
+                                       
                                    </tr>
                            <div class="modal fade" id="myModal-kaliteGuncelle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                <div class="modal-dialog">
@@ -836,7 +849,14 @@
                                        <td>
                                            {{$firmaReferans->is_yili}}
                                        </td>
-                                       <td> <button name="open-modal-gecmis"  value="{{$firmaReferans->id}}" class="btn btn-primary btn-xs open-modal-gecmis" >Düzenle</button></td>
+                                       <td> <button name="open-modal-gecmis"  value="{{$firmaReferans->id}}" class="btn btn-primary btn-xs open-modal-gecmis" >Düzenle</button>
+                                       </td>
+                                        <td>
+                                                {{ Form::open(array('url'=>'firmaProfili/referansSil/'.$firmaReferans->id,'method' => 'DELETE', 'files'=>true)) }}
+                                                <input type="hidden" name="firma_id"  id="firma_id" value="{{$firma->id}}">
+                                             {{ Form::submit('Sil', ['class' => 'btn btn-primary btn-xs']) }}
+                                            {{ Form::close() }}
+                                        </td>
                                         <input type="hidden" name="ref_id"  id="ref_id" value="{{$firmaReferans->id}}"> 
                                    </tr>
                                    <div class="modal fade" id="myModal-referanslarGecmis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -1040,7 +1060,14 @@
                                            <a href="{{ asset('brosur/'.$firmaBrosur->yolu) }}">{{$firmaBrosur->yolu}}</a>
                                        </td>
                                   
-                                   <td> <button   value="{{$firmaBrosur->id}}" class="btn btn-primary btn-xs open-modal-brosurGuncelle" >Düzenle</button></td>
+                                   <td> <button   value="{{$firmaBrosur->id}}" class="btn btn-primary btn-xs open-modal-brosurGuncelle" >Düzenle</button>
+                                   </td>
+                                   <td>
+                                   {{ Form::open(array('url'=>'firmaProfili/brosurSil/'.$firmaBrosur->id,'method' => 'DELETE', 'files'=>true)) }}
+                                                <input type="hidden" name="firma_id"  id="firma_id" value="{{$firma->id}}">
+                                             {{ Form::submit('Sil', ['class' => 'btn btn-primary btn-xs']) }}
+                                            {{ Form::close() }}
+                                  </td>
                                     <input type="hidden" name="brosur_id"  id="brosur_id" value="{{$firmaBrosur->id}}"> 
                                     </tr>
                                     <div class="modal fade" id="myModal-firmabrosurGuncelle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -1272,156 +1299,29 @@
        </div>
    </div>       
 <script>
-  
-    $(document).ready(function() {
-        var max_fields      = 10; //maximum input boxes allowed
-        var wrapper         = $(".input_fields_wrap"); //Fields wrapper
-        var add_button      = $(".add_field_button"); //Add button ID
-        var x = 1; //initlal text box count
-        
-        $(add_button).click(function(e){ //on add input button click
-        e.preventDefault();
-            if(x < max_fields){ //max input box allowed
-                x++; //text box increment
-                $(wrapper).append('<div><input type="text" class="form-control" name="firmanin_urettigi_markalar[]"/><a href="#" class="remove_field"><i class="large material-icons">delete</i></a></div>'); //add input box
-            }
-        });
-
-        $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-            e.preventDefault(); $(this).parent('div').remove(); x--;
-        });
-                                               
-        $( "#kurulus_tarihi" ).datepicker(
-            showOn: "button",
-            buttonImage: "/checkbook/public/overcast/images/calendar19.gif",  // put in an image to click on
-            buttonImageOnly: true,
-            dateFormat: "yyyy-mm-dd",
-            changeMonth: true,
-            changeYear: true,
-                                                                                    
-        );
-});
-var selectDD(){
-        fillIlce({{$firmaAdres->iller->id}});
-        fillSemt({{$firmaAdres->ilceler->id}});
-        $("#il_id").val({{$firmaAdres->iller->id}});
-        $("#ilce_id").val({{$firmaAdres->ilceler->id}});
-        $("#semt_id").val({{$firmaAdres->semtler->id}});
-}
-        /*alert("doluyum ben");
-        popDropDown('ilce_id', 'ajax-subcat?il_id=', {{$firmaAdres->iller->id}});
-        popDropDown('semt_id', 'ajax-subcatt?ilce_id=', {{$firmaAdres->ilceler->id}});
-        $("#il_id").val({{$firmaAdres->iller->id}});
-        $("#ilce_id").val({{$firmaAdres->ilceler->id}});
-        alert("seçtim");
-        
-    */
-
-
-var fillTanitim = function () {
-    CKEDITOR.instances['tanitim_yazisi'].setData('{{$firma->tanitim_yazisi}}');
-}
-
-function GetIlce(il_id) {
-    if (il_id > 0) {
-        $("#ilce_id").get(0).options.length = 0;
-        $("#ilce_id").get(0).options[0] = new Option("Yükleniyor", "-1"); 
- 
-        $.ajax({
-            type: "GET",
-            url: "/tamrekabet/public/index.php/ajax-subcat?il_id="+il_id,
-            
-            contentType: "application/json; charset=utf-8",
-      
-            success: function(msg) {
-                $("#ilce_id").get(0).options.length = 0;
-                $("#ilce_id").get(0).options[0] = new Option("Seçiniz", "-1");
- 
-                $.each(msg, function(index, ilce) {
-                    $("#ilce_id").get(0).options[$("#ilce_id").get(0).options.length] = new Option(ilce.adi, ilce.id);
-                });
-            },
-            async: false,
-            error: function() {
-                $("#ilce_id").get(0).options.length = 0;
-                alert("İlçeler yükelenemedi!!!");
-            }
-        });
-    }
-    else {
-        $("#ilce_id").get(0).options.length = 0;
-    }
-} 
-
-function GetSemt(ilce_id) {
-    if (ilce_id > 0) {
-        $("#semt_id").get(0).options.length = 0;
-        $("#semt_id").get(0).options[0] = new Option("Yükleniyor", "-1"); 
- 
-        $.ajax({
-            type: "GET",
-            url: "/tamrekabet/public/index.php/ajax-subcatt?ilce_id="+ilce_id,
-            
-            contentType: "application/json; charset=utf-8",
-      
-            success: function(msg) {
-                $("#semt_id").get(0).options.length = 0;
-                $("#semt_id").get(0).options[0] = new Option("Seçiniz", "-1");
- 
-                $.each(msg, function(index, semt) {
-                    $("#semt_id").get(0).options[$("#semt_id").get(0).options.length] = new Option(semt.adi, semt.id);
-                });
-            },
-            async: false,
-            error: function() {
-                $("#semt_id").get(0).options.length = 0;
-                alert("Semtler yükelenemedi!!!");
-            }
-        });
-    }
-    else {
-        $("#semt_id").get(0).options.length = 0;
-    }
-} 
-
-
-var popDropDown = function (element, ajax, parameter){
     
-        //alert(element+","+ajax+","+parameters);
-    $.get('/tamrekabet/public/index.php/'+ ajax + parameter, function (data) {
-        $('#'+ element).empty();
-        $('#'+ element).append('<option value=""> Seçiniz </option>');
-        $.each(data, function (index, subcatObj) {
-            $('#'+ element).append('<option value="' + subcatObj.id + '">' + subcatObj.adi + '</option>');
-        });
+$( document ).ready(function() {
+    var max_fields      = 10; //maximum input boxes allowed
+    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+    var add_button      = $(".add_field_button"); //Add button ID
+    
+    var x = 1; //initlal text box count
+    $(add_button).click(function(e){ //on add input button click
+        e.preventDefault();
+        if(x < max_fields){ //max input box allowed
+            x++; //text box increment
+            $(wrapper).append('<div><input type="text" name="firmanin_urettigi_markalar_[]"/><a href="#" class="remove_field">Sil</a></div>'); //add input box
+        }
     });
-    alert(element);
-}
-
-$('#il_id').on('change', function (e) {
-    alert("change");
-    var il_id = e.target.value;
-    GetIlce(il_id);
-    //popDropDown('ilce_id', 'ajax-subcat?il_id=', il_id);
-    //$("#semt_id")[0].selectedIndex=0;
+    
+    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+        e.preventDefault(); $(this).parent('div').remove(); x--;
+    })
+    
 });
 
-$('#ilce_id').on('change', function (e) {
-    var ilce_id = e.target.value;
-    GetSemt(ilce_id);
-    //popDropDown('semt_id', 'ajax-subcatt?ilce_id=', ilce_id);
-});
 
-$('#mali_il_id').on('change', function (e) {
-    var il_id = e.target.value;
-    popDropDown('mali_ilce_id', 'ajax-subcat?il_id=', il_id);
-    $("#mali_semt_id")[0].selectedIndex=0;
-});
 
-$('#mali_ilce_id').on('change', function (e) {
-    var ilce_id = e.target.value;
-    popDropDown('mali_semt_id', 'ajax-subcatt?ilce_id=', ilce_id);
-});
 
 
 </script>

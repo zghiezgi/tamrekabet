@@ -503,7 +503,7 @@
                  </div>
              </div>
 
-             <div id="mal" class="panel panel-default">
+             <div id="mal"   class="panel panel-default">
                  <div class="panel-heading">
                      <h4 class="panel-title">
                          <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Fiyat İstenen Kalemler Listesi</a>
@@ -557,10 +557,10 @@
 
                                      <td> <button name="open-modal-mal"  value="{{$ilan_mal->id}}" class="btn btn-primary btn-xs open-modal-mal" >Düzenle</button></td>
                                      <td>
-                                         {{ Form::open(array('url'=>'firmaIlanOlustur/mal/'.$ilan_mal->id,'method' => 'DELETE', 'files'=>true)) }}
-                             <input type="hidden" name="firma_id"  id="firma_id" value="{{$firma->id}}">
-                                 {{ Form::submit('Sil', ['class' => 'btn btn-primary btn-xs']) }}
-                                 {{ Form::close() }}
+                                                {{ Form::open(array('url'=>'firmaIlanOlustur/mal/'.$ilan_mal->id,'method' => 'DELETE', 'files'=>true)) }}
+                                                <input type="hidden" name="firma_id"  id="firma_id" value="{{$firma->id}}">
+                                             {{ Form::submit('Sil', ['class' => 'btn btn-primary btn-xs']) }}
+                                            {{ Form::close() }}
                                  </td>
                                  <input type="hidden" name="ilan_mal_id"  id="ilan_mal_id" value="{{$ilan_mal->id}}"> 
 
@@ -710,7 +710,7 @@
                                      </div>
                                      </div>
                                      </div>
-             <div  id="hizmet" class="panel panel-default ">
+             <div  id="hizmet"   class="panel panel-default ">
                  <div class="panel-heading">
                      <h4 class="panel-title">
                          <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">Fiyat İstenen Kalemler Listesi</a>
@@ -1053,7 +1053,7 @@
                                      </div>
                                      </div>
                                      </div>
-             <div id="yapim" class="panel panel-default ">
+             <div id="yapim"  class="panel panel-default ">
                  <div class="panel-heading">
                      <h4 class="panel-title">
                          <a data-toggle="collapse" data-parent="#accordion" href="#collapse7">Fiyat İstenen Kalemler Listesi</a>
@@ -1293,14 +1293,49 @@ $('#sozlesme_turu').on('change', function (e) {
 
 
 
+
 $( document ).ready(function() {
     
-<?php $firma->ilanlar = new App\Ilan();
- $ilan_turu_turu=$firma->ilanlar->ilan_turu;
+       
+   
+    var ilan_turu='{{$firma->ilanlar->ilan_turu}}';
+    var sozlesme_turu='{{$firma->ilanlar->sozlesme_turu}}';
  
-?>
-    var ilan_turu_turu=3;
-    alert(ilan_turu_turu);
+    
+            if(ilan_turu=="") 
+             {
+                          $('#hizmet').hide()
+                          $('#mal').hide()
+                          $('#goturu').hide()
+                          $('#yapim').hide()
+             }
+            else if(ilan_turu=="Mal" && sozlesme_turu=="Birim Fiyatlı")
+                {
+                   $('#hizmet').hide()
+                   $('#goturu').hide()
+                   $('#yapim').hide()
+                  
+                }
+             else if(ilan_turu=="Hizmet" && sozlesme_turu=="Birim Fiyatlı")
+                {
+                   $('#mal').hide()
+                   $('#goturu').hide()
+                   $('#yapim').hide()
+                }
+             else if(sozlesme_turu=="Götürü Bedel")
+                {
+                   $('#hizmet').hide()
+                   $('#mal').hide()
+                   $('#yapim').hide();
+                }
+            else if(ilan_turu=="Yapim İşi")
+                {
+                   $('#hizmet').hide()
+                   $('#goturu').hide()
+                   $('#mal').hide()
+                }
+           
+
               
      
 

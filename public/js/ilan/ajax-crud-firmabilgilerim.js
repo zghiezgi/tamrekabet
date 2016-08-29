@@ -20,7 +20,7 @@ $(document).ready(function(){
     });
      $('#btn-add-mal').click(function () {
         $('#myModal-mal_birimfiyat_add').modal('show');
-        alert('ozge');
+
     });
      $('#btn-add-hizmet').click(function () {
         $('#myModal-hizmet_birimfiyat_add').modal('show');

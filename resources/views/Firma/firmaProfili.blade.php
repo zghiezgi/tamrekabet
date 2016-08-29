@@ -229,25 +229,25 @@
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Adres</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control" id="adres" name="adres" placeholder="Adres" value="{{$firmaAdres->adres}}">
+                                               <input type="text" class="form-control" id="adres" name="adres" placeholder="Adres" value="{{$firmaAdres->adres}}" required>
                                            </div>
                                        </div>
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Telefon</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control" id="telefon" name="telefon" placeholder="Telefon" value="{{$firma->iletisim_bilgileri->telefon}}">
+                                               <input type="text" class="form-control" id="telefon" name="telefon" placeholder="Telefon" value="{{$firma->iletisim_bilgileri->telefon}}" required>
                                            </div>
                                        </div>
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Fax</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control" id="fax" name="fax" placeholder="Fax" value="{{$firma->iletisim_bilgileri->fax}}">
+                                               <input type="text" class="form-control" id="fax" name="fax" placeholder="Fax" value="{{$firma->iletisim_bilgileri->fax}}" required>
                                            </div>
                                        </div>
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Web Sayfası</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control" id="web_sayfasi" name="web_sayfasi" placeholder="Web Sayfası" value="{{$firma->iletisim_bilgileri->web_sayfasi}}">
+                                               <input type="text" class="form-control" id="web_sayfasi" name="web_sayfasi" placeholder="Web Sayfası" value="{{$firma->iletisim_bilgileri->web_sayfasi}}" required>
                                            </div>
                                        </div>
                                        {!! Form::submit('Kaydet', array('url'=>'firmaProfili/iletisimAdd/'.$firma->id,'class'=>'btn btn-danger')) !!}
@@ -295,7 +295,7 @@
                                            <label for="inputEmail3" class="col-sm-3 control-label">Tanıtım Yazısı</label>
                                            <div class="col-sm-9">
                                                <!--input type="text" class="form-control" id="tanıtım_yazısı" name="tanıtım_yazısı" placeholder="Tanıtım Yazısı" value=""-->
-                                               <textarea id="tanitim_yazisi" name="tanitim_yazisi" rows="7" class="form-control ckeditor" placeholder="Lütfen tanıtım yazısını buraya yazınız.." ></textarea>
+                                               <textarea id="tanitim_yazisi" name="tanitim_yazisi" rows="7" class="form-control ckeditor" placeholder="Lütfen tanıtım yazısını buraya yazınız.." required></textarea>
                                            </div>
                                        </div>
 
@@ -396,7 +396,7 @@
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Fatura Adresi</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control" id="fatura_adresi" name="fatura_adresi" placeholder="Fatura Adresi" value="">
+                                               <input type="text" class="form-control" id="fatura_adresi" name="fatura_adresi" placeholder="Fatura Adresi" value="" required>
                                            </div>
                                        </div>   
                                        <div class="form-group error">
@@ -430,7 +430,7 @@
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Firma Ünvanı</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control" id="unvani" name="unvani" placeholder="Firma Ünvanı" value="{{$firma->mali_bilgiler->unvani}}">
+                                               <input type="text" class="form-control" id="unvani" name="unvani" placeholder="Firma Ünvanı" value="{{$firma->mali_bilgiler->unvani}}" required>
                                            </div>
                                        </div>
                                        <div class="form-group">
@@ -458,20 +458,20 @@
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Vergi Numarası</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control" id="vergi_numarasi" name="vergi_numarasi" placeholder="Vergi Numarası" value="">
+                                               <input type="text" class="form-control" id="vergi_numarasi" name="vergi_numarasi" placeholder="Vergi Numarası" value="" required>
                                            </div>
                                        </div>
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Yıllık Cirosu</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control" id="yillik_cirosu" name="yillik_cirosu" placeholder="Yıllık Cirosu" value="">
+                                               <input type="text" class="form-control" id="yillik_cirosu" name="yillik_cirosu" placeholder="Yıllık Cirosu" value="" required>
                                                    <input type="checkbox" class="form-control" id="ciro_goster" name="ciro_goster" >Göster<br></input>
                                            </div>
                                        </div>
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Sermayesi</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control" id="sermayesi" name="sermayesi" placeholder="Sermayesi" value="">
+                                               <input type="text" class="form-control" id="sermayesi" name="sermayesi" placeholder="Sermayesi" value="" required/>
                                                    <input type="checkbox" class="form-control" id="sermaye_goster" name="sermaye_goster" >Göster<br></input>
                                            </div>
                                        </div>
@@ -587,7 +587,7 @@
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Ticaret Sicil NO</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control" id="ticaret_sicil_no" name="ticaret_sicil_no" placeholder="Ticaret Sicil No" value="{{$firma->ticari_bilgiler->tic_sicil_no}}">
+                                               <input type="text" class="form-control" id="ticaret_sicil_no" name="ticaret_sicil_no" placeholder="Ticaret Sicil No" value="{{$firma->ticari_bilgiler->tic_sicil_no}}" required>
                                            </div>
                                        </div>
                                        <div class="form-group">
@@ -616,7 +616,7 @@
                                            <label for="inputEmail3" class="col-sm-3 control-label">Faaliyet Sektörleri</label>
                                            <div class="col-sm-9">
                                                @foreach($ustsektor as $sektor)
-                                               <input type="checkbox" name="faaliyet_sektorleri[]" value="{{$sektor->id}}">{{$sektor->adi}}
+                                               <input type="checkbox" name="faaliyet_sektorleri[]" value="{{$sektor->id}}" >{{$sektor->adi}}
                                                    @endforeach
                                            </div>
                                        </div>
@@ -624,22 +624,22 @@
                                            <label for="inputEmail3" class="col-sm-3 control-label">Firma Departmanları</label>
                                            <div class="col-sm-9">
                                                @foreach($departmanlar as $departman)
-                                               <input type="checkbox" name="firma_departmanları[]" value="{{$departman->id}}">{{$departman->adi}}
+                                               <input type="checkbox" name="firma_departmanları[]" value="{{$departman->id}}" >{{$departman->adi}}
                                                    @endforeach
                                            </div>
                                        </div>
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Kuruluş Tarihi</label>
                                            <div class="col-sm-9">
-                                               <input type="date" class="form-control datepicker" id="kurulus_tarihi" name="kurulus_tarihi" placeholder="Kuruluş Tarihi" value="{{$firma->kurulus_tarihi}}">
+                                               <input type="date" class="form-control datepicker" id="kurulus_tarihi" name="kurulus_tarihi" placeholder="Kuruluş Tarihi" value="{{$firma->kurulus_tarihi}}" required>
                                            </div>
                                        </div>
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Firma Faaliyet Türü</label>
                                            <div class="col-sm-9">
                                                @foreach($faaliyetler as $faaliyet)
-                                               <input type="checkbox" name="firma_faaliyet_turu[]" value="{{$faaliyet->id}}">{{$faaliyet->adi}}
-                                                   @endforeach
+                                               <input type="checkbox" name="firma_faaliyet_turu[]" value="{{$faaliyet->id}}" >{{$faaliyet->adi}}
+                                                @endforeach
                                            </div>
                                        </div>
                                        <div class="form-group">
@@ -647,7 +647,7 @@
                                            <div class="col-sm-9">
                                                <div class="input_fields_wrap">
                                                     <button  class="add_field_button">Ekle</button>
-                                                    <div><input type="text" name="firmanin_urettigi_markalar[]"></div>
+                                                    <div><input type="text" name="firmanin_urettigi_markalar[]" required></div>
                                                 </div>
                                            </div>
                                        </div>
@@ -656,7 +656,7 @@
                                            <div class="col-sm-9">
 
                                                @foreach($markalar as $marka)
-                                               <input type="checkbox" name="firmanin_sattıgı_markalar[]" value="{{$marka->id}}">{{$marka->adi}}
+                                               <input type="checkbox" name="firmanin_sattıgı_markalar[]" value="{{$marka->id}}" >{{$marka->adi}}
                                                    @endforeach
 
                                            </div>
@@ -742,7 +742,7 @@
                                            <div class="form-group">
                                                <label for="inputEmail3" class="col-sm-3 control-label">Belge No</label>
                                                <div class="col-sm-9">
-                                                   <input type="text" class="form-control " id="belge_no" name="belge_no" placeholder="Belge No" value="{{$kalite_belgesi->pivot->belge_no}}"/>
+                                                   <input type="text" class="form-control " id="belge_no" name="belge_no" placeholder="Belge No" value="{{$kalite_belgesi->pivot->belge_no}}" required/>
                                                </div>
                                            </div>
                                            <input type="hidden" name="kalite_id"  id="kalite_id" value="{{$kalite_belgesi->id}}"> 
@@ -782,7 +782,7 @@
                                            <div class="form-group">
                                                <label for="inputEmail3" class="col-sm-3 control-label">Belge No</label>
                                                <div class="col-sm-9">
-                                                   <input type="text" class="form-control " id="belge_no" name="belge_no" placeholder="Belge No" value=""/>
+                                                   <input type="text" class="form-control " id="belge_no" name="belge_no" placeholder="Belge No" value="" required/>
                                                </div>
                                            </div>
                                            {!! Form::submit('Kaydet', array('url'=>'firmaProfili/kalite/'.$firma->id,'class'=>'btn btn-danger')) !!}
@@ -882,13 +882,13 @@
                                                    <div class="form-group">
                                                        <label for="inputEmail3" class="col-sm-3 control-label">Firma Adı</label>
                                                        <div class="col-sm-9">
-                                                           <input type="text" class="form-control " id="ref_firma_adi" name="ref_firma_adi" placeholder="Firma Adı" value=""/>
+                                                           <input type="text" class="form-control " id="ref_firma_adi" name="ref_firma_adi" placeholder="Firma Adı" value="" required/>
                                                        </div>
                                                    </div>
                                                    <div class="form-group">
                                                        <label for="inputEmail3" class="col-sm-3 control-label">Yapım İşi Adı</label>
                                                        <div class="col-sm-9">
-                                                           <input type="text" class="form-control " id="yapılan_isin_adi" name="yapılan_isin_adi" placeholder="Yapılan İşin Adı" value=""/>
+                                                           <input type="text" class="form-control " id="yapılan_isin_adi" name="yapılan_isin_adi" placeholder="Yapılan İşin Adı" value="" required/>
                                                        </div>
                                                    </div>
                                                    <div class="form-group">
@@ -905,31 +905,31 @@
                                                    <div class="form-group">
                                                        <label for="inputEmail3" class="col-sm-3 control-label">İş Yılı</label>
                                                        <div class="col-sm-9">
-                                                           <input type="text" class="form-control " id="is_yili" name="is_yili" placeholder="İş Yılı" value=""/>
+                                                           <input type="text" class="form-control " id="is_yili" name="is_yili" placeholder="İş Yılı" value="" required/>
                                                        </div>
                                                    </div>
                                                    <div class="form-group">
                                                        <label for="inputEmail3" class="col-sm-3 control-label">Çalışma Süresi</label>
                                                        <div class="col-sm-9">
-                                                           <input type="text" class="form-control " id="calısma_suresi" name="calısma_suresi" placeholder="Çalışma Süresi" value=""/>
+                                                           <input type="text" class="form-control " id="calısma_suresi" name="calısma_suresi" placeholder="Çalışma Süresi" value="" required/>
                                                        </div>
                                                    </div>
                                                    <div class="form-group">
                                                        <label for="inputEmail3" class="col-sm-3 control-label">Yetkili Kişi Adı</label>
                                                        <div class="col-sm-9">
-                                                           <input type="text" class="form-control " id="yetkili_kisi_adi" name="yetkili_kisi_adi" placeholder="Yetkili Kişi Adı" value=""/>
+                                                           <input type="text" class="form-control " id="yetkili_kisi_adi" name="yetkili_kisi_adi" placeholder="Yetkili Kişi Adı" value="" required/>
                                                        </div>
                                                    </div>
                                                    <div class="form-group">
                                                        <label for="inputEmail3" class="col-sm-3 control-label">Y.K Email Adresi</label>
                                                        <div class="col-sm-9">
-                                                           <input type="email" class="form-control " id="yetkili_kisi_email" name="yetkili_kisi_email" placeholder="Yetkili Kişi Email Adresi" value=" "/>
+                                                           <input type="email" class="form-control " id="yetkili_kisi_email" name="yetkili_kisi_email" placeholder="Yetkili Kişi Email Adresi" value="" required/>
                                                        </div>
                                                    </div>
                                                    <div class="form-group">
                                                        <label for="inputEmail3" class="col-sm-3 control-label">Y.K Telefon</label>
                                                        <div class="col-sm-9">
-                                                           <input type="text" class="form-control " id="yetkili_kisi_telefon" name="yetkili_kisi_telefon" placeholder="Yetkili Kişi Telefon" value=""/>
+                                                           <input type="text" class="form-control " id="yetkili_kisi_telefon" name="yetkili_kisi_telefon" placeholder="Yetkili Kişi Telefon" value="" required/>
                                                        </div>
                                                    </div>
                                                    <input type="hidden" name="ref_id"  id="ref_id" value="{{$firmaReferans->id}}">
@@ -969,13 +969,13 @@
                                            <div class="form-group">
                                                <label for="inputEmail3" class="col-sm-3 control-label">Firma Adı</label>
                                                <div class="col-sm-9">
-                                                   <input type="text" class="form-control " id="ref_firma_adi" name="ref_firma_adi" placeholder="Firma Adı" value=""/>
+                                                   <input type="text" class="form-control " id="ref_firma_adi" name="ref_firma_adi" placeholder="Firma Adı" value="" required/>
                                                </div>
                                            </div>
                                            <div class="form-group">
                                                <label for="inputEmail3" class="col-sm-3 control-label">Yapım İşi Adı</label>
                                                <div class="col-sm-9">
-                                                   <input type="text" class="form-control " id="yapılan_isin_adi" name="yapılan_isin_adi" placeholder="Yapılan İşin Adı" value=""/>
+                                                   <input type="text" class="form-control " id="yapılan_isin_adi" name="yapılan_isin_adi" placeholder="Yapılan İşin Adı" value="" required/>
                                                </div>
                                            </div>
                                            <div class="form-group">
@@ -992,31 +992,31 @@
                                            <div class="form-group">
                                                <label for="inputEmail3" class="col-sm-3 control-label">İş Yılı</label>
                                                <div class="col-sm-9">
-                                                   <input type="text" class="form-control " id="is_yili" name="is_yili" placeholder="İş Yılı" value=""/>
+                                                   <input type="text" class="form-control " id="is_yili" name="is_yili" placeholder="İş Yılı" value="" required/>
                                                </div>
                                            </div>
                                            <div class="form-group">
                                                <label for="inputEmail3" class="col-sm-3 control-label">Çalışma Süresi</label>
                                                <div class="col-sm-9">
-                                                   <input type="text" class="form-control " id="calısma_suresi" name="calısma_suresi" placeholder="Çalışma Süresi" value=""/>
+                                                   <input type="text" class="form-control " id="calısma_suresi" name="calısma_suresi" placeholder="Çalışma Süresi" value="" required/>
                                                </div>
                                            </div>
                                            <div class="form-group">
                                                <label for="inputEmail3" class="col-sm-3 control-label">Yetkili Kişi Adı</label>
                                                <div class="col-sm-9">
-                                                   <input type="text" class="form-control " id="yetkili_kisi_adi" name="yetkili_kisi_adi" placeholder="Yetkili Kişi Adı" value=""/>
+                                                   <input type="text" class="form-control " id="yetkili_kisi_adi" name="yetkili_kisi_adi" placeholder="Yetkili Kişi Adı" value="" required/>
                                                </div>
                                            </div>
                                            <div class="form-group">
                                                <label for="inputEmail3" class="col-sm-3 control-label">Yetkili Kişi Email Adresi</label>
                                                <div class="col-sm-9">
-                                                   <input type="email" class="form-control " id="yetkili_kisi_email" name="yetkili_kisi_email" placeholder="Yetkili Kişi Email Adresi" value=""/>
+                                                   <input type="email" class="form-control " id="yetkili_kisi_email" name="yetkili_kisi_email" placeholder="Yetkili Kişi Email Adresi" value="" required/>
                                                </div>
                                            </div>
                                            <div class="form-group">
                                                <label for="inputEmail3" class="col-sm-3 control-label">Yetkili Kişi Telefon</label>
                                                <div class="col-sm-9">
-                                                   <input type="text" class="form-control " id="yetkili_kisi_telefon" name="yetkili_kisi_telefon" placeholder="Yetkili Kişi Telefon" value=""/>
+                                                   <input type="text" class="form-control " id="yetkili_kisi_telefon" name="yetkili_kisi_telefon" placeholder="Yetkili Kişi Telefon" value="" required/>
                                                </div>
                                            </div>
 
@@ -1083,7 +1083,7 @@
                                                     <div class="form-group">
                                                         <label for="inputEmail3" class="col-sm-3 control-label">Broşür Adi</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control " id="brosur_adi" name="brosur_adi" placeholder="Broşür Adi" value=""/>
+                                                            <input type="text" class="form-control " id="brosur_adi" name="brosur_adi" placeholder="Broşür Adi" value="" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -1127,7 +1127,7 @@
                                               <div class="form-group">
                                                   <label for="inputEmail3" class="col-sm-3 control-label">Broşür Adi</label>
                                                   <div class="col-sm-9">
-                                                      <input type="text" class="form-control " id="brosur_adi" name="brosur_adi" placeholder="Broşür Adi" value=""/>
+                                                      <input type="text" class="form-control " id="brosur_adi" name="brosur_adi" placeholder="Broşür Adi" value="" required/>
                                                   </div>
                                               </div>
                                               <div class="form-group">
@@ -1222,19 +1222,19 @@
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Çalışma Saatleri</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control " id="calisma_saatleri" name="calisma_saatleri" placeholder="Çalışma Saatleri" value="{{$firma->firma_calisma_bilgileri->calisma_saatleri}}"/>
+                                               <input type="text" class="form-control " id="calisma_saatleri" name="calisma_saatleri" placeholder="Çalışma Saatleri" value="{{$firma->firma_calisma_bilgileri->calisma_saatleri}}" required/>
                                            </div>
                                        </div>
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Çalışma Profili</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control " id="calisma_profili" name="calisma_profili" placeholder="Çalışma Profili" value="{{$firma->firma_calisma_bilgileri->calisan_profili}}"/>
+                                               <input type="text" class="form-control " id="calisma_profili" name="calisma_profili" placeholder="Çalışma Profili" value="{{$firma->firma_calisma_bilgileri->calisan_profili}}" required/>
                                            </div>
                                        </div>
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Çalışan Sayısı</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control " id="calisma_sayisi" name="calisma_sayisi" placeholder="Çalışma Sayısı" value="{{$firma->firma_calisma_bilgileri->calisan_sayisi}}"/>
+                                               <input type="text" class="form-control " id="calisma_sayisi" name="calisma_sayisi" placeholder="Çalışma Sayısı" value="{{$firma->firma_calisma_bilgileri->calisan_sayisi}}" required/>
                                            </div>
                                        </div>
 
@@ -1281,7 +1281,7 @@
                                        <div class="form-group">
                                            <label for="inputEmail3" class="col-sm-3 control-label">Bilgilendirme Tercihi</label>
                                            <div class="col-sm-9">
-                                               <input type="text" class="form-control " id="bilgilendirme_tercihi" name="bilgilendirme_tercihi" placeholder="Bilgilendirme Tercihi" value="{{$firma->bilgilendirme_tercihi}}"/>
+                                               <input type="text" class="form-control " id="bilgilendirme_tercihi" name="bilgilendirme_tercihi" placeholder="Bilgilendirme Tercihi" value="{{$firma->bilgilendirme_tercihi}}" required/>
                                            </div>
                                        </div>
                                        {!! Form::submit('Kaydet', array('url'=>'firmaProfili/bilgilendirmeTercihi/'.$firma->id,'class'=>'btn btn-danger')) !!}

@@ -12,13 +12,73 @@ use App\iletisim_bilgileri;
 use Illuminate\Http\Request;
 
 
-Route::get('/', function () {
+Route::get('/firmalist', function () {
     $firmalar = Firma::paginate(2);
     return view('Firma.firmalar')->with('firmalar', $firmalar);
 });
 Route::get('/image/{id}', function ($id) {
     $firmas = Firma::find($id);
     return view('firmas.upload')->with('firmas', $firmas);
+});
+Route::get('/', function () {
+   
+    return view('Anasayfa.anasayfa');
+});
+Route::get('/firmaKayit', function () {
+    $iller = App\Il::all();
+    $sektorler= App\Sektor::all();
+    return view('Firma.firmaKayit')->with('iller', $iller)->with('sektorler',$sektorler);
+});
+Route::get('/firmaIslemleri/{id}', function () {
+    
+    return view('Firma.firmaIslemleri');
+});
+
+
+
+Route::post('/form', function (Request $request) {
+   
+        $firma= new Firma();
+      
+        $firma->adi=$request->adi;
+        $firma->save();
+        
+        $iletisim = $firma->iletisim_bilgileri ?: new App\IletisimBilgisi();
+        $iletisim->telefon = $request->telefon;
+        $firma->iletisim_bilgileri()->save($iletisim);    
+        
+        $adres = $firma->adresler()->where('tur_id', '=', '1')->first() ?: new  App\Adres();
+        $adres->il_id = $request->il_id;
+        $adres->ilce_id = $request->ilce_id;
+        $adres->semt_id = $request->semt_id;
+        $adres->adres = $request->adres;
+        $tur = 1;
+        $adres->tur_id = $tur;
+        $firma->adresler()->save($adres);
+        
+        $firma->sektorler()->attach($request->sektor_id);
+   
+
+      $kullanici= new App\Kullanici();
+      $kullanici->adi = $request->adi;
+      $kullanici->soyadi = $request->soyadi;
+      $kullanici->email = $request->email;
+      $kullanici->unvani = $request->unvan;
+      $kullanici->telefon = $request->telefonkisisel;
+
+      $kullanici->save(); 
+
+    $login = $kullanici->login ?: new App\Login();
+    $login->kullanici_adi = $request->kullanici_adi;
+    $login->email = $request->email;
+   
+    $login->sifre =Hash::make( $request->password);
+    
+
+
+    $kullanici->login()->save($login);
+
+    return redirect('/firmalist');
 });
 
 
@@ -108,6 +168,6 @@ Route::get('/ajax-subcatt', function () {
     $semtler = \App\Semt::where('ilce_id', '=', $ilce_id)->get();
     return Response::json($semtler);
 });
-
+ Route::auth();
 
 

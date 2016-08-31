@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Firma extends Model
 {
     protected $table = 'firmalar';
-    
+    public $timestamps=false;
     public function sektorler()
     {
         return $this->belongsToMany('App\Sektor', 'firma_sektorler', 'firma_id', 'sektor_id');

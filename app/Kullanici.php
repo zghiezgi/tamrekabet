@@ -8,7 +8,7 @@ class Kullanici extends Model
 {
     //
     protected $table = 'kullanicilar';
-    
+    public $timestamps=false;
     public function login()
     {
         return $this->hasOne('App\Login', 'kullanici_id', 'id');

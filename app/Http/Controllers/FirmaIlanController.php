@@ -8,7 +8,7 @@ use App\Il;
 use App\Ilan;
 use Illuminate\Support\Facades\Validator;
 use Session;
-
+use Gate;
 use File;
 use Illuminate\Support\Facades\Redirect;
 class FirmaIlanController extends Controller
@@ -16,6 +16,10 @@ class FirmaIlanController extends Controller
     //
      public function showFirmaIlan($id){
         $firma = Firma::find($id);
+          if (Gate::denies('show', $firma)) {
+              return Redirect::to('/');
+        }
+        
         $sektorler= \App\ Sektor::all();
         $maliyetler=  \App\Maliyet::all();
         $odeme_turleri= \App\OdemeTuru::all();

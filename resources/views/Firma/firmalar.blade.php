@@ -2,6 +2,7 @@
 <br>
 <br>
 @section ('content')
+  
 <div class="col-lg-6">
     <div class="form-group">
         <h1>Firmalar</h1>

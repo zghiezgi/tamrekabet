@@ -12,27 +12,27 @@ use App\iletisim_bilgileri;
 use Illuminate\Http\Request;
 
 
-Route::get('/firmalist', function () {
+Route::get('/firmalist', ['middleware'=>'auth' ,function () {
     $firmalar = Firma::paginate(2);
     return view('Firma.firmalar')->with('firmalar', $firmalar);
-});
-Route::get('/image/{id}', function ($id) {
+}]);
+Route::get('/image/{id}', ['middleware'=>'auth',function ($id) {
     $firmas = Firma::find($id);
     return view('firmas.upload')->with('firmas', $firmas);
-});
-Route::get('/', function () {
+}]);
+Route::get('/', ['middleware'=>'auth',function () {
    
     return view('Anasayfa.anasayfa');
-});
-Route::get('/firmaKayit', function () {
+}]);
+Route::get('/firmaKayit' ,function () {
     $iller = App\Il::all();
     $sektorler= App\Sektor::all();
     return view('Firma.firmaKayit')->with('iller', $iller)->with('sektorler',$sektorler);
 });
-Route::get('/firmaIslemleri/{id}', function () {
-    
-    return view('Firma.firmaIslemleri');
-});
+Route::get('/firmaIslemleri/{id}',['middleware'=>'auth', function ($id) {
+    $firma=  Firma::find($id);
+    return view('Firma.firmaIslemleri')->with('firma',$firma);
+}]);
 
 
 
@@ -68,15 +68,17 @@ Route::post('/form', function (Request $request) {
 
       $kullanici->save(); 
 
-    $login = $kullanici->login ?: new App\Login();
-    $login->kullanici_adi = $request->kullanici_adi;
-    $login->email = $request->email;
-   
-    $login->sifre =Hash::make( $request->password);
+        $user = $kullanici->user ?: new App\User();
+        $user->name = $request->kullanici_adi;
+        $user->email = $request->email;
+
+    $user->password =Hash::make( $request->password);
     
 
 
-    $kullanici->login()->save($login);
+    $kullanici->users()->save($user);
+    
+    $firma->kullanicilar()->attach($kullanici);
 
     return redirect('/firmalist');
 });

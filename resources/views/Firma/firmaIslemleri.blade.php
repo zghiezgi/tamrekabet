@@ -47,7 +47,7 @@ tr:nth-child(even) {
          <nav class="navbar navbar-inverse">
              <div class="container-fluid">
                  <div class="navbar-header">
-                     <a class="navbar-brand" href="#"><img src='{{asset('images/ev.png')}}'></a>
+                     <a class="navbar-brand" href="#"><img src='{{asset('images/anasayfa.png')}}'></a>
                  </div>
                  <ul class="nav navbar-nav">
                      <li class=""><a href="{{ url('firmaProfili/'.$firma->id)}}">Firma Profili</a></li>

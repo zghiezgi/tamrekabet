@@ -3,8 +3,7 @@
  <br>
  @section('content')
   
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
  
  <style>
 table {
@@ -51,11 +50,11 @@ tr:nth-child(even) {
                      <a class="navbar-brand" href="#"><img src='{{asset('images/ev.png')}}'></a>
                  </div>
                  <ul class="nav navbar-nav">
-                     <li class=""><a href="#">Firma Profili</a></li>
+                     <li class=""><a href="{{ url('firmaProfili/'.$firma->id)}}">Firma Profili</a></li>
                      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">İlan İşlemleri <span class="caret"></span></a>
                          <ul class="dropdown-menu">
                              <li><a href="#">İlanlarım</a></li>
-                             <li><a href="#">İlan Oluştur</a></li>
+                             <li><a href="{{ url('firmaIlanOlustur/'.$firma->id) }}">İlan Oluştur</a></li>
                          </ul>
                      </li>
                      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Başvuru İşlemleri <span class="caret"></span></a>
@@ -112,7 +111,6 @@ tr:nth-child(even) {
                                          <td></td>
                                          <td><button class="button">Düzenle</button></td>
                                      </tr>
-
                                  </table>
 
                              </div>

@@ -14,6 +14,17 @@
     <link href="{{asset('css/heroic-features.css')}}" rel="stylesheet">
     <script src="{{asset('js/jquery.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .yazi{
+            font-family:"Times New Roman";
+            
+            background-color: #ccc;
+                
+        }
+        
+    </style>
     
 
 </head>
@@ -27,7 +38,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" style="padding:25px 30px">TamRekabet</a>
+                <a class="navbar-brand" href="{{ url('/') }}" style="padding:25px 30px">TamRekabet</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav" style="float:right">
@@ -45,13 +56,27 @@
                     </li>
                    @else
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="caret"></span>
+                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-expanded="false">
+                               {{ Auth::user()->name }}<span class="caret"></span>
                             </a>
-
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+                           
+                            <ul class="dropdown-menu">
+                                <li class="dropdown"><a class="dropdown-toggle yazi" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Firma İşlemleri</a>
+                                    <?php 
+                                   
+                                     $kullanici = App\Kullanici::find(Auth::user()->kullanici_id);                   
+                                    ?>
+                                    @foreach($kullanici->firmalar as $kullanicifirma)
+                                        <ul style="list-style-type:square">
+                                        <li  ><a href="{{url('firmaIslemleri/'.$kullanicifirma->id)}}">{{$kullanicifirma->adi}}</a></li>
+                                        </ul>
+                                    @endforeach
+                                   
+                                <li><a href="" class="yazi"><i class="fa fa-btn fa-sign-out"></i>Yardım</a></li>
+                                <li><a href="{{ url('/logout') }}" class="yazi"><i class="fa fa-btn fa-sign-out"></i>Çıkış</a></li>
                             </ul>
+                            
+                            
                         </li>
                       <li>
                           <a href="#"><img src="{{asset('images/user.png')}}"></a>

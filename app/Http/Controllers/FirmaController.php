@@ -8,6 +8,7 @@ use App\Adres;
 use App\SirketTuru;
 use Session;
 use File;
+use Gate;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -314,7 +315,15 @@ class FirmaController extends Controller
          
      }
     public function showFirma($id){
+        
+
+        
         $firma = Firma::find($id);
+        if (Gate::denies('show', $firma)) {
+              return Redirect::to('/');
+        }
+        //$this->authorize('show',$firma);
+        
         $iller = Il::all();
         $sirketTurleri=  SirketTuru::all();
         $vergiDaireleri= \App\VergiDairesi::all();

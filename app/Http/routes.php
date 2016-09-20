@@ -9,6 +9,7 @@ use App\Sektor;
 use App\Firma;
 use App\FirmaReferans;
 use App\iletisim_bilgileri;
+use App\Ilan;
 use Illuminate\Http\Request;
 
 
@@ -32,6 +33,27 @@ Route::get('/firmaKayit' ,function () {
 Route::get('/firmaIslemleri/{id}',['middleware'=>'auth', function ($id) {
     $firma=  Firma::find($id);
     return view('Firma.firmaIslemleri')->with('firma',$firma);
+}]);
+Route::get('/ilanAra',['middleware'=>'auth', function (Request $request) {
+     $iller = App\Il::all();
+      $sektorler= App\Sektor::all();
+        $query = Ilan::all();
+        //$query->orwhere('id',12)->get();
+    
+        
+        if($request->il_id != NULL)
+        {
+            $matchThese = ['id' => 11];
+        
+
+            /*if ($request->il_id != null) {
+                $query->firmalar->adresler->where('il_id', 'LIKE', '%' . $request->input('il_id') . '%');
+            }*/
+            $query = Ilan::where($matchThese)->get();
+        }
+
+        
+    return view('Firma.ilan.ilanAra')->with('iller', $iller)->with('sektorler',$sektorler)->with('query',$query);
 }]);
 
 

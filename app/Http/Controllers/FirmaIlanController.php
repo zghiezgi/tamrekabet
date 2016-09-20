@@ -28,6 +28,7 @@ class FirmaIlanController extends Controller
         $birimler=  \App\Birim::all();
         
         /*
+         
         
         $sirketTurleri=  SirketTuru::all();
         $vergiDaireleri= \App\VergiDairesi::all();
@@ -39,7 +40,9 @@ class FirmaIlanController extends Controller
         $kalite_belgeleri= \App\KaliteBelgesi::all();
         $calisma_günleri= \App\CalismaGunu::all();
         */
-        return view('Firma.ilan.firmailan', ['firma' => $firma])->with('iller',$iller)->with('sektorler',$sektorler)->with('maliyetler',$maliyetler)->with('odeme_turleri',$odeme_turleri)->with('para_birimleri',$para_birimleri)->with('birimler',$birimler) ;//->with('sirketTurleri',$sirketTurleri)->with('vergiDaireleri',$vergiDaireleri)->with('ticaretodasi',$ticaretodasi)->with('departmanlar',$departmanlar)->with('markalar',$markalar)->with('faaliyetler',$faaliyetler)->with('kalite_belgeleri',$kalite_belgeleri)->with('calisma_günleri',$calisma_günleri);
+       
+
+        return view('Firma.ilan.firmailan', ['firma' => $firma])->with('iller',$iller)->with('sektorler',$sektorler)->with('maliyetler',$maliyetler)->with('odeme_turleri',$odeme_turleri)->with('para_birimleri',$para_birimleri)->with('birimler',$birimler);
     }
      public function firmaBilgilerimAdd(Request $request,$id){
         $firma = Firma::find($request->id);
@@ -275,6 +278,12 @@ class FirmaIlanController extends Controller
          
         return redirect('firmaIlanOlustur/'.$request->firma_id);
     }
+    
+    
+   
+        
+   
+
     
      
     

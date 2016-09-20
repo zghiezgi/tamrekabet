@@ -16,6 +16,7 @@
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
     <style>
         .yazi{
             font-family:"Times New Roman";
@@ -85,7 +86,7 @@
                 </ul>
                  <ul class="nav navbar-nav" style="padding-left: 30px" >
                     <li>
-                        <a href="#">İLAN ARA</a>
+                        <a href="{{url('ilanAra/')}}">İLAN ARA</a>
                     </li>
                    
                     

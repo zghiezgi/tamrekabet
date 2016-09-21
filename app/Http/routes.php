@@ -34,7 +34,7 @@ Route::get('/firmaIslemleri/{id}',['middleware'=>'auth', function ($id) {
     $firma=  Firma::find($id);
     return view('Firma.firmaIslemleri')->with('firma',$firma);
 }]);
-Route::get('/ilanAra',['middleware'=>'auth', function (Request $request) {
+Route::get('/ilanAra', function (Request $request) {
      $iller = App\Il::all();
       $sektorler= App\Sektor::all();
         $query = Ilan::all();
@@ -54,8 +54,20 @@ Route::get('/ilanAra',['middleware'=>'auth', function (Request $request) {
 
         
     return view('Firma.ilan.ilanAra')->with('iller', $iller)->with('sektorler',$sektorler)->with('query',$query);
-}]);
-
+});
+Route::get('/ilanAraFiltre/{il}',function ($id) {
+    $query = Ilan::all();
+     $il_id = Input::get('il');
+     if($id != NULL)
+        {
+         $query = DB::table('ilanlar')
+            ->where('id', $il_id)   
+            ->get();
+       
+        }
+    return Response::json($query);
+    
+});
 
 
 Route::post('/form', function (Request $request) {

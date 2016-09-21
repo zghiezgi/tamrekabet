@@ -1,5 +1,6 @@
 @extends('layouts.app')
  @section('content')
+ 
     <style>
            input[type=text] {
                width: 200px;
@@ -82,9 +83,9 @@
                      </div>
                      <br>
                      <div class="soldivler">
-                         <form >
+                         <form  >
                              <h4>İllerde Arama</h4>
-                             <select class="form-control" name="il_id" id="il_id" onchange="window.location='{{ URL::to('/ilanAra/?il_id=') }}'"  required >
+                             <select class="form-control" name="il_id" id="il_id"   required >
                                                    <option selected disabled>Seçiniz</option>
                                                    @foreach($iller as $il)
                                                    <option  value="{{$il->id}}"  >{{$il->adi}}</option>
@@ -122,25 +123,48 @@
                               <input type="radio" name="acik" value="Açık"> Açık<br>
                               <input type="radio" name="belirli" value="Belirli İstekler Arasında">Belirli İstekler Arasında<br>
                               <input type="radio" name="basvuru" value="Başvuru">Başvuru
-                     </div>
-                     
+                             
+                     </div>        
                             
                             
                  </div>
-                 <div class="col-sm-9">
-                     
-                     
-                     <h3>İlanlar</h3>
-                     <hr>
-                     @foreach($query as $query)
-                     <p>{{$query->adi}}</p>
-                     <p>{{$query->firmalar->adi}}</p>
-                     <hr>
-                     @endforeach
-                    
-                     
-                    
+                 <div class="col-sm-9" id="auto_load_div">
+                           
+                        <h3>İlanlar</h3>
+                                           <hr>
+                                           @foreach($query as $query)
+                                              <p id="ilan">{{$query->adi}}</p>
+                                              <p id="adi">{{$query->firmalar->adi}}</p>
+                                              <hr>
+                                           @endforeach
+                                 
+                </div>
+                       
                  </div>
+                  <script type="text/javascript">
+                      
+                      function auto_load(){
+                            var il_id=$('#il_id').val();                           
+                            $.ajax({
+                              type:"GET",
+                              url: "ilanAraFiltre/il="+il_id,
+                              data:{il:il_id},
+                              cache: false,
+                              success: function(data){
+                                 console.log(data);
+                                  $("#auto_load_div").html(data);
+                                 
+                                 $("p:first").html(data.adi);
+                                 $('p.last').html(data.adres);
+                                
+                              } 
+                            });
+                    }
+                    $('#il_id').change(function(){
+                        auto_load();
+                    });
+                      
+                  </script>
                   
         <hr>
     </div>

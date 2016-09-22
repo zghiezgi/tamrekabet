@@ -37,21 +37,9 @@ Route::get('/firmaIslemleri/{id}',['middleware'=>'auth', function ($id) {
 Route::get('/ilanAra', function (Request $request) {
      $iller = App\Il::all();
       $sektorler= App\Sektor::all();
-        $query = Ilan::all();
+        $query = Ilan::paginate(1);
         //$query->orwhere('id',12)->get();
-    
-        
-        if($request->il_id != NULL)
-        {
-            $matchThese = ['id' => 11];
-        
-
-            /*if ($request->il_id != null) {
-                $query->firmalar->adresler->where('il_id', 'LIKE', '%' . $request->input('il_id') . '%');
-            }*/
-            $query = Ilan::where($matchThese)->get();
-        }
-
+   
         
     return view('Firma.ilan.ilanAra')->with('iller', $iller)->with('sektorler',$sektorler)->with('query',$query);
 });
@@ -60,9 +48,21 @@ Route::get('/ilanAraFiltre/{il}',function ($id) {
      $il_id = Input::get('il');
      if($id != NULL)
         {
+         /*$query=DB::table('ilanlar')
+            ->join('firmalar', function ($join) {
+                $join->on('firmalar.id', '=', 'ilanlar.firma_id');
+        })
+        ->get();*/
          $query = DB::table('ilanlar')
-            ->where('id', $il_id)   
+            ->join('firmalar', 'ilanlar.firma_id', '=', 'firmalar.id')
+            ->join('adresler', 'adresler.firma_id', '=', 'firmalar.id')
+            ->join('iller', 'adresler.il_id', '=', 'iller.id')     
+             ->select('ilanlar.adi as ilanadi', 'ilanlar.*','firmalar.id as firmaid', 'firmalar.*','adresler.id as adresid','adresler.*','iller.adi as iladi')
+                 ->where('adresler.il_id',$il_id)
             ->get();
+         /*$query = DB::table('ilanlar')
+            ->where('id', $il_id)   
+            ->get();*/
        
         }
     return Response::json($query);

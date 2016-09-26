@@ -51,7 +51,10 @@ use Illuminate\Http\Request;
          $il_id = Input::get('il');
          $bas_tar = Input::get('bas_tar');
          $bit_tar = Input::get('bit_tar');   
-
+         $sektorler = Input::get('sektor');
+         $tur = Input::get('tur');
+         $usul= Input::get('usul');
+         
         if($il_id != NULL)
             {
              $querys->where('adresler.il_id',$il_id);
@@ -61,6 +64,15 @@ use Illuminate\Http\Request;
         }
         if ($bit_tar != NULL) {
             $querys->where('ilanlar.kapanma_tarihi','<=',$bit_tar);
+        }
+        if($sektorler != NULL){
+            $querys->whereIn('ilanlar.firma_sektor',$sektorler);
+        }
+        if($tur != NULL){
+            $querys->where('ilanlar.ilan_turu',$tur);
+        }
+        if($usul != NULL){
+            $querys->where('ilanlar.usulu',$usul);
         }
         $querys=$querys->get();  
         return Response::json($querys);

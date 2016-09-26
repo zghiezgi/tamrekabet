@@ -108,22 +108,21 @@
                          
                              <h4>İlan Sektörü</h4>
                              @foreach($sektorler as $sektor)
-                              <input type="checkbox" name="sektor[]" value="{{$sektor->id}}"> {{$sektor->adi}}<br>
+                              <input type="checkbox" name="sektor[]" class="checkboxClass" value="{{$sektor->id}}"> {{$sektor->adi}}<br>
                              @endforeach
                       
                      </div>
-                     <div class="soldivler">
-                         
+                     <div class="soldivler" id="radioDiv">
                              <h4>İlan Türü</h4>
-                             <input type="radio" name="ilanTuru"><span class="lever"></span>Mal<br>
-                             <input type="radio" name="ilanTuru"><span class="lever"></span>Hizmet<br>
-                             <input type="radio" name="ilanTuru"><span class="lever"></span>Yapım İşi
+                             <input type="radio" name="ilanTuru[]" class="tur" value="Mal"><span class="lever"></span>Mal<br>
+                             <input type="radio" name="ilanTuru[]" class="tur" value="Hizmet"><span class="lever"></span>Hizmet<br>
+                             <input type="radio" name="ilanTuru[]" class="tur" value="Yapım İşi"><span class="lever"></span>Yapım İşi
                      </div>
-                     <div class="soldivler">
+                     <div class="soldivler" id="radioDiv2">
                              <h4>İlan Usulü</h4>
-                              <input type="radio" name="gender" value="Açık"> Açık<br>
-                              <input type="radio" name="gender" value="Belirli İstekler Arasında">Belirli İstekler Arasında<br>
-                              <input type="radio" name="gender" value="Başvuru">Başvuru
+                              <input type="radio" name="gender[]" class="usul" value="Açık"> Açık<br>
+                              <input type="radio" name="gender[]" class="usul" value="Belirli İstekler Arasında">Belirli İstekler Arasında<br>
+                              <input type="radio" name="gender[]" class="usul" value="Başvuru">Başvuru
                              
                      </div>      
                             
@@ -132,46 +131,51 @@
                  <div class="col-sm-9" id="auto_load_div">
                          <?php $i=0;?>  
                         <h3>İlanlar</h3>
-                        <table id="ilanlar">
-                            <tbody>
-                                
-                            </tbody>
-                        </table>
+                                           <hr>
+                                           @foreach($querys as $query)
+                                              <p id="ilan{{$i}}">{{$query->adi}}</p>
+                                              <p id="adi{{$i}}">{{$query->firmalar->adi}}</p>
+                                              <hr id="hr{{$i}}">
+                                             <?php $i++;?>
+                                           @endforeach
+                                        {{$querys->links()}}
                 </div>
                        
                  </div>
            <script>
-                
-                function getIlanlarFilterOptions(){
-                  var opts = {};
-                  opts.sektorler = [];
-                  $("input[name='sektor']:checked").each(function(){
-                    if(this.opts.sektorlerchecked){
-                      opts.sektorler.push($(this).val());
-                    }
-                  });
-                  return opts;
-                }
-              
-                var $checkboxes = $("input:checkbox");
-                $checkboxes.on("change", function(){
-                  alert("mete");
-                  var opts = getIlanlarFilterOptions();
-                  console.log(opts);
-                  //updateIlanlar(opts);
-                });
+            
            
            </script> 
-                  <script type="text/javascript">
+            <script type="text/javascript">
                       
                       function auto_load(){
                             var il_id=$('#il_id').val();
                             var basTar=$('#baslangic_tarihi').val();
                             var bitTar=$('#bitis_tarihi').val();
+                            var selectedSektor = new Array();
+                            var n = jQuery(".checkboxClass:checked").length;
+                            if (n > 0){
+                                jQuery(".checkboxClass:checked").each(function(){
+                                    selectedSektor.push($(this).val());
+                                });
+                            }
+                            var selectedTur = "";
+                            var selected = $("#radioDiv input[type='radio']:checked");
+                            if (selected.length > 0) {
+                                selectedTur = selected.val();
+                            }
+                            var selectedUsul = "";
+                            var selected2 = $("#radioDiv2 input[type='radio']:checked");
+                            if (selected2.length > 0) {
+                                selectedUsul = selected2.val();
+                            }
+                            alert(selectedSektor);
+                            alert(selectedTur);
+                            alert(selectedUsul);
                             $.ajax({
                               type:"GET",
                               url: "ilanAraFiltre/il="+il_id,
-                              data:{il:il_id,bas_tar:basTar,bit_tar:bitTar},
+                              data:{il:il_id,bas_tar:basTar,bit_tar:bitTar,sektor:selectedSektor,tur:selectedTur,usul:selectedUsul},
                               cache: false,
                               success: function(data){
                                  console.log(data);
@@ -179,12 +183,10 @@
                                 {
                                  $("#ilan"+key).empty();
                                  $("#adi"+key).empty();
-                                 $("#hr"+key).hide();  
-                                 
+                                 $("#hr"+key).hide();
                                 }
                                 for(var key=0; key <Object.keys(data).length;key++)
                                 {
-                                 
                                  $("#ilan"+key).append(data[key].ilanadi);
                                  $("#adi"+key).append(data[key].yayin_tarihi);
                                  $("#hr"+key).append("<hr />");
@@ -201,6 +203,15 @@
                     });
                     $('#bitis_tarihi').change(function(){
                         auto_load();
+                    });
+                    $('.tur').click(function(){
+                        auto_load();
+                    });
+                    $('.usul').click(function(){
+                        auto_load();
+                    });
+                    jQuery(".checkboxClass").click(function(){
+                        auto_load(); 
                     });
                       
                   </script>

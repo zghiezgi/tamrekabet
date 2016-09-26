@@ -132,17 +132,36 @@
                  <div class="col-sm-9" id="auto_load_div">
                          <?php $i=0;?>  
                         <h3>İlanlar</h3>
-                                           <hr>
-                                           @foreach($querys as $query)
-                                              <p id="ilan{{$i}}">{{$query->adi}}</p>
-                                              <p id="adi{{$i}}">{{$query->firmalar->adi}}</p>
-                                              <hr id="hr{{$i}}">
-                                             <?php $i++;?>
-                                           @endforeach
-                                        {{$querys->links()}}
+                        <table id="ilanlar">
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
                 </div>
                        
                  </div>
+           <script>
+                
+                function getIlanlarFilterOptions(){
+                  var opts = {};
+                  opts.sektorler = [];
+                  $("input[name='sektor']:checked").each(function(){
+                    if(this.opts.sektorlerchecked){
+                      opts.sektorler.push($(this).val());
+                    }
+                  });
+                  return opts;
+                }
+              
+                var $checkboxes = $("input:checkbox");
+                $checkboxes.on("change", function(){
+                  alert("mete");
+                  var opts = getIlanlarFilterOptions();
+                  console.log(opts);
+                  //updateIlanlar(opts);
+                });
+           
+           </script> 
                   <script type="text/javascript">
                       
                       function auto_load(){

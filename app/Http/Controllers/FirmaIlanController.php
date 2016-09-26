@@ -95,6 +95,7 @@ class FirmaIlanController extends Controller
                 
                
                     $ilan->adi= $request->ilan_adi;
+                    $ilan->firma_sektor=$request->firma_sektor;
                     $ilan->yayin_tarihi= $request->yayinlama_tarihi;
                     $ilan->kapanma_tarihi= $request->kapanma_tarihi;
                     $ilan->aciklama = $request->aciklama;

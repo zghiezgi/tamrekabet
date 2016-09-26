@@ -97,13 +97,7 @@
                                      ?>
                                     
                                  </tr>
-                                 <tr>
-                                     <td>Firma Sektör:</td>
-                                     <td> @foreach($firma->sektorler as $sektor)
-                                         {{$sektor->adi}}
-                                         @endforeach
-                                     </td>
-                                 </tr>
+                                 
                                  </tr>
                              </thead>
                          </table>
@@ -133,17 +127,7 @@
                                                  </select>
                                              </div>
                                          </div>
-                                         <div class="form-group">
-                                             <label for="inputEmail3" class="col-sm-3 control-label">Firma Sektör</label>
-                                             <div class="col-sm-9">
-                                                 <select class="form-control" name="firma_sektor" id="firma_sektor" required>
-                                                     <option selected disabled>Seçiniz</option>
-                                                     @foreach($sektorler as $sektor)
-                                                     <option  value="{{$sektor->id}}" >{{$sektor->adi}}</option>
-                                                     @endforeach
-                                                 </select>
-                                             </div>
-                                         </div>
+                                        
                                          {!! Form::submit('Kaydet', array('url'=>'firmaIlanOlustur/firmaBilgilerim/'.$firma->id,'class'=>'btn btn-danger')) !!}
                                          {!! Form::close() !!}
                                      </div>
@@ -183,6 +167,18 @@
                                      }
                                      ?>
                                      <td>{{$firma->ilanlar->adi}}</td>
+                                 </tr>
+                                 
+                                  <tr>
+                                     <td>İlan Sektor:</td>
+                                      @foreach($sektorler as $ilanSektor)<?php
+                                   if($ilanSektor->id == $firma->ilanlar->firma_sektor){
+                                       ?>
+                                          <td>{{$ilanSektor->adi}}</td>
+                                          <?php
+                                   }
+                                   ?>
+                                   @endforeach
                                  </tr>
                                  <tr>
                                      <td>İlan Yayınlama Tarihi:</td>
@@ -264,6 +260,17 @@
                                              <label for="inputEmail3" class="col-sm-3 control-label">İlan Adı</label>
                                              <div class="col-sm-9">
                                                  <input type="text" class="form-control" id="ilan_adi" name="ilan_adi" placeholder="İlan Adı" value="{{$firma->ilanlar->adi}}" required>
+                                             </div>
+                                         </div>
+                                         <div class="form-group">
+                                             <label for="inputEmail3" class="col-sm-3 control-label">Firma Sektör</label>
+                                             <div class="col-sm-9">
+                                                 <select class="form-control" name="firma_sektor" id="firma_sektor" required>
+                                                     <option selected disabled>Seçiniz</option>
+                                                     @foreach($sektorler as $sektor)
+                                                     <option  value="{{$sektor->id}}" >{{$sektor->adi}}</option>
+                                                     @endforeach
+                                                 </select>
                                              </div>
                                          </div>
                                          <div class="form-group">

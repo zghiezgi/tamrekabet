@@ -37,35 +37,34 @@ Route::get('/firmaIslemleri/{id}',['middleware'=>'auth', function ($id) {
 Route::get('/ilanAra', function (Request $request) {
      $iller = App\Il::all();
       $sektorler= App\Sektor::all();
-        $query = Ilan::paginate(1);
+        $querys = Ilan::paginate(5);
         //$query->orwhere('id',12)->get();
    
         
-    return view('Firma.ilan.ilanAra')->with('iller', $iller)->with('sektorler',$sektorler)->with('query',$query);
+    return view('Firma.ilan.ilanAra')->with('iller', $iller)->with('sektorler',$sektorler)->with('querys',$querys);
 });
 Route::get('/ilanAraFiltre/{il}',function ($id) {
-    $query = Ilan::all();
-     $il_id = Input::get('il');
-     if($id != NULL)
-        {
-         /*$query=DB::table('ilanlar')
-            ->join('firmalar', function ($join) {
-                $join->on('firmalar.id', '=', 'ilanlar.firma_id');
-        })
-        ->get();*/
-         $query = DB::table('ilanlar')
+   $querys = DB::table('ilanlar')
             ->join('firmalar', 'ilanlar.firma_id', '=', 'firmalar.id')
             ->join('adresler', 'adresler.firma_id', '=', 'firmalar.id')
-            ->join('iller', 'adresler.il_id', '=', 'iller.id')     
-             ->select('ilanlar.adi as ilanadi', 'ilanlar.*','firmalar.id as firmaid', 'firmalar.*','adresler.id as adresid','adresler.*','iller.adi as iladi')
-                 ->where('adresler.il_id',$il_id)
-            ->get();
-         /*$query = DB::table('ilanlar')
-            ->where('id', $il_id)   
-            ->get();*/
-       
+            ->join('iller', 'adresler.il_id', '=', 'iller.id')
+            ->select('ilanlar.adi as ilanadi', 'ilanlar.*','firmalar.id as firmaid', 'firmalar.*','adresler.id as adresid','adresler.*','iller.adi as iladi');  
+     $il_id = Input::get('il');
+     $bas_tar = Input::get('bas_tar');
+     $bit_tar = Input::get('bit_tar');   
+
+    if($il_id != NULL)
+        {
+         $querys->where('adresler.il_id',$il_id);
         }
-    return Response::json($query);
+    if ($bas_tar != NULL) {
+        $querys->where('ilanlar.yayin_tarihi','>=', $bas_tar);
+    }
+    if ($bit_tar != NULL) {
+        $querys->where('ilanlar.kapanma_tarihi','<=',$bit_tar);
+    }
+    $querys=$querys->get();  
+    return Response::json($querys);
     
 });
 

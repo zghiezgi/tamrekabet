@@ -129,13 +129,14 @@
                             
                  </div>
                  <div class="col-sm-9" id="auto_load_div">
-                           
+                         <?php $i=0;?>  
                         <h3>İlanlar</h3>
                                            <hr>
                                            @foreach($query as $query)
-                                              <p id="ilan">{{$query->adi}}</p>
-                                              <p id="adi">{{$query->firmalar->adi}}</p>
-                                              <hr>
+                                              <p id="ilan{{$i}}">{{$query->adi}}</p>
+                                              <p id="adi{{$i}}">{{$query->firmalar->adi}}</p>
+                                              <hr id="hr{{$i}}">
+                                             <?php $i++;?>
                                            @endforeach
                                  
                 </div>
@@ -152,11 +153,21 @@
                               cache: false,
                               success: function(data){
                                  console.log(data);
-                                  $("#auto_load_div").html(data);
+                                 for(var key=0; key < {{$i}};key++)
+                                {
+                                 $("#ilan"+key).empty();
+                                 $("#adi"+key).empty();
+                                 $("#hr"+key).hide();  
                                  
-                                 $("p:first").html(data.adi);
-                                 $('p.last').html(data.adres);
-                                
+                                }
+                                for(var key=0; key <Object.keys(data).length;key++)
+                                {
+                                 
+                                 $("#ilan"+key).append(data[key].adi);
+                                 $("#adi"+key).append(data[key].is_baslama_tarihi);
+                                 $("#hr"+key).append("<hr />");
+                                }
+                                 
                               } 
                             });
                     }

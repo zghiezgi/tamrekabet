@@ -162,15 +162,17 @@ button {
                  <div class="col-sm-3">
                      
                      
-                     <div class="search">
+                     <div class="search" id="radioDiv3">
+                         
                                 <div>
-                                    <input type="text" name="search" placeholder="Anahtar Kelime"><input type="button"  value="ARA">
+                                    <input type="text" name="search" id="search" placeholder="Anahtar Kelime"><input type="button" id="button"  value="ARA">
                                 </div>
                                 <div>
-                                   <input type="radio" name="gender" value="male"> Tüm İlanda<br>
-                                   <input type="radio" name="gender" value="female"> Sadece İlan Başlığında<br>
-                                   <input type="radio" name="gender" value="other"> Sadece Firma Adında Ara
-                                </div>  
+                                   <input type="radio" name="gender" value="tum"> Tüm İlanda<br>
+                                   <input type="radio" name="gender" value="ilan_baslık"> Sadece İlan Başlığında<br>
+                                   <input type="radio" name="gender" value="firma"> Sadece Firma Adında Ara
+                                </div>
+                            
                      </div>
                      <br>
                      <div class="soldivler">
@@ -286,11 +288,23 @@ button {
                             if (selected2.length > 0) {
                                 selectedUsul = selected2.val();
                             }
-                            alert(selectedIl);
+                            var selectedUsul = "";
+                            var selected2 = $("#radioDiv2 input[type='radio']:checked");
+                            if (selected2.length > 0) {
+                                selectedUsul = selected2.val();
+                            }
+                            var selectedSearch = "";
+                            var inputSearch = "";
+                            var selected3 = $("#radioDiv3 input[type='radio']:checked");
+                            if (selected3.length > 0) {
+                                selectedSearch = selected3.val();
+                                inputSearch=$('#search').val();
+                            }
+                            alert(selectedSearch);
                             $.ajax({
                               type:"GET",
-                              url: "ilanAraFiltre/il="+il_id,
-                              data:{il:selectedIl,bas_tar:basTar,bit_tar:bitTar,sektor:selectedSektor,tur:selectedTur,usul:selectedUsul},
+                              url: "ilanAraFiltre",
+                              data:{il:selectedIl,bas_tar:basTar,bit_tar:bitTar,sektor:selectedSektor,tur:selectedTur,usul:selectedUsul,radSearch:selectedSearch,input:inputSearch},
                               cache: false,
                               success: function(data){
                                  console.log(data);
@@ -310,6 +324,9 @@ button {
                               } 
                             });
                     }
+                    $('#button').click(function(){
+                        auto_load();
+                    });
                 
                     $('#il_id').change(function(){
                         auto_load();
@@ -328,40 +345,40 @@ button {
                     });
                 
                      $(".dropdown dt a").on('click', function() {
-  $(".dropdown dd ul").slideToggle('fast');
-});
+                    $(".dropdown dd ul").slideToggle('fast');
+                  });
 
-$(".dropdown dd ul li a").on('click', function() {
-  $(".dropdown dd ul").hide();
-});
+                  $(".dropdown dd ul li a").on('click', function() {
+                    $(".dropdown dd ul").hide();
+                  });
 
-function getSelectedValue(id) {
-  return $("#" + id).find("dt a span.value").html();
-}
+                  function getSelectedValue(id) {
+                    return $("#" + id).find("dt a span.value").html();
+                  }
 
-$(document).bind('click', function(e) {
-  var $clicked = $(e.target);
-  if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
-});
+                  $(document).bind('click', function(e) {
+                    var $clicked = $(e.target);
+                    if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
+                  });
 
-$('.mutliSelect input[type="checkbox"]').on('click', function() {
+                  $('.mutliSelect input[type="checkbox"]').on('click', function() {
 
-  var title = $(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),
-    title = $(this).val() + ",";
+                    var title = $(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),
+                      title = $(this).val() + ",";
 
-  if ($(this).is(':checked')) {
-    var html = '<span title="' + title + '">' + title + '</span>';
-    $('.multiSel').append(html);
-    $(".hida").hide();
-    auto_load();
-  } else {
-    $('span[title="' + title + '"]').remove();
-    var ret = $(".hida");
-    $('.dropdown dt a').append(ret);
+                    if ($(this).is(':checked')) {
+                      var html = '<span title="' + title + '">' + title + '</span>';
+                      $('.multiSel').append(html);
+                      $(".hida").hide();
+                      auto_load();
+                    } else {
+                      $('span[title="' + title + '"]').remove();
+                      var ret = $(".hida");
+                      $('.dropdown dt a').append(ret);
 
-  }
+                    }
   
-});
+                });
    
                   </script>
                   

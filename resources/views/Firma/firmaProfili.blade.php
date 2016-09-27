@@ -12,10 +12,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        
-       
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-       
         <script src="{{asset('js/ajax-crud.js')}}"></script>
         <script src="{{asset('js/ajax-crud-image.js')}}"></script>
         <script src="{{asset('js/ajax-crud-firmaTanitim.js')}}"></script>
@@ -73,6 +70,32 @@
    </head>
    <body>
    <div class="container">
+       <br>
+       <br>
+       <nav class="navbar navbar-inverse">
+             <div class="container-fluid">
+                 <div class="navbar-header">
+                     <a class="navbar-brand" href="#"><img src='{{asset('images/anasayfa.png')}}'></a>
+                 </div>
+                 <ul class="nav navbar-nav">
+                     <li class=""><a href="{{ url('firmaProfili/'.$firma->id)}}">Firma Profili</a></li>
+                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">İlan İşlemleri <span class="caret"></span></a>
+                         <ul class="dropdown-menu">
+                             <li><a href="#">İlanlarım</a></li>
+                             <li><a href="{{ url('firmaIlanOlustur/'.$firma->id) }}">İlan Oluştur</a></li>
+                         </ul>
+                     </li>
+                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Başvuru İşlemleri <span class="caret"></span></a>
+                         <ul class="dropdown-menu">
+                             <li><a href="#">Başvurularım</a></li>
+                             <li><a href="#">Başvur</a></li>
+                         </ul>
+                     </li>
+                     <li><a href="#">Mesajlar</a></li>
+                     <li><a href="#">Kullanici İşlemleri</a></li>
+                 </ul>
+             </div>
+         </nav>
        <h2>Firma Profili</h2>
        <div class="col-lg-6">
            <div class="form-group">

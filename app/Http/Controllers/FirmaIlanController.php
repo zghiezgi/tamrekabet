@@ -58,6 +58,7 @@ class FirmaIlanController extends Controller
    
          
      }
+     //kullanılmıyor artık.
      public function fiyatlandırmaBilgileriAdd(Request $request,$id){
          $firma = Firma::find($request->id);
          $ilan= $firma->ilanlar ?: new \App\Ilan();
@@ -91,6 +92,10 @@ class FirmaIlanController extends Controller
                 $fileName = rand(11111, 99999) . '.' . $extension; // renameing image
 
                 $firma = Firma::find($request->id);
+                
+                $firma->goster = $request->firma_adi_gizli;
+                $firma->save();
+                
                 $ilan= $firma->ilanlar ?: new \App\Ilan();
                 
                

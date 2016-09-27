@@ -57,7 +57,7 @@ use Illuminate\Http\Request;
          
         if($il_id != NULL)
             {
-             $querys->where('adresler.il_id',$il_id);
+             $querys->whereIn('adresler.il_id',$il_id);
             }
         if ($bas_tar != NULL) {
             $querys->where('ilanlar.yayin_tarihi','>=', $bas_tar);

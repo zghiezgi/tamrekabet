@@ -11,10 +11,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        
-        
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        
         <script src="{{asset('js/ilan/ajax-crud-firmabilgilerim.js')}}"></script>
         <script src="//cdn.ckeditor.com/4.5.10/standard/ckeditor.js"></script>
         <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
@@ -61,6 +58,32 @@
 </head>
 <body>
     <div class="container">
+        <br>
+        <br>
+        <nav class="navbar navbar-inverse">
+             <div class="container-fluid">
+                 <div class="navbar-header">
+                     <a class="navbar-brand" href="#"><img src='{{asset('images/anasayfa.png')}}'></a>
+                 </div>
+                 <ul class="nav navbar-nav">
+                     <li class=""><a href="{{ url('firmaProfili/'.$firma->id)}}">Firma Profili</a></li>
+                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">İlan İşlemleri <span class="caret"></span></a>
+                         <ul class="dropdown-menu">
+                             <li><a href="#">İlanlarım</a></li>
+                             <li><a href="{{ url('firmaIlanOlustur/'.$firma->id) }}">İlan Oluştur</a></li>
+                         </ul>
+                     </li>
+                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Başvuru İşlemleri <span class="caret"></span></a>
+                         <ul class="dropdown-menu">
+                             <li><a href="#">Başvurularım</a></li>
+                             <li><a href="#">Başvur</a></li>
+                         </ul>
+                     </li>
+                     <li><a href="#">Mesajlar</a></li>
+                     <li><a href="#">Kullanici İşlemleri</a></li>
+                 </ul>
+             </div>
+         </nav>
        <h2>İlan Oluştur</h2>
     </div>
     <div class="container">
@@ -69,15 +92,15 @@
              <div class="panel panel-default">
                  <div class="panel-heading">
                      <h4 class="panel-title">
-                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Firma Bilgilerim</a>
+                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">İlan Bilgilerim</a>
                      </h4>
                  </div>
-                 <div id="collapse1" class="panel-collapse collapse">
+                 <div id="collapse2" class="panel-collapse collapse">
                      <div class="panel-body">
                          <table class="table" >
                              <thead id="tasks-list" name="tasks-list">
                                  <tr id="firma{{$firma->id}}">
-                                 <tr>
+                                     <tr>
                                      <td>Firma Adı:</td>
                                      <?php
                                      
@@ -91,66 +114,13 @@
                                      }
                                      else if($firma->goster=="Gizle"){    
                                      ?>
-                                     <td></td>
+                                     <td>{{$firma->adi}}(GİZLİ)</td>
                                      <?php
                                      }
                                      ?>
                                     
                                  </tr>
                                  
-                                 </tr>
-                             </thead>
-                         </table>
-                         <div class="modal fade" id="myModal-firmaBilgilerim" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                             <div class="modal-dialog">
-                                 <div class="modal-content">
-                                     <div class="modal-header">
-                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                         <h4 class="modal-title" id="myModalLabel">Firma Bilgilerim</h4>
-                                     </div>
-                                     <div class="modal-body">
-                                         {!! Form::open(array('url'=>'firmaIlanOlustur/firmaBilgilerim/'.$firma->id,'class'=>'form-horizontal','method'=>'POST', 'files'=>true)) !!}
-
-                                         <div class="form-group">
-                                             <label for="inputEmail3" class="col-sm-3 control-label">Firma Adı</label>
-                                             <div class="col-sm-9">
-                                                 <input type="text" class="form-control " id="firma_adi" name="firma_adi" placeholder="Firma Adı" value="{{$firma->adi}}" required/>
-                                             </div>
-                                         </div>
-                                         <div class="form-group">
-                                             <label for="inputEmail3" class="col-sm-3 control-label">Firma Adı Göster</label>
-                                             <div class="col-sm-9">
-                                                 <select class="form-control" name="firma_adi_gizli" id="firma_adi_gizli" required>
-                                                     <option selected disabled value="Seçiniz">Seçiniz</option>
-                                                     <option   value="Göster">Göster</option>
-                                                     <option  value="Gizle">Gizle</option>
-                                                 </select>
-                                             </div>
-                                         </div>
-                                        
-                                         {!! Form::submit('Kaydet', array('url'=>'firmaIlanOlustur/firmaBilgilerim/'.$firma->id,'class'=>'btn btn-danger')) !!}
-                                         {!! Form::close() !!}
-                                     </div>
-                                     <div class="modal-footer">                                                            
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                         <button id="btn-add-firmaBilgilerim" name="btn-add-firmaBilgilerim" class="btn btn-primary btn-xs" >Ekle / Düzenle</button>
-                     </div>
-                 </div>
-             </div>
-             <div class="panel panel-default">
-                 <div class="panel-heading">
-                     <h4 class="panel-title">
-                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">İlan Bilgilerim</a>
-                     </h4>
-                 </div>
-                 <div id="collapse2" class="panel-collapse collapse">
-                     <div class="panel-body">
-                         <table class="table" >
-                             <thead id="tasks-list" name="tasks-list">
-                                 <tr id="firma{{$firma->id}}">
                                  <tr>
                                      <td>İlan Adı:</td>
 
@@ -168,8 +138,7 @@
                                      ?>
                                      <td>{{$firma->ilanlar->adi}}</td>
                                  </tr>
-                                 
-                                  <tr>
+                                 <tr>
                                      <td>İlan Sektor:</td>
                                       @foreach($sektorler as $ilanSektor)<?php
                                    if($ilanSektor->id == $firma->ilanlar->firma_sektor){
@@ -254,8 +223,20 @@
                                          <h4 class="modal-title" id="myModalLabel">İlan Bilgileri</h4>
                                      </div>
                                      <div class="modal-body">
+                                         
+                                         
                                          {!! Form::open(array('url'=>'firmaIlanOlustur/ilanBilgileri/'.$firma->id,'class'=>'form-horizontal','method'=>'POST', 'files'=>true)) !!}
-
+                                          
+                                           <div class="form-group">
+                                             <label for="inputEmail3" class="col-sm-3 control-label">Firma Adı Göster</label>
+                                             <div class="col-sm-9">
+                                                 <select class="form-control" name="firma_adi_gizli" id="firma_adi_gizli" required>
+                                                     <option selected disabled value="Seçiniz">Seçiniz</option>
+                                                     <option   value="Göster">Göster</option>
+                                                     <option  value="Gizle">Gizle</option>
+                                                 </select>
+                                             </div>
+                                         </div>
                                          <div class="form-group">
                                              <label for="inputEmail3" class="col-sm-3 control-label">İlan Adı</label>
                                              <div class="col-sm-9">
@@ -263,7 +244,7 @@
                                              </div>
                                          </div>
                                          <div class="form-group">
-                                             <label for="inputEmail3" class="col-sm-3 control-label">Firma Sektör</label>
+                                             <label for="inputEmail3" class="col-sm-3 control-label">İlan Sektör</label>
                                              <div class="col-sm-9">
                                                  <select class="form-control" name="firma_sektor" id="firma_sektor" required>
                                                      <option selected disabled>Seçiniz</option>

@@ -10,6 +10,7 @@ use App\Firma;
 use App\FirmaReferans;
 use App\iletisim_bilgileri;
 use App\Ilan;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
     Route::get('/firmalist', ['middleware'=>'auth' ,function () {
@@ -42,7 +43,7 @@ use Illuminate\Http\Request;
 
         return view('Firma.ilan.ilanAra')->with('iller', $iller)->with('sektorler',$sektorler)->with('querys',$querys);
     });
-    Route::get('/ilanAraFiltre/{il}',function ($id) {
+    Route::get('/ilanAraFiltre',function () {
        $querys = DB::table('ilanlar')
                 ->join('firmalar', 'ilanlar.firma_id', '=', 'firmalar.id')
                 ->join('adresler', 'adresler.firma_id', '=', 'firmalar.id')
@@ -54,6 +55,24 @@ use Illuminate\Http\Request;
          $sektorler = Input::get('sektor');
          $tur = Input::get('tur');
          $usul= Input::get('usul');
+         $usul= Input::get('usul');
+         $radSearch= Input::get('radSearch');
+         $input= Str::lower(Input::get('input'));
+        if($radSearch != NULL){
+            if($radSearch == "tum"){
+                $querys->where('LOWER(`ilanlar.adi`)' ,$input )->orWhere('LOWER(`ilanlar.usulu`) ',$input )
+                        ->orWhere('LOWER(`ilanlar.ilan_turu`) ','LIKE', '%' . $input . '%')->orWhere('LOWER(`ilanlar.yayin_tarihi`) ','LIKE', '%' . $input . '%')
+                        ->orWhere('LOWER(`ilanlar.kapanma_tarihi`) ','LIKE', '%' . $input . '%')
+                        ->orWhere('LOWER(`ilanlar.sozlesme_turu`) ','LIKE', '%' . $input . '%')->orWhere('LOWER(`ilanlar.usulu`) ','LIKE', '%' . $input . '%');
+            }
+            else if($radSearch == "ilan_baslık"){
+                $querys->where('LOWER(`ilanlar.adi`) like ?', $input);
+            }
+            else{
+                $querys->where('LOWER(`firmalar.adi`) like ?', $input);
+                
+            }
+        }
          
         if($il_id != NULL)
             {

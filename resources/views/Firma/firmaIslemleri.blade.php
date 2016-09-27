@@ -68,10 +68,6 @@ tr:nth-child(even) {
                  </ul>
              </div>
          </nav>
-   
-                   
-         <div class="container">
-
              <div class="row">
                  <div class="col-xs-12 col-sm-6 col-md-8">
 
@@ -131,25 +127,8 @@ tr:nth-child(even) {
                          </div>
 
                      </div>
-
+                 
                  </div>
-             </div>
-
-
-         </div>
-                  
-                    
-                    
-               
-            
-            
-           
-            
-        
-            
-        
-           
+             </div>   
     </div>
-
-  
 @endsection

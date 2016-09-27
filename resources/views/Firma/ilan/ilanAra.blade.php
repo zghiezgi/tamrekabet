@@ -1,4 +1,5 @@
-@extends('layouts.app')
+
+@extends('layouts.ilanApp')
  @section('content')
  
     <style>
@@ -55,109 +56,164 @@
            }
           
 
-.dropdown {
-  
-  
-  transform: translateY(-50%);
+            .dropdown {
+
+
+
+            }
+
+            a {
+              color: #fff;
+            }
+
+            .dropdown dd,
+            .dropdown dt {
+              margin: 0px;
+              padding: 0px;
+            }
+
+            .dropdown ul {
+              margin: -1px 0 0 0;
+            }
+
+            .dropdown dd {
+              position: relative;
+            }
+
+            .dropdown a,
+            .dropdown a:visited {
+              color: #333;
+              text-decoration: none;
+              outline: none;
+              font-size: 12px;
+            }
+
+            .dropdown dt a {
+              background-color: #FFF;
+              display: block;
+
+              min-height: 25px;
+              line-height: 24px;
+              overflow: hidden;
+              border: 0;
+              border-radius: 4px;
+              width: 250px;
+            }
+
+            .dropdown dt a span,
+            .multiSel span {
+              cursor: pointer;
+              display: inline-block;
+              padding: 0 3px 2px 0;
+            }
+
+            .dropdown dd ul {
+              background-color: #4F6877;
+              border: 0;
+              color: #fff;
+              display: none;
+              left: 0px;
+              padding: 2px 15px 2px 5px;
+              position: absolute;
+              top: 2px;
+              width: 250px;
+              list-style: none;
+              height: 170px;
+              overflow: auto;
+            }
+
+            .dropdown span.value {
+              display: none;
+            }
+
+            .dropdown dd ul li a {
+              padding: 5px;
+              display: block;
+            }
+
+            .dropdown dd ul li a:hover {
+              background-color: #fff;
+            }
+
+            button {
+              background-color: #6BBE92;
+              width: 302px;
+              border: 0;
+              padding: 10px 0;
+              margin: 5px 0;
+              text-align: center;
+              color: #fff;
+              font-weight: bold;
+            }
+            .pclass {
+    color: rgb(255, 255, 255);
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+    display: inline-block;
+    zoom: 1;
+    font: 13px/18px roboto;
+    background: rgb(128, 30, 138);
+    padding: 5px;
 }
 
-a {
-  color: #fff;
-}
-
-.dropdown dd,
-.dropdown dt {
-  margin: 0px;
-  padding: 0px;
-}
-
-.dropdown ul {
-  margin: -1px 0 0 0;
-}
-
-.dropdown dd {
-  position: relative;
-}
-
-.dropdown a,
-.dropdown a:visited {
-  color: #333;
-  text-decoration: none;
-  outline: none;
-  font-size: 12px;
-}
-
-.dropdown dt a {
-  background-color: #FFF;
-  display: block;
-  padding: 1px 20px 5px 10px;
-  min-height: 25px;
-  line-height: 24px;
-  overflow: hidden;
-  border: 0;
-  border-radius: 4px;
-  width: 250px;
-}
-
-.dropdown dt a span,
-.multiSel span {
-  cursor: pointer;
-  display: inline-block;
-  padding: 0 3px 2px 0;
-}
-
-.dropdown dd ul {
-  background-color: #4F6877;
-  border: 0;
-  color: #fff;
-  display: none;
-  left: 0px;
-  padding: 2px 15px 2px 5px;
-  position: absolute;
-  top: 2px;
-  width: 250px;
-  list-style: none;
-  height: 170px;
-  overflow: auto;
-}
-
-.dropdown span.value {
-  display: none;
-}
-
-.dropdown dd ul li a {
-  padding: 5px;
-  display: block;
-}
-
-.dropdown dd ul li a:hover {
-  background-color: #fff;
-}
-
-button {
-  background-color: #6BBE92;
-  width: 302px;
-  border: 0;
-  padding: 10px 0;
-  margin: 5px 0;
-  text-align: center;
-  color: #fff;
-  font-weight: bold;
-}
        
            
    </style>
-    <hr>
-      <div class="header">
-          
-             
-      </div>
-     <hr>
-     <div class="container">
-      
 
-       
-       <div class="container-fluid" style="width:100%">
+   
+   <div id="header">
+       <div  class="container-fuild">
+           <div class="row content"  >
+               <div class="col-sm-6">
+                   <?php $ilan = DB::table('ilanlar')->count();?>
+                   <h4>Arama kriterlerinize uyan <img src="{{asset('images/sol.png')}}"> {{$ilan}} ilan </h4>
+                   
+                   
+               </div>
+               <div class="col-sm-4">
+                   <ul style="list-style-type: none">
+                       <li>
+                           <p class="pclass ">
+                               <span class="multiSel"><img src="{{asset('images/kapat.png')}}"> </span> 
+                               <span class="multiSel"><img src="{{asset('images/kapat.png')}}"> </span>
+                               
+                           
+                           
+                           </p>
+                       </li>
+                       <li>
+                           <p class="pclass ">
+                               <span class="multiSel"></span> 
+                               <span class="multiSel"></span>
+                               <img src="{{asset('images/kapat.png')}}"> 
+                           
+                           
+                           </p>
+                       </li>
+                   </ul>
+                   
+                  
+                   
+               </div>
+               <div class="col-sm-2">
+                   
+                   <img src="{{asset('images/sil1.png')}}">&nbsp;Temizle</img>
+               </div>
+           </div>
+       </div>
+
+   </div>
+   
+   
+   <br>
+   <br>
+   <br>
+     <div class="container">
+    
+      
+       <div  class="container-fluid" style="width:100%">
               <div class="row content" style="padding-top: 0px" >
                  <div class="col-sm-3">
                      
@@ -182,8 +238,8 @@ button {
 
                                 <dt>
                                 <a href="#">
-                                  <span class="hida">Seçiniz</span>    
-                                  <p class="multiSel"></p>  
+                                  <span class="hida">Seçiniz<span class="caret"></span></span>    
+                                  
                                 </a>
                                 </dt>
 

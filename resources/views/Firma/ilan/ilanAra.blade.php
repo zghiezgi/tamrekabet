@@ -148,9 +148,14 @@
                 display: inline-block;
                 zoom: 1;
                 font: 13px/18px roboto;
-                background: rgb(128, 30, 138);
+                background:	#1E90FF;
                 padding: 5px;
             }
+              .li {
+                     position: relative;
+                     display: inline;
+                     margin: 20px;
+              }
 
        
            
@@ -159,44 +164,42 @@
       
   
        <div  class="container-fuild">
-         
            <div id ="header" class="row content ">
-             
-               <div class="col-sm-3">
-                   <?php $ilan = DB::table('ilanlar')->count();?>
-                   <h4>Arama kriterlerinize uyan <img src="{{asset('images/sol.png')}}"> {{$ilan}} ilan </h4>
-                   
-                   
-               </div>
-               <div class="col-sm-6">
-                   <ul style="list-style-type: none">
-                       <li>
-                           <p class="pclass ">
-                               <span class="multiSel"><img src="{{asset('images/kapat.png')}}"> </span> 
-                               <span class="multiSel"><img src="{{asset('images/kapat.png')}}"> </span>
-                               
-                           
-                           
-                           </p>
-                       </li>
-                       <li>
-                           <p class="pclass ">
-                               <span class="multiSel"></span> 
-                               <span class="multiSel"></span>
-                               <img src="{{asset('images/kapat.png')}}"> 
-                           
-                           
-                           </p>
-                       </li>
-                   </ul>
-                   
-                  
-                   
-               </div>
-               <div class="col-sm-3"  >
-                   <div style="float:right">
-                   <img  src="{{asset('images/sil1.png')}}">&nbsp;Temizle</img>
+               <div class="container">
+                   <div class="col-sm-3">
+                        <?php $ilan = DB::table('ilanlar')->count();?>
+                        <h4>Arama kriterlerinize uyan <img src="{{asset('images/sol.png')}}"> {{$ilan}} ilan </h4>
                    </div>
+                    <div class="col-sm-6">
+                        <ul style="list-style: none outside none;">
+                            <li class="li">
+                                <p class="pclass ">
+                                    <span class="multiSel"></span> 
+                                    <img src="{{asset('images/kapat.png')}}"> 
+                                
+                                </p>
+                            </li>
+                            <li class="li">
+                                <p class="pclass ">
+                                    <span class="multiSel"></span> 
+                                    <img src="{{asset('images/kapat.png')}}"> 
+                                
+                                </p>
+                            </li>
+                            <li class="li">
+                                 <p class="pclass ">
+                                    <span class="multiSel"></span>
+                                    <img src="{{asset('images/kapat.png')}}"> 
+                                 </p>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="col-sm-3">
+                        <div style="float:right">
+                        <img  src="{{asset('images/sil1.png')}}">&nbsp;Temizle</img>
+                        </div>
+                    </div>
                </div>
            </div>
        </div>
@@ -206,124 +209,128 @@
    <br>
    <br>
    <br>
-     <div class="container">
+    
     
       
-       <div  class="container-fluid" style="width:100%">
-              <div class="row content" style="padding-top: 0px" >
-                 <div class="col-sm-3">
-                     
-                     
-                     <div class="search" id="radioDiv3">
-                         
-                                <div>
-                                    <input type="text" name="search" id="search" placeholder="Anahtar Kelime"><input type="button" id="button"  value="ARA">
-                                </div>
-                                <div>
-                                   <input type="radio" name="gender" value="tum"> Tüm İlanda<br>
-                                   <input type="radio" name="gender" value="ilan_baslık"> Sadece İlan Başlığında<br>
-                                   <input type="radio" name="gender" value="firma"> Sadece Firma Adında Ara
-                                </div>
-                            
-                     </div>
-                     <br>
-                     <div class="soldivler">
-                         <form  >
-                             <h4>İllerde Arama</h4>
-                             <br>
-                             <br>
-                              <dl class="dropdown"> 
+       <div  class="container">
+              <div class="row content"  >
+                        <div class="col-sm-3">
 
-                                <dt>
-                                <a href="#">
-                                  <span class="hida">Seçiniz<span class="caret"></span></span>    
-                                  
-                                </a>
-                                </dt>
 
-                                <dd>
-                                    <div class="mutliSelect">
-                                        <ul>
-                                            @foreach($iller as $il)
-                                            <li>
-                                                <input type="checkbox" value="{{$il->id}}" />{{$il->adi}}</li>
-                                            @endforeach
-                                            
-                                        </ul>
-                                    </div>
-                                </dd>
-                            </dl>
-                         </form>
-                     </div>
-                    
-                     <div class="soldivler">
-                         
-                             <h4>İlan Tarihi Aralığı</h4>
-                             <p>Başlangıç Tarihi</p>
-                              <input type="date" class="form-control datepicker" id="baslangic_tarihi" name="baslangic_tarihi" placeholder="" value="">
-                                  <br>
-                             <p>Bitiş Tarihi</p>
-                              <input type="date" class="form-control datepicker" id="bitis_tarihi" name="bitis_tarihi" placeholder="" value="">
-                      
-                     </div>
-                     <div class="soldivler">
+                            <div class="search" id="radioDiv3">
+
+                                       <div>
+                                           <input type="text" name="search" id="search" placeholder="Anahtar Kelime"><input type="button" id="button"  value="ARA">
+                                       </div>
+                                       <div>
+                                          <input type="radio" name="gender" value="tum"> Tüm İlanda<br>
+                                          <input type="radio" name="gender" value="ilan_baslık"> Sadece İlan Başlığında<br>
+                                          <input type="radio" name="gender" value="firma"> Sadece Firma Adında Ara
+                                       </div>
+
+                            </div>
+                            <br>
+                            <div class="soldivler">
+                                <form  >
+                                    <h4>İllerde Arama</h4>
+                                    <br>
+                                    <br>
+                                     <dl class="dropdown">
+                                       <dt>
+                                       <a href="#">
+                                         <span class="hida">Seçiniz<span class="caret"></span></span>    
+
+                                       </a>
+                                       </dt>
+
+                                       <dd>
+                                           <div class="mutliSelect">
+                                               <ul>
+                                                   @foreach($iller as $il)
+                                                   <li>
+                                                       <input type="checkbox" value="{{$il->id}}" />{{$il->adi}}</li>
+                                                   @endforeach
+
+                                               </ul>
+                                           </div>
+                                       </dd>
+                                   </dl>
+                                </form>
+                            </div>
+
+                            <div class="soldivler">
+
+                                    <h4>İlan Tarihi Aralığı</h4>
+                                    <p>Başlangıç Tarihi</p>
+                                     <input type="date" class="form-control datepicker" id="baslangic_tarihi" name="baslangic_tarihi" placeholder="" value="">
+                                         <br>
+                                    <p>Bitiş Tarihi</p>
+                                     <input type="date" class="form-control datepicker" id="bitis_tarihi" name="bitis_tarihi" placeholder="" value="">
+
+                            </div>
+                            <div class="soldivler">
+
+                                    <h4>İlan Sektörü</h4>
+                                    @foreach($sektorler as $sektor)
+                                     <input type="checkbox" name="sektor[]" class="checkboxClass" value="{{$sektor->id}}"> {{$sektor->adi}}<br>
+                                    @endforeach
+
+                            </div>
+                          
+                           <div class="soldivler">
                          
                              <h4>İlan Sektörü</h4>
                              @foreach($sektorler as $sektor)
                               <input type="checkbox" name="sektor[]" class="checkboxClass" value="{{$sektor->id}}"> {{$sektor->adi}}<br>
                              @endforeach
                       
-                     </div>
-                  
-                     <div class="soldivler" id="radioDiv">
-                             <h4>İlan Türü</h4>
-                             <input type="radio" name="ilanTuru[]" class="tur" value="Mal"><span class="lever"></span>Mal<br>
-                             <input type="radio" name="ilanTuru[]" class="tur" value="Hizmet"><span class="lever"></span>Hizmet<br>
-                             <input type="radio" name="ilanTuru[]" class="tur" value="Yapım İşi"><span class="lever"></span>Yapım İşi
-                     </div>
-                      <div class="soldivler" id="radioDiv4"> 
-                             <h4>Sözleşme Türü</h4>
-                             <input type="radio" name="sozlesmeTuru[]" class="sozlesme" value="Birim Fiyatlı"><span class="lever"></span>Birim Fiyatlı<br>
-                             <input type="radio" name="sozlesmeTuru[]" class="sozlesme" value="Götürü Bedel"><span class="lever"></span>Götürü Bedel<br>
-                             
-                     </div>
-                     <div class="soldivler" id="radioDiv2">
-                             <h4>İlan Usulü</h4>
-                              <input type="radio" name="gender[]" class="usul" value="Açık"> Açık<br>
-                              <input type="radio" name="gender[]" class="usul" value="Belirli İstekler Arasında">Belirli İstekler Arasında<br>
-                              <input type="radio" name="gender[]" class="usul" value="Başvuru">Başvuru
-                             
-                     </div>   
-                      <div class="soldivler">
-                         
-                             <h4>Ödeme Türleri</h4>
-                             @foreach($odeme_turleri as $odeme)
-                              <input type="checkbox" name="odeme[]" class="checkbox" value="{{$odeme->id}}"> {{$odeme->adi}}<br>
-                             @endforeach
-                      
-                     </div>
-                            
-                            
-                 </div>
-                 <div class="col-sm-9" id="auto_load_div">
-                         <?php $i=0;?>  
-                        <h3>İlanlar</h3>
-                                           <hr>
-                                           @foreach($querys as $query)
-                                              <p id="ilan{{$i}}">{{$query->adi}}</p>
-                                              <p id="adi{{$i}}">{{$query->firmalar->adi}}</p>
-                                              <hr id="hr{{$i}}">
-                                             <?php $i++;?>
-                                           @endforeach
-                                        {{$querys->links()}}
-                </div>
+                            </div>
+
+                            <div class="soldivler" id="radioDiv">
+                                    <h4>İlan Türü</h4>
+                                    <input type="radio" name="ilanTuru[]" class="tur" value="Mal"><span class="lever"></span>Mal<br>
+                                    <input type="radio" name="ilanTuru[]" class="tur" value="Hizmet"><span class="lever"></span>Hizmet<br>
+                                    <input type="radio" name="ilanTuru[]" class="tur" value="Yapım İşi"><span class="lever"></span>Yapım İşi
+                            </div>
+                             <div class="soldivler" id="radioDiv4"> 
+                                    <h4>Sözleşme Türü</h4>
+                                    <input type="radio" name="sozlesmeTuru[]" class="sozlesme" value="Birim Fiyatlı"><span class="lever"></span>Birim Fiyatlı<br>
+                                    <input type="radio" name="sozlesmeTuru[]" class="sozlesme" value="Götürü Bedel"><span class="lever"></span>Götürü Bedel<br>
+
+                            </div>
+                            <div class="soldivler" id="radioDiv2">
+                                    <h4>İlan Usulü</h4>
+                                     <input type="radio" name="gender[]" class="usul" value="Açık"> Açık<br>
+                                     <input type="radio" name="gender[]" class="usul" value="Belirli İstekler Arasında">Belirli İstekler Arasında<br>
+                                     <input type="radio" name="gender[]" class="usul" value="Başvuru">Başvuru
+
+                            </div>   
+                             <div class="soldivler">
+
+                                    <h4>Ödeme Türleri</h4>
+                                    @foreach($odeme_turleri as $odeme)
+                                     <input type="checkbox" name="odeme[]" class="checkboxClass2" value="{{$odeme->id}}"> {{$odeme->adi}}<br>
+                                    @endforeach
+
+                            </div>
+
+
+                        </div>
+                        <div class="col-sm-9" id="auto_load_div">
+                                <?php $i=0;?>  
+                               <h3>İlanlar</h3>
+                                                  <hr>
+                                                  @foreach($querys as $query)
+                                                     <p id="ilan{{$i}}">{{$query->adi}}</p>
+                                                     <p id="adi{{$i}}">{{$query->firmalar->adi}}</p>
+                                                     <hr id="hr{{$i}}">
+                                                    <?php $i++;?>
+                                                  @endforeach
+                                               {{$querys->links()}}
+                       </div>
                        
                  </div>
-           <script>
-            
-
-           
-           </script> 
+          
             <script type="text/javascript">
                       
                       function auto_load(){
@@ -345,9 +352,9 @@
                                 });
                             }
                             var selectedOdeme = new Array();
-                            var n = jQuery('.checkbox:checked').length;
+                            var n = jQuery('.checkboxClass2:checked').length;
                             if (n > 0){
-                                jQuery('.checkbox:checked').each(function(){
+                                jQuery('.checkboxClass2:checked').each(function(){
                                     selectedOdeme.push($(this).val());
                                 });
                             }
@@ -427,10 +434,11 @@
                     $('.check').click(function(){
                         auto_load();
                     });
-                     $('.checkbox').click(function(){
+                     $('.checkboxClass2').click(function(){
                         auto_load();
                     });
                     $('.checkboxClass').click(function(){
+
                         auto_load();
                     });
                 

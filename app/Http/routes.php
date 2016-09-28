@@ -37,17 +37,19 @@ use Illuminate\Http\Request;
     Route::get('/ilanAra', function (Request $request) {
          $iller = App\Il::all();
           $sektorler= App\Sektor::all();
+          $odeme_turleri=  App\OdemeTuru::all();
             $querys = Ilan::paginate(5);
             //$query->orwhere('id',12)->get();
 
 
-        return view('Firma.ilan.ilanAra')->with('iller', $iller)->with('sektorler',$sektorler)->with('querys',$querys);
+        return view('Firma.ilan.ilanAra')->with('iller', $iller)->with('sektorler',$sektorler)->with('querys',$querys)->with('odeme_turleri',$odeme_turleri);
     });
     Route::get('/ilanAraFiltre',function () {
        $querys = DB::table('ilanlar')
                 ->join('firmalar', 'ilanlar.firma_id', '=', 'firmalar.id')
                 ->join('adresler', 'adresler.firma_id', '=', 'firmalar.id')
                 ->join('iller', 'adresler.il_id', '=', 'iller.id')
+                
                 ->select('ilanlar.adi as ilanadi', 'ilanlar.*','firmalar.id as firmaid', 'firmalar.*','adresler.id as adresid','adresler.*','iller.adi as iladi');  
          $il_id = Input::get('il');
          $bas_tar = Input::get('bas_tar');
@@ -58,6 +60,8 @@ use Illuminate\Http\Request;
          $usul= Input::get('usul');
          $radSearch= Input::get('radSearch');
          $input= Str::lower(Input::get('input'));
+         $sozlesme= Input::get('sozles');
+         $odeme= Input::get('odeme');
         if($radSearch != NULL){
             if($radSearch == "tum"){
                 $querys->where('LOWER(`ilanlar.adi`)' ,$input )->orWhere('LOWER(`ilanlar.usulu`) ',$input )
@@ -92,6 +96,12 @@ use Illuminate\Http\Request;
         }
         if($usul != NULL){
             $querys->where('ilanlar.usulu',$usul);
+        }
+        if($sozlesme != NULL){
+            $querys->where('ilanlar.sozlesme_turu',$sozlesme);
+        }
+        if($odeme != NULL){
+            $querys->whereIn('ilanlar.odeme_turu_id',$odeme);
         }
         $querys=$querys->get();  
         return Response::json($querys);

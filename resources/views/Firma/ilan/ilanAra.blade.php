@@ -1,4 +1,3 @@
-
 @extends('layouts.ilanApp')
  @section('content')
  
@@ -28,12 +27,7 @@
                margin: 4px 2px;
               
            }
-           .header{
-               background-color: #f5f5f5;
-               width: 100%;
-               height: 100px;
-               
-           }
+          
            .search{
                width: 270px;
                box-sizing: border-box;
@@ -146,33 +140,35 @@
               font-weight: bold;
             }
             .pclass {
-    color: rgb(255, 255, 255);
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    border-bottom-left-radius: 15px;
-    border-top-left-radius: 15px;
-    display: inline-block;
-    zoom: 1;
-    font: 13px/18px roboto;
-    background: rgb(128, 30, 138);
-    padding: 5px;
-}
+                color: rgb(255, 255, 255);
+                border-top-right-radius: 15px;
+                border-bottom-right-radius: 15px;
+                border-bottom-left-radius: 15px;
+                border-top-left-radius: 15px;
+                display: inline-block;
+                zoom: 1;
+                font: 13px/18px roboto;
+                background: rgb(128, 30, 138);
+                padding: 5px;
+            }
 
        
            
    </style>
 
-   
-   <div id="header">
+      
+  
        <div  class="container-fuild">
-           <div class="row content"  >
-               <div class="col-sm-6">
+         
+           <div id ="header" class="row content ">
+             
+               <div class="col-sm-3">
                    <?php $ilan = DB::table('ilanlar')->count();?>
                    <h4>Arama kriterlerinize uyan <img src="{{asset('images/sol.png')}}"> {{$ilan}} ilan </h4>
                    
                    
                </div>
-               <div class="col-sm-4">
+               <div class="col-sm-6">
                    <ul style="list-style-type: none">
                        <li>
                            <p class="pclass ">
@@ -197,14 +193,14 @@
                   
                    
                </div>
-               <div class="col-sm-2">
-                   
-                   <img src="{{asset('images/sil1.png')}}">&nbsp;Temizle</img>
+               <div class="col-sm-3"  >
+                   <div style="float:right">
+                   <img  src="{{asset('images/sil1.png')}}">&nbsp;Temizle</img>
+                   </div>
                </div>
            </div>
        </div>
 
-   </div>
    
    
    <br>
@@ -278,11 +274,18 @@
                              @endforeach
                       
                      </div>
+                  
                      <div class="soldivler" id="radioDiv">
                              <h4>İlan Türü</h4>
                              <input type="radio" name="ilanTuru[]" class="tur" value="Mal"><span class="lever"></span>Mal<br>
                              <input type="radio" name="ilanTuru[]" class="tur" value="Hizmet"><span class="lever"></span>Hizmet<br>
                              <input type="radio" name="ilanTuru[]" class="tur" value="Yapım İşi"><span class="lever"></span>Yapım İşi
+                     </div>
+                      <div class="soldivler" id="radioDiv4"> 
+                             <h4>Sözleşme Türü</h4>
+                             <input type="radio" name="sozlesmeTuru[]" class="sozlesme" value="Birim Fiyatlı"><span class="lever"></span>Birim Fiyatlı<br>
+                             <input type="radio" name="sozlesmeTuru[]" class="sozlesme" value="Götürü Bedel"><span class="lever"></span>Götürü Bedel<br>
+                             
                      </div>
                      <div class="soldivler" id="radioDiv2">
                              <h4>İlan Usulü</h4>
@@ -290,7 +293,15 @@
                               <input type="radio" name="gender[]" class="usul" value="Belirli İstekler Arasında">Belirli İstekler Arasında<br>
                               <input type="radio" name="gender[]" class="usul" value="Başvuru">Başvuru
                              
-                     </div>      
+                     </div>   
+                      <div class="soldivler">
+                         
+                             <h4>Ödeme Türleri</h4>
+                             @foreach($odeme_turleri as $odeme)
+                              <input type="checkbox" name="odeme[]" class="checkbox" value="{{$odeme->id}}"> {{$odeme->adi}}<br>
+                             @endforeach
+                      
+                     </div>
                             
                             
                  </div>
@@ -333,7 +344,14 @@
                                     selectedIl.push($(this).val());
                                 });
                             }
-                            
+                            var selectedOdeme = new Array();
+                            var n = jQuery('.checkbox:checked').length;
+                            if (n > 0){
+                                jQuery('.checkbox:checked').each(function(){
+                                    selectedOdeme.push($(this).val());
+                                });
+                            }
+                            alert(selectedOdeme);
                             var selectedTur = "";
                             var selected = $("#radioDiv input[type='radio']:checked");
                             if (selected.length > 0) {
@@ -344,11 +362,7 @@
                             if (selected2.length > 0) {
                                 selectedUsul = selected2.val();
                             }
-                            var selectedUsul = "";
-                            var selected2 = $("#radioDiv2 input[type='radio']:checked");
-                            if (selected2.length > 0) {
-                                selectedUsul = selected2.val();
-                            }
+                           
                             var selectedSearch = "";
                             var inputSearch = "";
                             var selected3 = $("#radioDiv3 input[type='radio']:checked");
@@ -356,11 +370,19 @@
                                 selectedSearch = selected3.val();
                                 inputSearch=$('#search').val();
                             }
+                            var selectedSozlesme = "";
+                            var selected4 = $("#radioDiv4 input[type='radio']:checked");
+                            if (selected4.length > 0) {
+                                selectedSozlesme = selected4.val();
+                            }
                             alert(selectedSearch);
                             $.ajax({
                               type:"GET",
                               url: "ilanAraFiltre",
-                              data:{il:selectedIl,bas_tar:basTar,bit_tar:bitTar,sektor:selectedSektor,tur:selectedTur,usul:selectedUsul,radSearch:selectedSearch,input:inputSearch},
+                              data:{il:selectedIl,bas_tar:basTar,bit_tar:bitTar,sektor:selectedSektor,tur:selectedTur,
+                                    usul:selectedUsul,radSearch:selectedSearch,input:inputSearch,odeme:selectedOdeme,
+                                    sozles:selectedSozlesme
+                                   },
                               cache: false,
                               success: function(data){
                                  console.log(data);
@@ -397,6 +419,18 @@
                         auto_load();
                     });
                     $('.usul').click(function(){
+                        auto_load();
+                    });
+                    $('.sozlesme').click(function(){
+                        auto_load();
+                    });
+                    $('.check').click(function(){
+                        auto_load();
+                    });
+                     $('.checkbox').click(function(){
+                        auto_load();
+                    });
+                    $('.checkboxClass').click(function(){
                         auto_load();
                     });
                 
@@ -442,4 +476,3 @@
     </div>
   
 @endsection
-

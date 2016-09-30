@@ -172,32 +172,17 @@
                    </div>
                     <div class="col-sm-6">
                         <ul style="list-style: none outside none;">
-                            <li class="li">
-                                <p class="pclass ">
-                                    <span class="multiSel"></span> 
-                                    <img src="{{asset('images/kapat.png')}}"> 
-                                
-                                </p>
+                            <?php $j=0; ?>
+                            <li class="li" id="multiSel{{$j}}">
+                              
                             </li>
-                            <li class="li">
-                                <p class="pclass ">
-                                    <span class="multiSel"></span> 
-                                    <img src="{{asset('images/kapat.png')}}"> 
-                                
-                                </p>
-                            </li>
-                            <li class="li">
-                                 <p class="pclass ">
-                                    <span class="multiSel"></span>
-                                    <img src="{{asset('images/kapat.png')}}"> 
-                                 </p>
-                            </li>
+                            
                         </ul>
 
                     </div>
                     <div class="col-sm-3">
                         <div style="float:right">
-                        <img  src="{{asset('images/sil1.png')}}">&nbsp;Temizle</img>
+                            <img  src="{{asset('images/sil1.png')}}">&nbsp;Temizle</img>
                         </div>
                     </div>
                </div>
@@ -276,15 +261,6 @@
                                     @endforeach
 
                             </div>
-                          
-                           <div class="soldivler">
-                         
-                             <h4>İlan Sektörü</h4>
-                             @foreach($sektorler as $sektor)
-                              <input type="checkbox" name="sektor[]" class="checkboxClass" value="{{$sektor->id}}"> {{$sektor->adi}}<br>
-                             @endforeach
-                      
-                            </div>
 
                             <div class="soldivler" id="radioDiv">
                                     <h4>İlan Türü</h4>
@@ -309,7 +285,7 @@
 
                                     <h4>Ödeme Türleri</h4>
                                     @foreach($odeme_turleri as $odeme)
-                                     <input type="checkbox" name="odeme[]" class="checkboxClass2" value="{{$odeme->id}}"> {{$odeme->adi}}<br>
+                                     <input type="checkbox" class="checkboxClass2" value="{{$odeme->id}}" name="{{$odeme->adi}}"> {{$odeme->adi}}<br>
                                     @endforeach
 
                             </div>
@@ -321,9 +297,10 @@
                                <h3>İlanlar</h3>
                                                   <hr>
                                                   @foreach($querys as $query)
-                                                     <p id="ilan{{$i}}">{{$query->adi}}</p>
-                                                     <p id="adi{{$i}}">{{$query->firmalar->adi}}</p>
-                                                     <hr id="hr{{$i}}">
+                                                     <p id="ilan{{$i}}"></p>
+                                                     <p id="adi{{$i}}"></p>
+                                                     <p id="il{{$i}}"></p>
+                                                    
                                                     <?php $i++;?>
                                                   @endforeach
                                                {{$querys->links()}}
@@ -332,7 +309,6 @@
                  </div>
           
             <script type="text/javascript">
-                      
                       function auto_load(){
                             var il_id=$('#il_id').val();
                             var basTar=$('#baslangic_tarihi').val();
@@ -342,6 +318,8 @@
                             if (n > 0){
                                 jQuery(".checkboxClass:checked").each(function(){
                                     selectedSektor.push($(this).val());
+                                     var html = '<span title="' + selectedSektor + '">' + selectedSektor + '</span>';
+                                     
                                 });
                             }
                             var selectedIl = new Array();
@@ -358,7 +336,7 @@
                                     selectedOdeme.push($(this).val());
                                 });
                             }
-                            alert(selectedOdeme);
+                          
                             var selectedTur = "";
                             var selected = $("#radioDiv input[type='radio']:checked");
                             if (selected.length > 0) {
@@ -382,7 +360,7 @@
                             if (selected4.length > 0) {
                                 selectedSozlesme = selected4.val();
                             }
-                            alert(selectedSearch);
+                           
                             $.ajax({
                               type:"GET",
                               url: "ilanAraFiltre",
@@ -397,50 +375,102 @@
                                 {
                                  $("#ilan"+key).empty();
                                  $("#adi"+key).empty();
+                                 $("#il"+key).empty();
                                  $("#hr"+key).hide();
                                 }
                                 for(var key=0; key <Object.keys(data).length;key++)
                                 {
                                  $("#ilan"+key).append(data[key].ilanadi);
-                                 $("#adi"+key).append(data[key].yayin_tarihi);
-                                 $("#hr"+key).append("<hr />");
+                                 $("#adi"+key).append(data[key].adi);
+                                 $("#il"+key).append(data[key].iladi);
+                                 $("#il"+key).append("<hr />");
                                 }
+                               
+                               
                                  
                               } 
                             });
+                    }
+                    function doldurma(name){
+                        var key=0;
+                                    
+                        $("#multisel"+key).empty();
+                        var html = '<li class="li" name="'+name+'"> <p class="pclass "><span title="' + name + '">' + name + '</span> <button onclick="silme()"><img src="{{asset('images/kapat.png')}}"></button></p> </li>';
+                        $("#multiSel"+key).append(html);                                     
+                    }  
+                    function silme(){
+                        alert("içerde");
+                        $('li[name=Nakit]').remove();
+                        $('.checkboxClass2[name=Nakit]').prop("checked", false);
                     }
                     $('#button').click(function(){
                         auto_load();
                     });
                 
                     $('#il_id').change(function(){
+                        var il = new Array();
+                            var n = jQuery('.mutliSelect input[type="checkbox"]').length;
+                            if (n > 0){
+                                jQuery('.mutliSelect input[type="checkbox"]:checked').each(function(){
+                                    il.push($(this).val());
+                                });
+                            }
                         auto_load();
+                        doldurma(il,"il");
                     });
                     $('#baslangic_tarihi').change(function(){
+                        var bas=$('#baslangic_tarihi').val();
                         auto_load();
+                        doldurma(bas,"baslangic");
                     });
                     $('#bitis_tarihi').change(function(){
+                        var bit=$('#bitis_tarihi').val();
                         auto_load();
+                        doldurma(bit,"bitis");
                     });
                     $('.tur').click(function(){
+                        var tur=$("#radioDiv input[type='radio']:checked").val();
                         auto_load();
+                        doldurma(tur,"tur");
                     });
                     $('.usul').click(function(){
+                        var usul=$("#radioDiv2 input[type='radio']:checked").val();
                         auto_load();
+                        doldurma(usul,"usul");
                     });
                     $('.sozlesme').click(function(){
+                        var sozlesme=$('#sozlesme').val();
                         auto_load();
+                        doldurma(sozlesme,"sozlesme");
                     });
-                    $('.check').click(function(){
-                        auto_load();
-                    });
+                    var odeme = new Array();
                      $('.checkboxClass2').click(function(){
+                            
+                            var sonSecilen;
+                            var n = jQuery('.checkboxClass2:checked').length;
+                            if (n > 0){
+                                jQuery('.checkboxClass2:checked').each(function(){
+                                    sonSecilen = $(this).attr('name');
+                                    if(jQuery.inArray(sonSecilen, odeme) === -1){
+                                        console.log(sonSecilen);
+                                        odeme.push(sonSecilen);
+                                        return false;
+                                    }
+                                });
+                                
+                            }
                         auto_load();
+                        doldurma(sonSecilen);
                     });
                     $('.checkboxClass').click(function(){
-
+                        var sektor=new Array();
+                        jQuery(".checkboxClass:checked").each(function(){
+                                    sektor.push($(this).text());
+                                });
                         auto_load();
+                        doldurma(sektor,"sektor");
                     });
+                    
                 
                      $(".dropdown dt a").on('click', function() {
                     $(".dropdown dd ul").slideToggle('fast');
@@ -469,6 +499,7 @@
                       $('.multiSel').append(html);
                       $(".hida").hide();
                       auto_load();
+                      doldurma(title,"il");
                     } else {
                       $('span[title="' + title + '"]').remove();
                       var ret = $(".hida");
@@ -477,6 +508,11 @@
                     }
   
                 });
+                $("#remove").click()
+                $('document').ready(function(){
+                    auto_load();
+                });
+                
    
                   </script>
                   

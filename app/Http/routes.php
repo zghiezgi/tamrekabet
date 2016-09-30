@@ -107,6 +107,24 @@ use Illuminate\Http\Request;
         return Response::json($querys);
 
     });
+    Route::get('/il',function(){
+        $il_id = Input::get('data');
+        $il = \App\Il::find($il_id);
+        return Response::json($il);
+        
+    });
+    Route::get('/odeme',function(){
+        $odeme_id= Input::get('data');
+        $odeme = \App\OdemeTuru::find($odeme_id);
+        return Response::json($odeme);
+        
+    });
+    Route::get('/sektor',function(){
+        $sektor_id= Input::get('data');
+        $sektor =  \App\Sektor::find($sektor_id);
+        return Response::json($sektor);
+        
+    });
     Route::post('/getIlan',function () {
        $querys = DB::table('ilanlar')
                 ->join('firmalar', 'ilanlar.firma_id', '=', 'firmalar.id')

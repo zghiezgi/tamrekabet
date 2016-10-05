@@ -233,7 +233,7 @@
                                                <ul>
                                                    @foreach($iller as $il)
                                                    <li>
-                                                       <input type="checkbox" value="{{$il->id}}" />{{$il->adi}}</li>
+                                                       <input type="checkbox" value="{{$il->id}}" name="{{$il->adi}}" />{{$il->adi}}</li>
                                                    @endforeach
 
                                                </ul>
@@ -257,7 +257,7 @@
 
                                     <h4>İlan Sektörü</h4>
                                     @foreach($sektorler as $sektor)
-                                     <input type="checkbox" name="sektor[]" class="checkboxClass" value="{{$sektor->id}}"> {{$sektor->adi}}<br>
+                                     <input type="checkbox" class="checkboxClass" value="{{$sektor->id}}" name="{{$sektor->adi}}"> {{$sektor->adi}}<br>
                                     @endforeach
 
                             </div>
@@ -274,13 +274,6 @@
                                     <input type="radio" name="sozlesmeTuru[]" class="sozlesme" value="Götürü Bedel"><span class="lever"></span>Götürü Bedel<br>
 
                             </div>
-                            <div class="soldivler" id="radioDiv2">
-                                    <h4>İlan Usulü</h4>
-                                     <input type="radio" name="gender[]" class="usul" value="Açık"> Açık<br>
-                                     <input type="radio" name="gender[]" class="usul" value="Belirli İstekler Arasında">Belirli İstekler Arasında<br>
-                                     <input type="radio" name="gender[]" class="usul" value="Başvuru">Başvuru
-
-                            </div>   
                              <div class="soldivler">
 
                                     <h4>Ödeme Türleri</h4>
@@ -289,6 +282,13 @@
                                     @endforeach
 
                             </div>
+                            <div class="soldivler" id="radioDiv2">
+                                    <h4>İlan Usulü</h4>
+                                     <input type="radio" name="gender[]" class="usul" value="Açık"> Açık<br>
+                                     <input type="radio" name="gender[]" class="usul" value="Belirli İstekler Arasında">Belirli İstekler Arasında<br>
+                                     <input type="radio" name="gender[]" class="usul" value="Başvuru">Başvuru
+
+                            </div>   
 
 
                         </div>
@@ -393,15 +393,81 @@
                     }
                     function doldurma(name){
                         var key=0;
-                                    
+                         alert(name);           
                         $("#multisel"+key).empty();
-                        var html = '<li class="li" name="'+name+'"> <p class="pclass "><span title="' + name + '">' + name + '</span> <button onclick="silme()"><img src="{{asset('images/kapat.png')}}"></button></p> </li>';
+                        var valName="'"+name+"'";
+                        var html = '<li class="li" name="'+name+'"> <p class="pclass "><span title="' + name + '">' + name + '</span> <button onclick=silme("'+name+'")><img src="{{asset('images/kapat.png')}}"></button></p> </li>';
+                        alert(name);
                         $("#multiSel"+key).append(html);                                     
                     }  
-                    function silme(){
-                        alert("içerde");
-                        $('li[name=Nakit]').remove();
-                        $('.checkboxClass2[name=Nakit]').prop("checked", false);
+                    function silme(name){
+                        
+                        alert('içerde');
+                        $('li[name='+name+']').remove();
+                        if(name == "tarım" || name == "hizmet"){
+                            $('.checkboxClass[name='+name+']').prop("checked", false);
+                            auto_load();
+                        }
+                        if(name == "Nakit" || name == "Kredi Kartı" || name == "Havale" || name == "Çek" || name == "Senet"){
+                            $('.checkboxClass2[name='+name+']').prop("checked", false);
+                            auto_load();
+                        }
+                        if(name == "Mal" || name == "Hizmet" || name == "Yapım İşi"){
+                            
+                            $("#radioDiv input[type='radio']").each(function(){
+                                alert($(this).val());
+                                $(this).prop('checked', false);
+                            });
+                            auto_load();
+                        }
+                        if(name == "Açık" || name == "Belirli İstekler Arasında" || name == "Başvuru"){
+                            
+                            $("#radioDiv2 input[type='radio']").each(function(){
+                                alert($(this).val());
+                                $(this).prop('checked', false);
+                                
+                            });
+                            auto_load();
+                        }
+                        if(name == "Birim Fiyatlı" || name == "Götürü Bedel"){
+                            
+                            $("#radioDiv4 input[type='radio']").each(function(){
+                                alert($(this).val());
+                                $(this).prop('checked', false);
+                                
+                            });
+                            auto_load();
+                        }
+                        if(name.indexOf("başlangıç") != -1){
+                            alert("ozge");
+                            $(' input[type=date]').each( function resetDate(){
+                                if(name.indexOf(this.value) != -1){
+                                    this.value = this.defaultValue;
+                                }
+                            } );
+                            auto_load();
+                                            
+                        }
+                        if(name.indexOf("bitiş") != -1){
+                            alert("ezgi");
+                            $(' input[type=date]').each( function resetDate(){
+                                if(name.indexOf(this.value) != -1){
+                                    this.value = this.defaultValue;
+                                }
+                            } );
+                            auto_load();
+                                            
+                        }
+                        else{
+                            $('.mutliSelect input[type="checkbox"]').each(function(){
+                                var title = $(this).closest('.mutliSelect').find('input[type="checkbox"]').attr('name'),
+                                title = $(this).attr('name');
+                                if(name == title){
+                                    $(this).prop('checked', false);
+                                }
+                            });
+                             auto_load();
+                        }
                     }
                     $('#button').click(function(){
                         auto_load();
@@ -416,32 +482,32 @@
                                 });
                             }
                         auto_load();
-                        doldurma(il,"il");
+                        doldurma(il);
                     });
                     $('#baslangic_tarihi').change(function(){
-                        var bas=$('#baslangic_tarihi').val();
+                        var bas=$('#baslangic_tarihi').val()+"başlangıç";
                         auto_load();
-                        doldurma(bas,"baslangic");
+                        doldurma(bas);
                     });
                     $('#bitis_tarihi').change(function(){
-                        var bit=$('#bitis_tarihi').val();
+                        var bit=$('#bitis_tarihi').val()+"bitiş";
                         auto_load();
-                        doldurma(bit,"bitis");
+                        doldurma(bit);
                     });
                     $('.tur').click(function(){
                         var tur=$("#radioDiv input[type='radio']:checked").val();
                         auto_load();
-                        doldurma(tur,"tur");
+                        doldurma(tur);
                     });
                     $('.usul').click(function(){
                         var usul=$("#radioDiv2 input[type='radio']:checked").val();
                         auto_load();
-                        doldurma(usul,"usul");
+                        doldurma(usul);
                     });
                     $('.sozlesme').click(function(){
-                        var sozlesme=$('#sozlesme').val();
+                        var sozlesme=$("#radioDiv4 input[type='radio']:checked").val();
                         auto_load();
-                        doldurma(sozlesme,"sozlesme");
+                        doldurma(sozlesme);
                     });
                     var odeme = new Array();
                      $('.checkboxClass2').click(function(){
@@ -462,13 +528,23 @@
                         auto_load();
                         doldurma(sonSecilen);
                     });
+                    var sektor = new Array();
                     $('.checkboxClass').click(function(){
-                        var sektor=new Array();
-                        jQuery(".checkboxClass:checked").each(function(){
-                                    sektor.push($(this).text());
+                        var sonSecilen;
+                            var n = jQuery('.checkboxClass:checked').length;
+                            if (n > 0){
+                                jQuery('.checkboxClass:checked').each(function(){
+                                    sonSecilen = $(this).attr('name');
+                                    if(jQuery.inArray(sonSecilen, sektor) === -1){
+                                        
+                                        sektor.push(sonSecilen);
+                                        return false;
+                                    }
                                 });
+                                console.log(sonSecilen);
+                            }
                         auto_load();
-                        doldurma(sektor,"sektor");
+                        doldurma(sonSecilen);
                     });
                     
                 
@@ -491,15 +567,15 @@
 
                   $('.mutliSelect input[type="checkbox"]').on('click', function() {
 
-                    var title = $(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),
-                      title = $(this).val() + ",";
+                    var title = $(this).closest('.mutliSelect').find('input[type="checkbox"]').attr('name'),
+                      title = $(this).attr('name');
 
                     if ($(this).is(':checked')) {
                       var html = '<span title="' + title + '">' + title + '</span>';
                       $('.multiSel').append(html);
                       $(".hida").hide();
                       auto_load();
-                      doldurma(title,"il");
+                      doldurma(title);
                     } else {
                       $('span[title="' + title + '"]').remove();
                       var ret = $(".hida");
@@ -508,7 +584,6 @@
                     }
   
                 });
-                $("#remove").click()
                 $('document').ready(function(){
                     auto_load();
                 });

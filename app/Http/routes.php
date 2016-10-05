@@ -103,8 +103,8 @@ use Illuminate\Http\Request;
         if($odeme != NULL){
             $querys->whereIn('ilanlar.odeme_turu_id',$odeme);
         }
-        $querys=$querys->get();  
-        return Response::json($querys);
+        $result=$querys->get();  
+        return Response::json($result);
 
     });
     Route::get('/il',function(){
